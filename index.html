@@ -1,0 +1,3297 @@
+<!DOCTYPE html>
+<html lang="es" id="html" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>LigaDigital</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<style>
+/* ═══ THEMES ═══ */
+[data-theme="light"]{--bg:#f0f4f0;--bg2:#fff;--card:#fff;--card2:#f6faf6;--border:#d8e8d8;--border2:#c0d8c0;--text:#0f1f0f;--text2:#3a5a3a;--muted:#8aaa8a;--hdr:#fff;--acc:#16a34a;--acc2:#15803d;--acc3:#dcfce7;--sh:rgba(22,163,74,.12);}
+[data-theme="dark"]{--bg:#0a120a;--bg2:#0f1a0f;--card:#121e12;--card2:#162016;--border:#1e321e;--border2:#254025;--text:#e8f5e8;--text2:#9aba9a;--muted:#4a6a4a;--hdr:#0d170d;--acc:#22c55e;--acc2:#16a34a;--acc3:#052e16;--sh:rgba(34,197,94,.15);}
+:root{--red:#dc2626;--blue:#2563eb;--amber:#d97706;--purple:#7c3aed;--gold:#ca8a04;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ═══ SPLASH ═══ */
+#splash{position:fixed;inset:0;z-index:3000;background:linear-gradient(160deg,#052e16,#14532d,#166534);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px;}
+#splash.hidden{display:none;}
+.sp-ball{font-size:60px;margin-bottom:20px;animation:bounce .9s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
+.sp-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:5px;color:#fff;text-align:center;margin-bottom:6px;}
+.sp-title span{color:#4ade80;}
+.sp-sub{font-size:11px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center;margin-bottom:36px;}
+.sp-opts{display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;}
+.sp-opt{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);border-radius:16px;padding:20px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .2s;}
+.sp-opt:hover{border-color:#4ade80;background:rgba(74,222,128,.08);transform:translateY(-2px);}
+.sp-opt-icon{font-size:36px;}
+.sp-opt-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#fff;}
+.sp-opt-sub{font-size:11px;color:rgba(255,255,255,.5);font-weight:500;margin-top:2px;}
+.sp-admin-link{margin-top:24px;font-size:11px;color:rgba(255,255,255,.35);cursor:pointer;font-weight:600;letter-spacing:1px;text-decoration:underline;}
+
+/* ═══ LOGIN MODAL ═══ */
+#loginModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;align-items:center;justify-content:center;padding:20px;}
+#loginModal.show{display:flex;}
+.lm-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:18px;padding:24px 20px;width:100%;max-width:340px;}
+.lm-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--acc);margin-bottom:16px;text-align:center;}
+.lfi{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;margin-bottom:10px;}
+.lfi:focus{outline:none;border-color:var(--acc);}
+.g-btn{width:100%;background:#fff;color:#1a1a1a;border:none;border-radius:8px;padding:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;}
+.lm-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:6px;padding:9px;font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none;font-weight:600;}
+
+/* ═══ LOADING ═══ */
+#loadingScreen{display:none;position:fixed;inset:0;background:var(--acc);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#loadingScreen.show{display:flex;}
+.ld-ball{font-size:48px;animation:bounce .8s ease-in-out infinite alternate;}
+.ld-txt{font-size:11px;letter-spacing:4px;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:700;}
+
+/* ═══ HEADER ═══ */
+.header{position:sticky;top:0;z-index:100;background:var(--hdr);border-bottom:1px solid var(--border);box-shadow:0 2px 12px var(--sh);}
+.hdr-top{display:flex;align-items:center;gap:8px;padding:9px 13px 7px;}
+.hdr-brand{flex:1;min-width:0;}
+.hdr-icon{width:24px;height:24px;background:var(--acc);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.hdr-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:var(--acc);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-cat{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:1px;}
+.hdr-right{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.live-badge{background:#dc2626;color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 7px;border-radius:3px;display:flex;align-items:center;gap:3px;}
+.ldot{width:5px;height:5px;border-radius:50%;background:#fff;animation:pdot 1.5s infinite;}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
+.ico-btn{background:var(--card2);border:1px solid var(--border);border-radius:18px;padding:5px 8px;cursor:pointer;font-size:13px;color:var(--text);transition:all .2s;font-weight:600;}
+.ico-btn:hover{border-color:var(--acc);color:var(--acc);}
+
+/* ═══ CATEGORY TABS ═══ */
+.cat-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 4px;background:var(--card2);border-top:1px solid var(--border);}
+.cat-tabs::-webkit-scrollbar{display:none;}
+.cat-tab{flex-shrink:0;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:1px;padding:8px 12px 6px;cursor:pointer;white-space:nowrap;text-transform:uppercase;transition:all .2s;}
+.cat-tab.active{color:var(--acc);border-bottom-color:var(--acc);}
+
+/* ═══ NAV ═══ */
+.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 4px;border-top:1px solid var(--border);}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{flex-shrink:0;background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;padding:10px 11px 8px;cursor:pointer;white-space:nowrap;text-transform:uppercase;transition:all .2s;}
+.nav-tab:hover{color:var(--text2);}
+.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc);}
+.admin-only{display:none;}
+.admin-only.show{display:flex;}
+
+/* ═══ PAGES ═══ */
+.page{display:none;padding:14px 13px 100px;max-width:900px;margin:0 auto;}
+.page.active{display:block;}
+
+/* ═══ SECTION HDR ═══ */
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:6px;}
+.st{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text);white-space:nowrap;}
+.sl{flex:1;height:1px;background:var(--border);}
+
+/* ═══ CARD ═══ */
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.card-g{border-top:3px solid var(--acc);}
+.card-a{border-top:3px solid var(--amber);}
+.card-b{border-top:3px solid var(--blue);}
+.card-r{border-top:3px solid var(--red);}
+.card-gold{border-top:3px solid var(--gold);}
+
+/* ═══ STATS ═══ */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 8px;text-align:center;}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;}
+.sl2{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+
+/* ═══ BUTTONS ═══ */
+.btn{border:none;border-radius:7px;padding:8px 16px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.btn-g{background:var(--acc);color:#fff;}
+.btn-g:hover{background:var(--acc2);}
+.btn-r{background:var(--red);color:#fff;}
+.btn-b{background:var(--blue);color:#fff;}
+.btn-a{background:var(--amber);color:#fff;}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-out{background:transparent;border:1.5px solid var(--border);color:var(--text2);}
+.btn-out:hover{border-color:var(--acc);color:var(--acc);}
+.btn-sm{padding:5px 10px;font-size:10px;}
+.btn-full{width:100%;justify-content:center;padding:13px;font-size:13px;}
+
+/* ═══ FORM ═══ */
+.form-2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.form-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.fg{margin-bottom:9px;}
+.fl{display:block;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.fi{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;}
+.fi:focus{outline:none;border-color:var(--acc);}
+.fi option{background:var(--bg2);color:var(--text);}
+textarea.fi{resize:vertical;min-height:60px;}
+.divider{border:none;border-top:1px solid var(--border);margin:11px 0;}
+.img-upload{border:2px dashed var(--border);border-radius:9px;padding:12px;text-align:center;cursor:pointer;transition:border-color .2s;}
+.img-upload:hover{border-color:var(--acc);}
+.img-ul{font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:600;}
+.img-pr{width:56px;height:56px;object-fit:cover;border-radius:9px;margin:4px auto 0;display:block;}
+
+/* ═══ TABLA ═══ */
+.tabla-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid var(--border);}
+.tabla{width:100%;border-collapse:collapse;font-size:11px;}
+.tabla thead tr{background:var(--card2);}
+.tabla thead th{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:9px 5px;text-align:center;border-bottom:1.5px solid var(--border);}
+.tabla thead th.tal{text-align:left;padding-left:10px;}
+.tabla tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+.tabla tbody tr:last-child{border-bottom:none;}
+.tabla tbody tr:hover{background:var(--acc3);}
+.tabla tbody td{padding:9px 5px;text-align:center;font-weight:600;}
+.tabla tbody td.tal{text-align:left;padding-left:10px;}
+.pos-num{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:900;}
+.p1{color:var(--gold)}.p2{color:var(--muted)}.p3{color:#b45309}.pr{color:var(--muted)}
+.tc{display:flex;align-items:center;gap:7px;}
+.tc-logo{width:22px;height:22px;object-fit:cover;border-radius:4px;}
+.tc-ph{width:22px;height:22px;background:var(--card2);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.tc-name{font-size:12px;font-weight:700;}
+.pts-c{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--acc);}
+.dp{color:var(--acc);font-weight:700}.dn{color:var(--red);font-weight:700}.dz{color:var(--muted)}
+.fp{display:flex;gap:2px;justify-content:center;}
+.fp-w{width:13px;height:13px;border-radius:50%;background:var(--acc);font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
+.fp-d{width:13px;height:13px;border-radius:50%;background:#94a3b8;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
+.fp-l{width:13px;height:13px;border-radius:50%;background:var(--red);font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
+.tabla-empty{text-align:center;padding:28px;color:var(--muted);font-size:12px;font-weight:600;}
+
+/* FINALISSIMA BANNER */
+.finalissima-banner{background:linear-gradient(135deg,var(--gold),#b45309);border-radius:14px;padding:18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(202,138,4,.3);}
+.finalissima-banner::before{content:'🏆';position:absolute;right:14px;top:10px;font-size:48px;opacity:.2;}
+.fb-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:#fff;margin-bottom:6px;}
+.fb-sub{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.fb-teams{display:flex;align-items:center;justify-content:center;gap:14px;}
+.fb-team{text-align:center;}
+.fb-team-logo{width:44px;height:44px;object-fit:cover;border-radius:9px;margin:0 auto 5px;}
+.fb-team-ph{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 5px;}
+.fb-team-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:#fff;}
+.fb-vs{font-family:'Bebas Neue',sans-serif;font-size:32px;color:rgba(255,255,255,.7);}
+
+/* ═══ MATCH CARD ═══ */
+.match-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;margin-bottom:9px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.mc-top{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--card2);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.mc-status{font-size:9px;font-weight:800;padding:3px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;}
+.ms-pen{background:rgba(37,99,235,.08);color:var(--blue);border:1px solid rgba(37,99,235,.2);}
+.ms-live{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.25);animation:glow 2s infinite;}
+.ms-done{background:rgba(22,163,74,.08);color:var(--acc);border:1px solid rgba(22,163,74,.2);}
+@keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 8px rgba(220,38,38,.15)}}
+.mc-body{padding:12px 14px;}
+.scoreboard{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;}
+.team-side{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.team-logo{width:36px;height:36px;object-fit:cover;border-radius:8px;}
+.team-ph{width:36px;height:36px;background:var(--card2);border:1.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.team-name{font-size:12px;font-weight:800;text-align:center;line-height:1.2;}
+.team-score{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;color:var(--text);}
+.team-score.winner{color:var(--acc);}
+.score-sep{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--border2);}
+.mc-footer{display:flex;gap:8px;justify-content:center;padding:6px 12px;background:var(--card2);border-top:1px solid var(--border);flex-wrap:wrap;}
+.mc-meta{font-size:10px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:3px;}
+.scorers-strip{padding:5px 13px 8px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px;}
+.scorer-tag{display:inline-flex;align-items:center;gap:3px;background:var(--acc3);border:1px solid rgba(22,163,74,.2);border-radius:18px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--acc2);}
+
+/* CRONO */
+.crono-wrap{background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:13px;padding:16px 14px 12px;text-align:center;margin:10px 0;}
+.crono-display{font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:5px;color:#fff;line-height:1;}
+.crono-ctrls{display:flex;gap:7px;justify-content:center;margin-top:10px;}
+.gol-btn{background:var(--bg2);border:1.5px solid var(--border);color:var(--text);border-radius:7px;padding:8px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:all .15s;text-transform:uppercase;width:100%;}
+.gol-btn.add:hover{border-color:var(--acc);color:var(--acc);background:var(--acc3);}
+.gol-btn.undo:hover{border-color:var(--red);color:var(--red);}
+
+/* ═══ TIENDA POS ═══ */
+.pos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:7px;margin-bottom:14px;}
+.pos-item{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 7px 9px;text-align:center;cursor:pointer;transition:all .15s;position:relative;}
+.pos-item:hover{border-color:var(--acc);transform:translateY(-2px);}
+.pos-item:active{transform:scale(.96);}
+.pi-em{font-size:26px;display:block;margin-bottom:4px;}
+.pi-img{width:42px;height:42px;object-fit:cover;border-radius:7px;margin:0 auto 4px;display:block;}
+.pi-n{font-size:10px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.2;}
+.pi-p{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--acc);}
+.pi-s{font-size:9px;color:var(--muted);font-weight:600;}
+.pos-item.low{border-color:rgba(220,38,38,.4);}
+.low-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--red);border-radius:50%;animation:pdot 1.5s infinite;}
+
+/* CART */
+.ticket-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.ticket-title{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text2);}
+.cart-empty-msg{text-align:center;padding:14px;color:var(--muted);font-size:12px;font-weight:600;}
+.cart-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+.ci-em{font-size:19px;flex-shrink:0;}
+.ci-img{width:28px;height:28px;object-fit:cover;border-radius:5px;flex-shrink:0;}
+.ci-info{flex:1;}
+.ci-name{font-size:12px;font-weight:700;}
+.ci-sub{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--acc);}
+.ci-qty{display:flex;align-items:center;gap:5px;}
+.qty-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--text2);width:24px;height:24px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-weight:700;}
+.qty-btn:hover{border-color:var(--acc);color:var(--acc);}
+.qty-n{font-family:'Bebas Neue',sans-serif;font-size:14px;font-weight:700;min-width:16px;text-align:center;}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0 4px;border-top:1.5px solid var(--border);margin-top:4px;}
+.ct-lbl{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.ct-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--acc);}
+
+/* INVENTORY */
+.inv-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);}
+.inv-row:last-child{border-bottom:none;}
+.inv-img{width:32px;height:32px;object-fit:cover;border-radius:6px;flex-shrink:0;}
+.inv-em{font-size:20px;}
+.inv-info{flex:1;}
+.inv-name{font-size:12px;font-weight:700;}
+.inv-det{font-size:10px;color:var(--muted);font-weight:600;}
+.inv-ctrl{display:flex;align-items:center;gap:3px;}
+.inv-adj{width:40px;background:var(--bg2);border:1.5px solid var(--border);border-radius:5px;padding:4px 5px;color:var(--text);font-size:11px;text-align:center;font-weight:700;}
+
+/* VENTA ROW */
+.venta-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.venta-row:last-child{border-bottom:none;}
+.v-hora{font-family:'Bebas Neue',sans-serif;font-size:14px;font-weight:600;}
+.v-items{font-size:10px;color:var(--muted);font-weight:600;}
+.v-monto{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--acc);}
+.v-actions{display:flex;gap:4px;flex-shrink:0;}
+
+/* ═══ EQUIPOS ═══ */
+.equipos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.equipo-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+.equipo-card:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 18px var(--sh);}
+.eq-logo{width:52px;height:52px;object-fit:cover;border-radius:11px;margin:0 auto 8px;}
+.eq-ph{width:52px;height:52px;background:var(--card2);border:1.5px solid var(--border);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 8px;}
+.eq-name{font-size:12px;font-weight:800;color:var(--text);line-height:1.2;}
+.eq-cat{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px;}
+
+/* EQUIPO DETAIL */
+.eq-detail-header{display:flex;align-items:center;gap:14px;padding:16px;background:var(--card);border:1.5px solid var(--border);border-radius:13px;margin-bottom:12px;}
+.eq-detail-logo{width:60px;height:60px;object-fit:cover;border-radius:12px;flex-shrink:0;}
+.eq-detail-ph{width:60px;height:60px;background:var(--card2);border:1.5px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;}
+.eq-detail-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--acc);}
+.eq-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.eq-stat{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 8px;text-align:center;}
+.eq-stat-n{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--acc);}
+.eq-stat-l{font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+
+/* ═══ INSCRIPCIONES ═══ */
+.insc-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:13px;margin-bottom:10px;}
+.insc-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.insc-logo{width:40px;height:40px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+.insc-ph{width:40px;height:40px;background:var(--card2);border:1.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.insc-info{flex:1;}
+.insc-name{font-size:14px;font-weight:800;}
+.insc-meta{font-size:11px;color:var(--muted);font-weight:600;}
+.insc-total{text-align:right;}
+.insc-pagado{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--acc);}
+.insc-deuda{font-size:11px;color:var(--red);font-weight:700;}
+.progress-bar{width:100%;height:6px;background:var(--border);border-radius:3px;margin:8px 0;}
+.progress-fill{height:100%;background:var(--acc);border-radius:3px;transition:width .5s;}
+.abono-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.abono-row:last-child{border-bottom:none;}
+.abono-fecha{color:var(--muted);font-weight:600;}
+.abono-method{font-size:10px;font-weight:800;padding:2px 7px;border-radius:12px;}
+.am-ef{background:rgba(22,163,74,.1);color:var(--acc);border:1px solid rgba(22,163,74,.25);}
+.am-tr{background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.25);}
+.am-pp{background:rgba(217,119,6,.1);color:var(--amber);border:1px solid rgba(217,119,6,.25);}
+.abono-monto{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--acc);}
+
+/* ═══ ARBITROS ═══ */
+.arb-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:12px;display:flex;align-items:center;gap:11px;margin-bottom:9px;}
+.arb-av{width:40px;height:40px;background:var(--acc3);border:1.5px solid rgba(22,163,74,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.arb-info{flex:1;}
+.arb-name{font-size:13px;font-weight:800;}
+.arb-meta{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;}
+.arb-earned{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--acc);}
+.pago-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
+.pago-row:last-child{border-bottom:none;}
+.pago-info{flex:1;}
+.pago-match{font-size:12px;font-weight:700;}
+.pago-meta{font-size:10px;color:var(--muted);font-weight:600;}
+.pago-amt{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--acc);}
+.pay-box{background:var(--card2);border:1.5px solid var(--border);border-radius:9px;padding:11px;margin-bottom:11px;}
+.pay-box-title{font-size:11px;font-weight:800;letter-spacing:.5px;margin-bottom:8px;color:var(--text2);}
+.pay-method-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:7px;}
+.pmo{background:var(--bg2);border:1.5px solid var(--border);border-radius:7px;padding:8px;cursor:pointer;text-align:center;font-size:11px;font-family:'Montserrat',sans-serif;font-weight:700;transition:all .15s;color:var(--text2);}
+.sel-ef{border-color:var(--acc)!important;color:var(--acc)!important;background:var(--acc3)!important;}
+.sel-tr{border-color:var(--blue)!important;color:var(--blue)!important;background:rgba(37,99,235,.06)!important;}
+.sel-pp{border-color:var(--amber)!important;color:var(--amber)!important;background:rgba(217,119,6,.06)!important;}
+.sel-mx{border-color:var(--muted)!important;color:var(--muted)!important;}
+
+/* ═══ RESUMEN FINANCIERO ═══ */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+.res-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
+.res-n{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;}
+.res-l{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.money-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.money-row:last-child{border-bottom:none;}
+.money-lbl{color:var(--text2);font-weight:600;}
+.money-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--acc);}
+.money-row.total-row{padding-top:10px;border-top:2px solid var(--border2);border-bottom:none;margin-top:4px;}
+.fin-ratio{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px;}
+.fin-ratio-title{font-size:12px;font-weight:800;margin-bottom:4px;}
+.fin-ratio-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--acc);}
+.fin-ratio-desc{font-size:11px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:4px;}
+.insight-box{background:var(--acc3);border:1px solid rgba(22,163,74,.25);border-radius:10px;padding:12px;margin-bottom:8px;}
+.insight-box.warn{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.3);}
+.insight-box.alert{background:rgba(220,38,38,.06);border-color:rgba(220,38,38,.2);}
+.insight-title{font-size:12px;font-weight:800;color:var(--acc);margin-bottom:4px;}
+.insight-box.warn .insight-title{color:var(--amber);}
+.insight-box.alert .insight-title{color:var(--red);}
+.insight-text{font-size:11px;color:var(--text2);line-height:1.6;font-weight:500;}
+
+/* ═══ GOLEADORES ═══ */
+.gol-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.gol-row:last-child{border-bottom:none;}
+.gol-pos{font-family:'Bebas Neue',sans-serif;font-size:22px;width:26px;text-align:center;}
+.gol-info{flex:1;}
+.gol-player{font-size:13px;font-weight:800;}
+.gol-team{font-size:10px;color:var(--muted);font-weight:600;}
+.gol-count{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--acc);}
+
+/* ═══ MODAL ═══ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border-top:3px solid var(--acc);border-radius:18px 18px 0 0;padding:18px 15px 36px;width:100%;max-height:93vh;overflow-y:auto;animation:slide-up .27s ease;}
+@keyframes slide-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border);}
+.modal-title{font-size:14px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--acc);}
+.modal-close{background:var(--card2);border:1.5px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.modal-close:hover{border-color:var(--red);color:var(--red);}
+
+/* ═══ EMPTY / MISC ═══ */
+.empty{text-align:center;padding:30px 18px;color:var(--muted);font-size:12px;font-weight:600;}
+.empty-icon{font-size:38px;display:block;margin-bottom:8px;opacity:.4;}
+.info-box{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--blue);margin-bottom:12px;font-weight:600;}
+.warn-box{background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--amber);margin-bottom:12px;font-weight:600;}
+
+/* ═══ TOAST ═══ */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);padding:10px 20px;border-radius:7px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;z-index:600;transition:transform .3s;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.tg{background:var(--acc);color:#fff;}
+.tr{background:var(--red);color:#fff;}
+.ta{background:var(--amber);color:#fff;}
+.tb{background:var(--blue);color:#fff;}
+
+/* ═══ AI CALENDAR ═══ */
+.ai-panel{background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:14px;padding:18px;margin-bottom:14px;color:#fff;position:relative;overflow:hidden;}
+.ai-panel::before{content:'🤖';position:absolute;right:14px;top:10px;font-size:44px;opacity:.15;}
+.ai-panel-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:3px;}
+.ai-panel-sub{font-size:11px;font-weight:600;opacity:.8;margin-bottom:14px;}
+.ai-params{background:rgba(255,255,255,.12);border-radius:9px;padding:12px;margin-bottom:12px;}
+.ai-param-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.ai-param-row:last-child{margin-bottom:0;}
+.ai-param-lbl{font-size:10px;font-weight:700;letter-spacing:1px;opacity:.8;width:90px;flex-shrink:0;}
+.ai-fi{flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:7px 10px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;}
+.ai-fi:focus{outline:none;border-color:rgba(255,255,255,.6);}
+.ai-fi option{background:#14532d;color:#fff;}
+.ai-fi::placeholder{color:rgba(255,255,255,.5);}
+.ai-gen-btn{width:100%;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.3);border-radius:8px;padding:13px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:1px;text-transform:uppercase;}
+.ai-gen-btn:hover{background:rgba(255,255,255,.25);}
+.ai-gen-btn:disabled{opacity:.5;cursor:not-allowed;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-right:6px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cal-preview-match{background:var(--card);border:1.5px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;}
+.cpm-top{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--card2);border-bottom:1px solid var(--border);}
+.cpm-date{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.cpm-cancha{font-size:10px;font-weight:800;background:var(--acc3);color:var(--acc2);padding:2px 8px;border-radius:18px;border:1px solid rgba(22,163,74,.2);}
+.cpm-body{padding:11px 13px;}
+.cpm-teams{display:flex;align-items:center;gap:10px;}
+.cpm-team{flex:1;display:flex;align-items:center;gap:6px;}
+.cpm-team-logo{width:26px;height:26px;object-fit:cover;border-radius:5px;}
+.cpm-team-ph{width:26px;height:26px;background:var(--card2);border:1px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.cpm-team-name{font-size:12px;font-weight:800;}
+.cpm-vs{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--border2);}
+.cpm-time{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--acc);}
+.cpm-reason{font-size:10px;color:var(--muted);font-weight:600;margin-top:4px;font-style:italic;}
+.cpm-actions{display:flex;gap:5px;margin-top:8px;}
+.prox-match{background:var(--card);border:1.5px solid var(--border);border-radius:13px;margin-bottom:9px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+.pm-top{display:flex;align-items:center;justify-content:space-between;padding:6px 13px;background:var(--card2);border-bottom:1px solid var(--border);}
+.pm-date{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.pm-cancha{font-size:10px;font-weight:800;background:var(--acc3);color:var(--acc2);padding:2px 8px;border-radius:18px;border:1px solid rgba(22,163,74,.2);}
+.pm-body{padding:12px 14px;}
+.pm-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;}
+.pm-team{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.pm-logo{width:38px;height:38px;object-fit:cover;border-radius:9px;}
+.pm-ph{width:38px;height:38px;background:var(--card2);border:1.5px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.pm-name{font-size:11px;font-weight:800;text-align:center;line-height:1.2;}
+.pm-vs{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--border2);}
+.pm-time{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--acc);text-align:center;margin-top:3px;}
+.pm-footer{display:flex;align-items:center;justify-content:space-between;padding:6px 13px;background:var(--card2);border-top:1px solid var(--border);}
+.ps-confirmed{background:rgba(22,163,74,.1);color:var(--acc);border:1px solid rgba(22,163,74,.2);font-size:9px;font-weight:800;padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.ps-cancelled{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2);font-size:9px;font-weight:800;padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.ps-programado{background:rgba(37,99,235,.08);color:var(--blue);border:1px solid rgba(37,99,235,.2);font-size:9px;font-weight:800;padding:3px 8px;border-radius:3px;text-transform:uppercase;}
+.cancel-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0;}
+.cancel-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:7px;padding:9px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;transition:all .15s;}
+.cancel-opt:hover,.cancel-opt.sel{border-color:var(--red);color:var(--red);background:rgba(220,38,38,.05);}
+.week-pills{display:flex;gap:5px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none;}
+.week-pills::-webkit-scrollbar{display:none;}
+.week-pill{flex-shrink:0;background:var(--card);border:1.5px solid var(--border);border-radius:9px;padding:7px 10px;cursor:pointer;text-align:center;min-width:52px;transition:all .2s;}
+.week-pill.sel{background:var(--acc);border-color:var(--acc);}
+.week-pill.sel .wp-name,.week-pill.sel .wp-num{color:#fff;}
+.wp-name{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+.wp-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);}
+.restrict-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:18px;}
+.rt-fixed{background:rgba(22,163,74,.1);color:var(--acc);border:1px solid rgba(22,163,74,.25);}
+.rt-restrict{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2);}
+.rt-cancel{background:rgba(217,119,6,.1);color:var(--amber);border:1px solid rgba(217,119,6,.25);}
+
+/* LINEUP */
+.lineup-box{background:var(--card2);border:1.5px solid var(--border);border-radius:9px;padding:10px;}
+.lineup-title{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;}
+.player-input-row{display:flex;gap:5px;margin-bottom:5px;}
+
+/* CHECKBOX */
+.chk-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
+.chk-row:last-child{border-bottom:none;}
+.chk-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc);}
+.chk-label{font-size:12px;font-weight:600;cursor:pointer;flex:1;}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING ═══ -->
+<div id="loadingScreen" class="show">
+  <div class="ld-ball">⚽</div>
+  <div class="ld-txt" id="ldTxt">LigaDigital</div>
+</div>
+
+<!-- ═══ SPLASH ═══ -->
+<div id="splash">
+  <div class="sp-ball">⚽</div>
+  <div class="sp-title">LIGA<span>Digital</span></div>
+  <div class="sp-sub">Selecciona tu torneo</div>
+  <div class="sp-opts">
+    <div class="sp-opt" onclick="selectTorneo('villa')">
+      <div class="sp-opt-icon">🏟️</div>
+      <div>
+        <div class="sp-opt-name">TORNEO VILLA UNIVERSIDAD</div>
+        <div class="sp-opt-sub">Organizador: Joel "El Chingón" Rivera</div>
+      </div>
+    </div>
+    <div class="sp-opt" onclick="selectTorneo('musala')">
+      <div class="sp-opt-icon">⚽</div>
+      <div>
+        <div class="sp-opt-name">TORNEO ISLA MÚSALA</div>
+        <div class="sp-opt-sub">Organizador: Joel "El Chingón" Rivera</div>
+      </div>
+    </div>
+  </div>
+  <div class="sp-admin-link" onclick="openLoginModal()">🔐 Acceso administrador</div>
+</div>
+
+<!-- ═══ LOGIN MODAL ═══ -->
+<div id="loginModal">
+  <div class="lm-box">
+    <div class="lm-title">Admin Login</div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Entrar con Google
+    </button>
+    <div style="text-align:center;font-size:10px;color:var(--muted);margin:6px 0;font-weight:600;">— o con correo —</div>
+    <input class="lfi" id="l_email" type="email" placeholder="admin@gmail.com"/>
+    <input class="lfi" id="l_pass" type="password" placeholder="Contraseña"/>
+    <button class="btn btn-g btn-full" onclick="loginEmail()">Entrar</button>
+    <div class="lm-err" id="lmerr"></div>
+    <button class="btn btn-out btn-full" style="margin-top:8px" onclick="closeLoginModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appShell" style="display:none">
+
+<div class="header">
+  <div class="hdr-top">
+    <div class="hdr-icon">⚽</div>
+    <div class="hdr-brand">
+      <div class="hdr-name" id="hdrName">LIGADIGITAL</div>
+      <div class="hdr-cat" id="hdrCat">Selecciona categoría</div>
+    </div>
+    <div class="hdr-right">
+      <button class="ico-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <button class="ico-btn" onclick="cambiarTorneo()" title="Cambiar torneo" style="font-size:11px;font-weight:800;letter-spacing:.5px">⚽ Cambiar</button>
+      <span id="adminBadge" style="display:none;background:var(--acc);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 7px;border-radius:3px;">ADMIN</span>
+      <button id="loginBtn" class="ico-btn" onclick="openLoginModal()" title="Admin">🔐</button>
+      <button id="logoutBtn" class="ico-btn" style="display:none" onclick="signOut()">🚪</button>
+      <div class="live-badge"><div class="ldot"></div>En Vivo</div>
+    </div>
+  </div>
+  <!-- Category tabs -->
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="selectCat('liga_alta',this)">Liga Alta</button>
+    <button class="cat-tab" onclick="selectCat('liga_media',this)">Liga Media</button>
+    <button class="cat-tab" onclick="selectCat('liga_baja_a',this)">Liga Baja A</button>
+    <button class="cat-tab" onclick="selectCat('liga_baja_b',this)">Liga Baja B</button>
+  </div>
+  <!-- Nav -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('tabla',this)">📊 Tabla</button>
+    <button class="nav-tab" onclick="showPage('partidos',this)">⚽ Últimos Partidos</button>
+    <button class="nav-tab" onclick="showPage('equipos',this)">🏆 Equipos</button>
+    <button class="nav-tab admin-only" id="navTienda" onclick="showPage('tienda',this)">🛒 Tienda</button>
+    <button class="nav-tab admin-only" id="navInsc" onclick="showPage('inscripciones',this)">💰 Inscripciones</button>
+    <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">🦺 Árbitros</button>
+    <button class="nav-tab admin-only" id="navCal" onclick="showPage('calendario',this)">🤖 Calendario IA</button>
+    <button class="nav-tab admin-only" id="navRes" onclick="showPage('resumen',this)">📋 Resumen</button>
+  </div>
+</div>
+
+<!-- ═══════ PRÓXIMOS PARTIDOS (público) ═══════ -->
+<div class="page" id="page-proximos" style="display:none">
+  <div class="stats-row" id="proximosStats"></div>
+  <div class="sh"><div class="st">📅 Semana</div><div class="sl"></div></div>
+  <div class="week-pills" id="weekPills"></div>
+  <div class="sh">
+    <div class="st">⚽ Partidos programados</div><div class="sl"></div>
+    <button class="btn btn-out btn-sm" onclick="filterProximos(null)">Todos</button>
+  </div>
+  <div id="proximosList"></div>
+</div>
+
+<!-- ═══════ TABLA ═══════ -->
+<div class="page active" id="page-tabla">
+  <div id="finalissimaBanner"></div>
+  <div class="sh"><div class="st">📊 Tabla de Posiciones</div><div class="sl"></div></div>
+  <div class="tabla-wrap card" style="padding:0">
+    <table class="tabla">
+      <thead><tr>
+        <th>#</th><th class="tal">Equipo</th>
+        <th>PJ</th><th>G</th><th>E</th><th>P</th>
+        <th>GF</th><th>GC</th><th>DG</th><th>PTS</th><th>Forma</th>
+      </tr></thead>
+      <tbody id="tablaBody"><tr><td colspan="11" class="tabla-empty">Sin partidos terminados</td></tr></tbody>
+    </table>
+  </div>
+  <div class="sh" style="margin-top:18px"><div class="st">🥅 Máximos Goleadores</div><div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 15</span></div></div>
+  <div class="card"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
+</div>
+
+<!-- ═══════ ÚLTIMOS PARTIDOS ═══════ -->
+<div class="page" id="page-partidos">
+  <div id="adminAddPartido" style="display:none;margin-bottom:14px">
+    <button class="btn btn-g btn-full" onclick="openModal('modalPartido');resetPartidoForm()">+ REGISTRAR PARTIDO</button>
+  </div>
+  <!-- Date filter -->
+  <div class="card" style="padding:11px 13px;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase;white-space:nowrap">📅 Ver desde:</span>
+      <input class="fi" id="partidos_fecha_desde" type="date" style="flex:1;min-width:130px;padding:7px 10px;font-size:12px" onchange="renderPartidos()"/>
+      <button class="btn btn-out btn-sm" onclick="setFechaUltimos(3)">Últimos 3 días</button>
+      <button class="btn btn-out btn-sm" onclick="setFechaUltimos(7)">7 días</button>
+      <button class="btn btn-out btn-sm" onclick="setFechaUltimos(0)">Todos</button>
+    </div>
+  </div>
+  <div id="partidosList"></div>
+</div>
+
+<!-- ═══════ EQUIPOS ═══════ -->
+<div class="page" id="page-equipos">
+  <div id="adminAddEquipo" style="display:none;margin-bottom:14px">
+    <button class="btn btn-g btn-full" onclick="openModal('modalEquipo');resetEquipoForm()">+ REGISTRAR EQUIPO</button>
+  </div>
+  <div id="equiposView"></div>
+</div>
+
+<!-- ═══════ TIENDA ═══════ -->
+<div class="page" id="page-tienda">
+  <div class="stats-row" id="tiendaStats"></div>
+  <div class="sh"><div class="st">🛒 Punto de Venta</div><div class="sl"></div></div>
+  <div class="pos-grid" id="posGrid"></div>
+  <div class="card card-g">
+    <div class="ticket-hdr"><div class="ticket-title">— Ticket —</div><button class="btn btn-out btn-sm" onclick="clearCart()">Limpiar</button></div>
+    <div id="cartItems"><div class="cart-empty-msg">Toca un producto para agregarlo</div></div>
+    <div class="cart-total-row"><span class="ct-lbl">Total</span><span class="ct-num" id="cartTotal">$0</span></div>
+    <button class="btn btn-g btn-full" onclick="cobrar()">💵 COBRAR</button>
+  </div>
+  <div class="sh" style="margin-top:16px">
+    <div class="st">📦 Inventario</div><div class="sl"></div>
+    <button class="btn btn-out btn-sm" onclick="openModal('modalAddProd')">+ Agregar</button>
+  </div>
+  <div class="card"><div id="inventarioList"></div></div>
+  <div class="sh" style="margin-top:16px"><div class="st">🕓 Ventas del día</div><div class="sl"></div></div>
+  <div class="card"><div id="historialVentas"><div class="empty"><span class="empty-icon">🧾</span>Sin ventas aún</div></div></div>
+</div>
+
+<!-- ═══════ INSCRIPCIONES ═══════ -->
+<div class="page" id="page-inscripciones">
+  <div class="sh">
+    <div class="st">💰 Inscripciones</div><div class="sl"></div>
+    <button class="btn btn-g btn-sm" onclick="openModal('modalInscEquipo')">+ Equipo</button>
+  </div>
+  <div class="stats-row" id="inscStats"></div>
+  <div id="inscList"></div>
+</div>
+
+<!-- ═══════ ÁRBITROS ═══════ -->
+<div class="page" id="page-arbitros">
+  <button class="btn btn-g btn-full" style="margin-bottom:16px" onclick="openModal('modalNuevoArb')">+ REGISTRAR ÁRBITRO</button>
+  <div id="arbitrosList"></div>
+  <div class="sh" style="margin-top:16px"><div class="st">🏟️ Asignar árbitro a partido</div><div class="sl"></div></div>
+  <div class="card"><div id="asignacionArb"></div></div>
+  <div class="sh" style="margin-top:16px"><div class="st">💰 Cobros del día</div><div class="sl"></div></div>
+  <div class="card" id="cobrosDelDia"></div>
+  <div class="sh" style="margin-top:16px"><div class="st">💳 Pagos pendientes</div><div class="sl"></div></div>
+  <div class="card"><div id="pagosPend"></div></div>
+</div>
+
+<!-- ═══════ CALENDARIO IA ═══════ -->
+<div class="page" id="page-calendario">
+
+  <!-- Próximos programados -->
+  <div class="sh"><div class="st">📅 Próximos Partidos</div><div class="sl"></div></div>
+  <div class="stats-row" id="calStats"></div>
+  <div class="week-pills" id="calWeekPills"></div>
+  <div id="calProximosList"></div>
+
+  <!-- AI Generator -->
+  <div class="sh" style="margin-top:18px"><div class="st">🤖 Generador IA</div><div class="sl"></div></div>
+  <div class="ai-panel">
+    <div class="ai-panel-title">🤖 Calendario Inteligente</div>
+    <div class="ai-panel-sub">La IA analiza restricciones y genera el calendario sin choques de horario</div>
+    <div class="ai-params">
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">🏆 Torneo</div>
+        <select class="ai-fi" id="gen_torneo" onchange="genUpdateEquipos()">
+          <option value="villa">Villa Universidad</option>
+          <option value="musala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">📋 Categoría</div>
+        <select class="ai-fi" id="gen_cat" onchange="genUpdateEquipos()">
+          <option value="liga_alta">Liga Alta</option>
+          <option value="liga_media">Liga Media</option>
+          <option value="liga_baja_a">Liga Baja A</option>
+          <option value="liga_baja_b">Liga Baja B</option>
+        </select>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">👥 Equipos</div>
+        <div style="flex:1">
+          <div id="gen_equipos_lista" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:8px;max-height:120px;overflow-y:auto;font-size:11px;font-weight:600;color:rgba(255,255,255,.8)">Cargando equipos...</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:3px">Todos participan. Desselecciona los que NO juegan esta semana.</div>
+        </div>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">📅 Inicio torneo</div>
+        <input class="ai-fi" id="gen_fecha_inicio" type="date"/>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">📅 Fin torneo</div>
+        <input class="ai-fi" id="gen_fecha_fin" type="date"/>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">⏰ Horario</div>
+        <div style="display:flex;gap:5px;flex:1">
+          <input class="ai-fi" id="gen_h_ini" type="time" value="08:00" style="flex:1"/>
+          <span style="color:rgba(255,255,255,.6);align-self:center;font-weight:700">–</span>
+          <input class="ai-fi" id="gen_h_fin" type="time" value="22:00" style="flex:1"/>
+        </div>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">🏟️ Canchas</div>
+        <div style="flex:1">
+          <div style="display:flex;gap:6px;margin-bottom:5px">
+            <label style="display:flex;align-items:center;gap:5px;flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:7px 9px;cursor:pointer">
+              <input type="checkbox" id="gen_c_villa" checked style="accent-color:#4ade80"/>
+              <span style="font-size:11px;font-weight:700">🏟️ Villa Universidad</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:7px 9px;cursor:pointer">
+              <input type="checkbox" id="gen_c_musala" checked style="accent-color:#4ade80"/>
+              <span style="font-size:11px;font-weight:700">⚽ Isla Músala</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">⏱️ Duración partido</div>
+        <select class="ai-fi" id="gen_duracion">
+          <option value="45">45 min</option>
+          <option value="60">60 min</option>
+          <option value="75">75 min</option>
+          <option value="90" selected>90 min</option>
+          <option value="120">120 min</option>
+        </select>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">⏸️ Descanso entre partidos</div>
+        <select class="ai-fi" id="gen_descanso">
+          <option value="10">10 min</option>
+          <option value="15" selected>15 min</option>
+          <option value="20">20 min</option>
+          <option value="30">30 min</option>
+        </select>
+      </div>
+      <div class="ai-param-row">
+        <div class="ai-param-lbl">📝 Notas extra</div>
+        <input class="ai-fi" id="gen_notas" placeholder="Ej: No programar viernes..."/>
+      </div>
+    </div>
+    <button class="ai-gen-btn" id="genBtn" onclick="generarCalendario()">✨ GENERAR CALENDARIO CON IA</button>
+  </div>
+
+  <!-- Preview -->
+  <div id="calPreviewSection" style="display:none">
+    <div class="sh"><div class="st">👁️ Vista previa — Revisa antes de publicar</div><div class="sl"></div><button class="btn btn-out btn-sm" onclick="limpiarPreview()">✕</button></div>
+    <div class="warn-box">⚠️ Verifica cada partido. Una vez que apruebes se publicarán como próximos partidos.</div>
+    <div id="calPreviewList"></div>
+    <button class="btn btn-g btn-full" style="margin-top:6px" onclick="aprobarCalendario()">✅ APROBAR Y PUBLICAR TODO</button>
+  </div>
+
+  <!-- Restricciones de equipos -->
+  <div class="sh" style="margin-top:18px">
+    <div class="st">⚙️ Restricciones de Equipos</div><div class="sl"></div>
+    <button class="btn btn-g btn-sm" onclick="openModal('modalEquipoRestr')">+ Agregar</button>
+  </div>
+  <div class="info-box">Define horarios fijos y días restringidos de cada equipo para que la IA los respete al generar el calendario.</div>
+  <div id="restriccionesList"></div>
+
+  <!-- Reagendar -->
+  <div class="sh" style="margin-top:18px"><div class="st">🔄 Reagendar partido cancelado</div><div class="sl"></div></div>
+  <div class="card card-b">
+    <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px">⚡ Cambio de último momento</div>
+    <div style="font-size:12px;color:var(--text2);font-weight:500;margin-bottom:10px">Selecciona un partido cancelado y la IA encontrará el mejor nuevo horario.</div>
+    <div class="fg"><label class="fl">Partido cancelado</label>
+      <select class="fi" id="reagenda_sel"><option value="">— Seleccionar —</option></select>
+    </div>
+    <div class="fg"><label class="fl">Nueva fecha preferida (opcional)</label>
+      <input class="fi" id="reagenda_fecha" type="date"/>
+    </div>
+    <button class="btn btn-b btn-full" onclick="reagendarConIA()">🤖 REAGENDAR CON IA</button>
+  </div>
+</div>
+
+<!-- ═══════ RESUMEN ═══════ -->
+<div class="page" id="page-resumen">
+  <div class="sh"><div class="st">📋 Resumen del Día</div><div class="sl"></div></div>
+  <div class="res-grid" id="resumenGrid"></div>
+
+  <div class="sh"><div class="st">💡 Análisis Financiero</div><div class="sl"></div></div>
+  <div id="finInsights"></div>
+
+  <div class="sh" style="margin-top:8px"><div class="st">💰 Inscripciones</div><div class="sl"></div></div>
+  <div class="card"><div id="resInsc"></div></div>
+
+  <div class="sh" style="margin-top:8px"><div class="st">🛒 Top Ventas</div><div class="sl"></div></div>
+  <div class="card"><div id="resVentas"></div></div>
+
+  <div class="sh" style="margin-top:8px"><div class="st">🦺 Arbitrajes — Desglose</div><div class="sl"></div></div>
+  <div class="card"><div id="resArb"></div></div>
+
+  <!-- REINICIAR ESTADÍSTICAS -->
+  <div class="sh" style="margin-top:18px"><div class="st">🗑️ Reiniciar Estadísticas</div><div class="sl"></div></div>
+  <div class="card card-r">
+    <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:12px">⚠️ Estas acciones eliminan datos permanentemente. Usa con cuidado.</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-r btn-full" onclick="openResetModal('ventas')">🗑️ Reiniciar ventas de Tienda</button>
+      <button class="btn btn-r btn-full" onclick="openResetModal('partidos')">🗑️ Reiniciar partidos / resultados</button>
+      <button class="btn btn-r btn-full" onclick="openResetModal('inscripciones')">🗑️ Reiniciar inscripciones</button>
+      <button class="btn btn-r btn-full" onclick="openResetModal('arbitrajes')">🗑️ Reiniciar cobros de arbitraje</button>
+      <button class="btn btn-r btn-full" onclick="openResetModal('todo')">⚠️ Reiniciar TODO</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Reiniciar Estadísticas -->
+<div class="modal-overlay" id="modalReset">
+  <div class="modal" style="border-top-color:var(--red)">
+    <div class="modal-head"><div class="modal-title" style="color:var(--red)" id="resetModalTitle">⚠️ Reiniciar</div><button class="modal-close" onclick="closeModal('modalReset')">✕</button></div>
+    <input type="hidden" id="reset_tipo"/>
+    <div style="font-size:13px;font-weight:700;margin-bottom:14px" id="resetModalDesc"></div>
+    <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:12px">Puedes filtrar por rango de fechas y horas para borrar solo un período:</div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Desde fecha</label><input class="fi" id="reset_desde_fecha" type="date"/></div>
+      <div class="fg"><label class="fl">Hasta fecha</label><input class="fi" id="reset_hasta_fecha" type="date"/></div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Desde hora</label><input class="fi" id="reset_desde_hora" type="time"/></div>
+      <div class="fg"><label class="fl">Hasta hora</label><input class="fi" id="reset_hasta_hora" type="time"/></div>
+    </div>
+    <div class="warn-box" style="margin-bottom:12px">Si dejas las fechas vacías, se eliminarán <strong>TODOS</strong> los registros de esa sección.</div>
+    <div id="resetPreviewInfo" style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:10px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-r btn-full" onclick="confirmarReset()">🗑️ Confirmar eliminación</button>
+      <button class="btn btn-out btn-sm" onclick="closeModal('modalReset')" style="flex-shrink:0">Cancelar</button>
+    </div>
+    <div id="undoResetBtn" style="display:none;margin-top:8px">
+      <button class="btn btn-b btn-full" onclick="deshacerReset()">↩️ DESHACER último reset</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /appShell -->
+
+<!-- ═══════════ MODALS ═══════════ -->
+
+<!-- Registrar/Editar Partido -->
+<div class="modal-overlay" id="modalPartido">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="mpModalTitle">Registrar Partido</div><button class="modal-close" onclick="closeModal('modalPartido')">✕</button></div>
+    <input type="hidden" id="mp_key"/>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Torneo</label>
+        <select class="fi" id="mp_torneo">
+          <option value="villa">Villa Universidad</option>
+          <option value="musala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Categoría</label>
+        <select class="fi" id="mp_cat">
+          <option value="liga_alta">Liga Alta</option>
+          <option value="liga_media">Liga Media</option>
+          <option value="liga_baja_a">Liga Baja A</option>
+          <option value="liga_baja_b">Liga Baja B</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Cancha</label>
+        <select class="fi" id="mp_cancha">
+          <option value="Villa Universidad">Villa Universidad</option>
+          <option value="Isla Músala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Árbitro</label>
+        <select class="fi" id="mp_arbitro"><option value="">Sin árbitro</option></select>
+      </div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Equipo Local</label>
+        <select class="fi" id="mp_local"><option value="">Seleccionar...</option></select>
+      </div>
+      <div class="fg"><label class="fl">Equipo Visitante</label>
+        <select class="fi" id="mp_visita"><option value="">Seleccionar...</option></select>
+      </div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Fecha</label><input class="fi" id="mp_fecha" type="date"/></div>
+      <div class="fg"><label class="fl">Hora inicio</label><input class="fi" id="mp_hora_ini" type="time"/></div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Hora término</label><input class="fi" id="mp_hora_fin" type="time"/></div>
+      <div class="fg"><label class="fl">Costo arbitraje/eq $</label><input class="fi" id="mp_costo" type="number" value="250" min="0"/></div>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">ALINEACIONES (opcional)</div>
+    <div class="form-2">
+      <div>
+        <label class="fl">Jugadores Local</label>
+        <div id="lineup_local"></div>
+        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('local')">+ Jugador</button>
+      </div>
+      <div>
+        <label class="fl">Jugadores Visita</label>
+        <div id="lineup_visita"></div>
+        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('visita')">+ Jugador</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">MARCADOR (si ya terminó)</div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Goles Local</label><input class="fi" id="mp_gL" type="number" value="0" min="0"/></div>
+      <div class="fg"><label class="fl">Goles Visita</label><input class="fi" id="mp_gV" type="number" value="0" min="0"/></div>
+    </div>
+    <div class="fg"><label class="fl">Estado</label>
+      <select class="fi" id="mp_status">
+        <option value="pendiente">Pendiente</option>
+        <option value="jugando">En juego</option>
+        <option value="terminado">Terminado</option>
+      </select>
+    </div>
+    <button class="btn btn-g btn-full" onclick="savePartido()">💾 Guardar Partido</button>
+  </div>
+</div>
+
+<!-- Ver/Editar Partido (detail modal with crono + goles) -->
+<div class="modal-overlay" id="modalPartidoDetail">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="pdTitle">Partido</div><button class="modal-close" onclick="closeModal('modalPartidoDetail')">✕</button></div>
+    <div id="modalPartidoContent"></div>
+  </div>
+</div>
+
+<!-- Registrar Gol -->
+<div class="modal-overlay" id="modalGol">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="golModalTitle">⚽ Registrar Gol</div><button class="modal-close" onclick="closeModal('modalGol')">✕</button></div>
+    <input type="hidden" id="gol_equipo"/>
+    <div class="fg"><label class="fl">Jugador (de la alineación)</label><select class="fi" id="gol_jugador"></select></div>
+    <div class="fg"><label class="fl">O escribe el nombre</label><input class="fi" id="gol_manual" placeholder="Nombre del jugador"/></div>
+    <button class="btn btn-g btn-full" onclick="confirmGol()">✅ Confirmar Gol</button>
+  </div>
+</div>
+
+<!-- Pagos Arbitraje (dentro de partido) -->
+<div class="modal-overlay" id="modalPagoArb">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">💰 Pago de Arbitraje</div><button class="modal-close" onclick="closeModal('modalPagoArb')">✕</button></div>
+    <input type="hidden" id="pa_key"/>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:600">Arbitraje: <strong style="color:var(--acc)">$250 por equipo</strong></div>
+    <div class="pay-box">
+      <div class="pay-box-title" id="pa_local_title">🏠 Equipo Local</div>
+      <div class="pay-method-grid">
+        <div class="pmo" id="btn_l_ef" onclick="setPM('local','ef')">💵 Efectivo</div>
+        <div class="pmo" id="btn_l_tr" onclick="setPM('local','tr')">📱 Transf.</div>
+        <div class="pmo" id="btn_l_pp" onclick="setPM('local','pp')">✅ Prepago</div>
+        <div class="pmo" id="btn_l_mx" onclick="setPM('local','mx')">🔀 Mixto</div>
+      </div>
+      <div id="pa_l_amounts" style="display:none" class="form-3">
+        <div class="fg"><label class="fl">Efectivo</label><input class="fi" id="l_ef_a" type="number" placeholder="0" min="0"/></div>
+        <div class="fg"><label class="fl">Transf.</label><input class="fi" id="l_tr_a" type="number" placeholder="0" min="0"/></div>
+        <div class="fg"><label class="fl">Prepago</label><input class="fi" id="l_pp_a" type="number" placeholder="0" min="0"/></div>
+      </div>
+      <div id="pa_l_status" style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px"></div>
+    </div>
+    <div class="pay-box">
+      <div class="pay-box-title" id="pa_visita_title">✈️ Equipo Visitante</div>
+      <div class="pay-method-grid">
+        <div class="pmo" id="btn_v_ef" onclick="setPM('visita','ef')">💵 Efectivo</div>
+        <div class="pmo" id="btn_v_tr" onclick="setPM('visita','tr')">📱 Transf.</div>
+        <div class="pmo" id="btn_v_pp" onclick="setPM('visita','pp')">✅ Prepago</div>
+        <div class="pmo" id="btn_v_mx" onclick="setPM('visita','mx')">🔀 Mixto</div>
+      </div>
+      <div id="pa_v_amounts" style="display:none" class="form-3">
+        <div class="fg"><label class="fl">Efectivo</label><input class="fi" id="v_ef_a" type="number" placeholder="0" min="0"/></div>
+        <div class="fg"><label class="fl">Transf.</label><input class="fi" id="v_tr_a" type="number" placeholder="0" min="0"/></div>
+        <div class="fg"><label class="fl">Prepago</label><input class="fi" id="v_pp_a" type="number" placeholder="0" min="0"/></div>
+      </div>
+      <div id="pa_v_status" style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px"></div>
+    </div>
+    <button class="btn btn-g btn-full" onclick="guardarPagoArb()">💾 Guardar Pagos</button>
+  </div>
+</div>
+
+<!-- Modal Restricciones Equipo -->
+<div class="modal-overlay" id="modalEquipoRestr">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">⚙️ Restricciones de Equipo</div><button class="modal-close" onclick="closeModal('modalEquipoRestr')">✕</button></div>
+    <input type="hidden" id="er_key"/>
+    <div class="fg"><label class="fl">Equipo</label>
+      <select class="fi" id="er_equipo"><option value="">— Seleccionar equipo —</option></select>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Día fijo</label>
+        <select class="fi" id="er_dia_fijo">
+          <option value="">Sin día fijo</option>
+          <option value="lunes">Lunes</option><option value="martes">Martes</option>
+          <option value="miercoles">Miércoles</option><option value="jueves">Jueves</option>
+          <option value="viernes">Viernes</option><option value="sabado">Sábado</option>
+          <option value="domingo">Domingo</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Hora fija</label><input class="fi" id="er_hora_fija" type="time"/></div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Cancha preferida</label>
+        <select class="fi" id="er_cancha_fija">
+          <option value="">Sin preferencia</option>
+          <option value="Villa Universidad">Villa Universidad</option>
+          <option value="Isla Músala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Estado esta semana</label>
+        <select class="fi" id="er_estado">
+          <option value="activo">✅ Activo</option>
+          <option value="cancelado">❌ Cancelado</option>
+        </select>
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">🚫 Días que NO puede jugar</div>
+    <div class="card" style="padding:8px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_lun" value="lunes"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_lun">Lunes</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_mar" value="martes"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_mar">Martes</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_mie" value="miercoles"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_mie">Miércoles</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_jue" value="jueves"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_jue">Jueves</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_vie" value="viernes"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_vie">Viernes</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)"><input type="checkbox" id="er_sab" value="sabado"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_sab">Sábado</label></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0"><input type="checkbox" id="er_dom" value="domingo"/><label style="font-size:12px;font-weight:600;cursor:pointer" for="er_dom">Domingo</label></div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">No antes de</label><input class="fi" id="er_hora_min" type="time"/></div>
+      <div class="fg"><label class="fl">No después de</label><input class="fi" id="er_hora_max" type="time"/></div>
+    </div>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="er_notas" placeholder="Ej: Solo cancha techada..."/></div>
+    <button class="btn btn-g btn-full" onclick="saveEquipoRestr()">💾 Guardar Restricciones</button>
+  </div>
+</div>
+
+<!-- Modal Cancelar Partido Programado -->
+<div class="modal-overlay" id="modalCancelarProg">
+  <div class="modal" style="border-top-color:var(--red)">
+    <div class="modal-head"><div class="modal-title" style="color:var(--red)">⚠️ Cancelar Partido</div><button class="modal-close" onclick="closeModal('modalCancelarProg')">✕</button></div>
+    <input type="hidden" id="cp_key"/>
+    <div id="cp_match_info" style="background:var(--card2);border-radius:9px;padding:11px;margin-bottom:12px;font-size:13px;font-weight:600;"></div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">MOTIVO</div>
+    <div class="cancel-opts">
+      <div class="cancel-opt" onclick="selCPReason(this,'🌧️ Clima adverso')">🌧️ Clima</div>
+      <div class="cancel-opt" onclick="selCPReason(this,'🚫 Equipo no se presentó')">🚫 No show</div>
+      <div class="cancel-opt" onclick="selCPReason(this,'🏟️ Cancha no disponible')">🏟️ Sin cancha</div>
+      <div class="cancel-opt" onclick="selCPReason(this,'📞 Solicitud del equipo')">📞 Equipo pidió</div>
+      <div class="cancel-opt" onclick="selCPReason(this,'🦺 Sin árbitro')">🦺 Sin árbitro</div>
+      <div class="cancel-opt" onclick="selCPReason(this,'📝 Otro motivo')">📝 Otro</div>
+    </div>
+    <input type="hidden" id="cp_reason_val"/>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="cp_notas" placeholder="Detalles..."/></div>
+    <button class="btn btn-r btn-full" onclick="confirmarCPCancelacion()">❌ Cancelar partido</button>
+    <button class="btn btn-b btn-full" style="margin-top:8px" onclick="cpCancelarYReagendar()">🔄 Cancelar y reagendar con IA</button>
+  </div>
+</div>
+
+<!-- Modal Propuesta IA Reagendado -->
+<div class="modal-overlay" id="modalPropuestaIA">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">🤖 Propuesta de la IA</div><button class="modal-close" onclick="closeModal('modalPropuestaIA')">✕</button></div>
+    <div id="propuestaIAContent"></div>
+  </div>
+</div>
+
+<!-- Equipo -->
+<div class="modal-overlay" id="modalEquipo">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="eqModalTitle">Registrar Equipo</div><button class="modal-close" onclick="closeModal('modalEquipo')">✕</button></div>
+    <input type="hidden" id="eq_key"/>
+    <div class="fg" style="text-align:center">
+      <label class="fl" style="text-align:left">Logo del equipo</label>
+      <div class="img-upload" onclick="uploadImg('eq_logo','eq_logo_prev','eq_logo_lbl',100)">
+        <img id="eq_logo_prev" class="img-pr" style="display:none"/>
+        <div id="eq_logo_lbl" class="img-ul">📷 Subir logo</div>
+      </div>
+      <input type="hidden" id="eq_logo"/>
+    </div>
+    <div class="fg"><label class="fl">Nombre del equipo</label><input class="fi" id="eq_nombre" placeholder="Los Toros FC"/></div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Torneo</label>
+        <select class="fi" id="eq_torneo">
+          <option value="villa">Villa Universidad</option>
+          <option value="musala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Categoría</label>
+        <select class="fi" id="eq_cat">
+          <option value="liga_alta">Liga Alta</option>
+          <option value="liga_media">Liga Media</option>
+          <option value="liga_baja_a">Liga Baja A</option>
+          <option value="liga_baja_b">Liga Baja B</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Color</label><input class="fi" id="eq_color" type="color" value="#16a34a"/></div>
+      <div class="fg"><label class="fl">Contacto</label><input class="fi" id="eq_tel" type="tel" placeholder="667-000-0000"/></div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">👕 Alineación del Equipo (opcional)</div>
+    <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:10px">Registra los jugadores del equipo. Se usarán al registrar goles en los partidos.</div>
+    <div id="eq_lineup_list"></div>
+    <button class="btn btn-out btn-sm btn-full" style="margin-bottom:4px" onclick="addEqPlayer()">+ Agregar Jugador</button>
+
+    <button class="btn btn-g btn-full" style="margin-top:8px" onclick="saveEquipo()">💾 Guardar</button>
+  </div>
+</div>
+
+<!-- Equipo Detail (public view) -->
+<div class="modal-overlay" id="modalEquipoDetail">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="edTitle">Equipo</div><button class="modal-close" onclick="closeModal('modalEquipoDetail')">✕</button></div>
+    <div id="equipoDetailContent"></div>
+  </div>
+</div>
+
+<!-- Agregar Producto -->
+<div class="modal-overlay" id="modalAddProd">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="prodModalTitle">Nuevo Producto</div><button class="modal-close" onclick="closeModal('modalAddProd')">✕</button></div>
+    <input type="hidden" id="prod_key"/>
+    <div class="fg" style="text-align:center">
+      <div class="img-upload" onclick="uploadImg('prod_img','prod_img_prev','prod_img_lbl',120)">
+        <img id="prod_img_prev" class="img-pr" style="display:none"/>
+        <div id="prod_img_lbl" class="img-ul">📷 Imagen (opcional)</div>
+      </div>
+      <input type="hidden" id="prod_img"/>
+    </div>
+    <div class="fg"><label class="fl">Emoji (si no subiste imagen)</label><input class="fi" id="prod_emoji" placeholder="💧" maxlength="2"/></div>
+    <div class="form-2">
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Nombre</label><input class="fi" id="prod_nombre" placeholder="Agua 600ml"/></div>
+      <div class="fg"><label class="fl">Precio $</label><input class="fi" id="prod_precio" type="number" min="1"/></div>
+      <div class="fg"><label class="fl">Stock</label><input class="fi" id="prod_stock" type="number" min="0" value="0"/></div>
+    </div>
+    <button class="btn btn-g btn-full" onclick="saveProd()">💾 Guardar</button>
+  </div>
+</div>
+
+<!-- Editar Venta -->
+<div class="modal-overlay" id="modalEditVenta">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">✏️ Editar Venta</div><button class="modal-close" onclick="closeModal('modalEditVenta')">✕</button></div>
+    <input type="hidden" id="ev_key"/>
+    <div class="fg"><label class="fl">Total $</label><input class="fi" id="ev_total" type="number" min="0"/></div>
+    <div class="fg"><label class="fl">Nota / descripción</label><input class="fi" id="ev_nota" placeholder="Descripción de la venta..."/></div>
+    <button class="btn btn-g btn-full" onclick="saveEditVenta()">💾 Guardar</button>
+  </div>
+</div>
+
+<!-- Inscripciones - Nuevo Equipo -->
+<div class="modal-overlay" id="modalInscEquipo">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="ieModalTitle">Nuevo Equipo — Inscripción</div><button class="modal-close" onclick="closeModal('modalInscEquipo')">✕</button></div>
+    <input type="hidden" id="ie_key"/>
+    <div class="fg" style="text-align:center">
+      <div class="img-upload" onclick="uploadImg('ie_logo','ie_logo_prev','ie_logo_lbl',100)">
+        <img id="ie_logo_prev" class="img-pr" style="display:none"/>
+        <div id="ie_logo_lbl" class="img-ul">📷 Logo del equipo</div>
+      </div>
+      <input type="hidden" id="ie_logo"/>
+    </div>
+    <div class="fg"><label class="fl">Nombre del equipo</label><input class="fi" id="ie_nombre" placeholder="Los Toros FC"/></div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Torneo</label>
+        <select class="fi" id="ie_torneo">
+          <option value="villa">Villa Universidad</option>
+          <option value="musala">Isla Músala</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Categoría</label>
+        <select class="fi" id="ie_cat">
+          <option value="liga_alta">Liga Alta</option>
+          <option value="liga_media">Liga Media</option>
+          <option value="liga_baja_a">Liga Baja A</option>
+          <option value="liga_baja_b">Liga Baja B</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Monto total de inscripción $</label><input class="fi" id="ie_monto" type="number" min="0" placeholder="0"/></div>
+    <button class="btn btn-g btn-full" onclick="saveInscEquipo()">💾 Guardar</button>
+  </div>
+</div>
+
+<!-- Inscripción - Agregar Abono -->
+<div class="modal-overlay" id="modalAbono">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">➕ Registrar Abono</div><button class="modal-close" onclick="closeModal('modalAbono')">✕</button></div>
+    <input type="hidden" id="ab_insc_key"/>
+    <div class="fg"><label class="fl">Monto $</label><input class="fi" id="ab_monto" type="number" min="1" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Fecha</label><input class="fi" id="ab_fecha" type="date"/></div>
+    <div class="fg"><label class="fl">Método de pago</label>
+      <select class="fi" id="ab_metodo">
+        <option value="efectivo">💵 Efectivo</option>
+        <option value="transferencia">📱 Transferencia</option>
+        <option value="prepago">✅ Prepago</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="ab_notas" placeholder="Notas adicionales..."/></div>
+    <button class="btn btn-g btn-full" onclick="saveAbono()">💾 Guardar Abono</button>
+  </div>
+</div>
+
+<!-- Árbitro -->
+<div class="modal-overlay" id="modalNuevoArb">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Nuevo Árbitro</div><button class="modal-close" onclick="closeModal('modalNuevoArb')">✕</button></div>
+    <div class="fg"><label class="fl">Nombre</label><input class="fi" id="na_n" placeholder="Juan García"/></div>
+    <div class="fg"><label class="fl">Teléfono</label><input class="fi" id="na_t" type="tel" placeholder="667-000-0000"/></div>
+    <div class="fg"><label class="fl">Tarifa por partido $</label><input class="fi" id="na_f" type="number" placeholder="250" min="0"/></div>
+    <button class="btn btn-g btn-full" onclick="saveArbitro()">💾 Registrar</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  FIREBASE CONFIG
+// ══════════════════════════════════════
+const FB_CFG = {
+  apiKey:"AIzaSyAUyYu6E3oCJdeTNV9GbykmIaiT_ZBXro8",
+  authDomain:"torneo-villa-080204.firebaseapp.com",
+  databaseURL:"https://torneo-villa-080204-default-rtdb.firebaseio.com",
+  projectId:"torneo-villa-080204",
+  storageBucket:"torneo-villa-080204.firebasestorage.app",
+  messagingSenderId:"635061865343",
+  appId:"1:635061865343:web:4016afa91c4da96179684a"
+};
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let db = null, auth = null, currentUser = null, isAdmin = false;
+let currentTorneo = 'villa';
+let currentCat = 'liga_alta';
+let activePartidoKey = null;
+let pendingGolSide = null;
+let payMethods = { local: null, visita: null };
+let cart = [];
+const timers = {};
+const C = { equipos:{}, partidos:{}, productos:{}, ventas:{}, arbitros:{}, inscripciones:{} };
+const TORNEO_NAMES = { villa:'TORNEO VILLA UNIVERSIDAD', musala:'TORNEO ISLA MÚSALA' };
+const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:'Liga Baja A', liga_baja_b:'Liga Baja B' };
+const CANCHAS = ['Villa Universidad','Isla Músala'];
+
+// Default products
+const DEFAULT_PRODUCTS = [
+  {emoji:'💧',nombre:'Agua',precio:20,stock:30},
+  {emoji:'🍵',nombre:'JazTé',precio:25,stock:20},
+  {emoji:'🥭',nombre:'Jumex',precio:15,stock:20},
+  {emoji:'💎',nombre:'TopoChico',precio:30,stock:20},
+  {emoji:'🧪',nombre:'Suero',precio:30,stock:15},
+  {emoji:'🥤',nombre:'CocaCola',precio:30,stock:24},
+  {emoji:'⚡',nombre:'Powerade',precio:30,stock:18},
+  {emoji:'🍦',nombre:'Pingüino',precio:15,stock:20},
+  {emoji:'🍰',nombre:'Gansito',precio:15,stock:20},
+  {emoji:'🍪',nombre:'Nito',precio:20,stock:20},
+  {emoji:'🍟',nombre:'Sabritas',precio:25,stock:30},
+  {emoji:'🥔',nombre:'Viejitas',precio:25,stock:30},
+  {emoji:'🍪',nombre:'Galletas',precio:22,stock:20},
+  {emoji:'🍿',nombre:'Palomitas',precio:25,stock:20},
+  {emoji:'🌶️',nombre:'Gomitas Enchilosas',precio:2,stock:50},
+  {emoji:'🥤',nombre:'Popotes',precio:2,stock:50},
+  {emoji:'🍬',nombre:'Chicle',precio:2,stock:50},
+  {emoji:'👋',nombre:'Cachetadas',precio:2,stock:50},
+  {emoji:'🕯️',nombre:'Velitas',precio:2,stock:50},
+  {emoji:'🍭',nombre:'Paleta',precio:6,stock:30},
+  {emoji:'🍭',nombre:'Paleta Premium',precio:8,stock:30},
+  {emoji:'🌰',nombre:'Mazapán',precio:8,stock:30},
+  {emoji:'🏳️',nombre:'Banderita',precio:10,stock:20},
+  {emoji:'🪅',nombre:'Pirulines',precio:25,stock:15},
+  {emoji:'🧦',nombre:'Medias',precio:50,stock:10},
+];
+
+// ══════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════
+(function boot(){
+  applyTheme();
+  try {
+    if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    db = firebase.database();
+    auth = firebase.auth();
+    auth.onAuthStateChanged(onAuthChange);
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loadingScreen').classList.remove('show');
+    document.getElementById('splash').classList.remove('hidden');
+    showToast('Error Firebase','tr');
+  }
+})();
+
+function onAuthChange(user){
+  document.getElementById('loadingScreen').classList.remove('show');
+  currentUser = user;
+  isAdmin = !!user;
+  if(isAdmin){
+    document.getElementById('adminBadge').style.display='block';
+    document.getElementById('loginBtn').style.display='none';
+    document.getElementById('logoutBtn').style.display='block';
+    document.querySelectorAll('.admin-only').forEach(x=>x.classList.add('show'));
+    document.getElementById('adminAddPartido').style.display='block';
+    document.getElementById('adminAddEquipo').style.display='block';
+  } else {
+    document.getElementById('adminBadge').style.display='none';
+    document.getElementById('loginBtn').style.display='block';
+    document.getElementById('logoutBtn').style.display='none';
+    document.querySelectorAll('.admin-only').forEach(x=>x.classList.remove('show'));
+    document.getElementById('adminAddPartido').style.display='none';
+    document.getElementById('adminAddEquipo').style.display='none';
+  }
+  // Show splash if no torneo selected yet
+  const saved = localStorage.getItem('ld_torneo');
+  if(saved){ currentTorneo = saved; launchApp(); }
+  else { document.getElementById('splash').style.display='flex'; document.getElementById('appShell').style.display='none'; }
+}
+
+function selectTorneo(t){
+  currentTorneo = t;
+  localStorage.setItem('ld_torneo', t);
+  document.getElementById('splash').style.display = 'none';
+  launchApp();
+}
+
+function launchApp(){
+  document.getElementById('appShell').style.display = 'block';
+  document.getElementById('hdrName').textContent = TORNEO_NAMES[currentTorneo];
+  document.getElementById('hdrCat').textContent = CAT_NAMES[currentCat];
+  document.getElementById('mp_torneo').value = currentTorneo;
+  document.getElementById('mp_cat').value = currentCat;
+  setupListeners();
+  applyTheme();
+}
+
+function setupListeners(){
+  db.ref('equipos').on('value', s=>{
+    Object.keys(C.equipos).forEach(k=>delete C.equipos[k]);
+    if(s.exists()) Object.assign(C.equipos, s.val());
+    renderEquiposPage();
+    if(isPageActive('tabla')) renderTabla();
+  });
+  db.ref('partidos').on('value', s=>{
+    Object.keys(C.partidos).forEach(k=>delete C.partidos[k]);
+    if(s.exists()) Object.assign(C.partidos, s.val());
+    renderPartidos();
+    renderTabla();
+    if(isAdmin && isPageActive('arbitros')) renderArbitros();
+    if(isAdmin && isPageActive('resumen')) renderResumen();
+    if(isAdmin && isPageActive('calendario')){ renderCalProximos(); populateReagendaSel(); }
+    if(activePartidoKey && document.getElementById('modalPartidoDetail').classList.contains('open'))
+      renderPartidoDetail();
+  });
+  db.ref('productos').on('value', s=>{
+    Object.keys(C.productos).forEach(k=>delete C.productos[k]);
+    if(s.exists()) Object.assign(C.productos, s.val());
+    else seedProducts();
+    if(isAdmin && isPageActive('tienda')) renderTienda();
+  });
+  db.ref('ventas').on('value', s=>{
+    Object.keys(C.ventas).forEach(k=>delete C.ventas[k]);
+    if(s.exists()) Object.assign(C.ventas, s.val());
+    if(isAdmin && isPageActive('tienda')) renderHistorialVentas(); renderTiendaStats();
+    if(isAdmin && isPageActive('resumen')) renderResumen();
+  });
+  db.ref('arbitros').on('value', s=>{
+    Object.keys(C.arbitros).forEach(k=>delete C.arbitros[k]);
+    if(s.exists()) Object.assign(C.arbitros, s.val());
+    if(isAdmin && isPageActive('arbitros')) renderArbitros();
+  });
+  db.ref('inscripciones').on('value', s=>{
+    Object.keys(C.inscripciones).forEach(k=>delete C.inscripciones[k]);
+    if(s.exists()) Object.assign(C.inscripciones, s.val());
+    if(isAdmin && isPageActive('inscripciones')) renderInscripciones();
+    if(isAdmin && isPageActive('resumen')) renderResumen();
+  });
+  // Restricciones para calendario IA
+  C.restricciones = {};
+  db.ref('restricciones').on('value', s=>{
+    Object.keys(C.restricciones).forEach(k=>delete C.restricciones[k]);
+    if(s.exists()) Object.assign(C.restricciones, s.val());
+    if(isAdmin && isPageActive('calendario')) renderRestricciones();
+  });
+}
+
+function seedProducts(){
+  DEFAULT_PRODUCTS.forEach(p => db.ref('productos').push(p));
+}
+
+// ══════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════
+function openLoginModal(){ document.getElementById('loginModal').style.display='flex'; }
+function closeLoginModal(){ document.getElementById('loginModal').style.display='none'; }
+function loginGoogle(){
+  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(()=>closeLoginModal()).catch(e=>showLErr(e.message));
+}
+function loginEmail(){
+  const e=document.getElementById('l_email').value.trim(), p=document.getElementById('l_pass').value;
+  if(!e||!p){showLErr('Ingresa correo y contraseña');return;}
+  auth.signInWithEmailAndPassword(e,p).then(()=>closeLoginModal()).catch(err=>{
+    const m={'auth/wrong-password':'Contraseña incorrecta','auth/user-not-found':'Usuario no encontrado'};
+    showLErr(m[err.code]||err.message);
+  });
+}
+function showLErr(m){const e=document.getElementById('lmerr');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}
+function signOut(){ auth.signOut(); }
+
+// ══════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════
+function showPage(p, btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  const pageEl=document.getElementById('page-'+p);
+  if(pageEl) pageEl.classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(p==='tienda') renderTienda();
+  if(p==='inscripciones') renderInscripciones();
+  if(p==='arbitros') renderArbitros();
+  if(p==='resumen') renderResumen();
+  if(p==='tabla') renderTabla();
+  if(p==='equipos') renderEquiposPage();
+  if(p==='calendario') initCalendario();
+}
+
+function selectCat(cat, btn){
+  currentCat = cat;
+  document.getElementById('hdrCat').textContent = CAT_NAMES[cat];
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTabla();
+  renderPartidos();
+  renderEquiposPage();
+}
+
+const isPageActive = p => document.getElementById('page-'+p)?.classList.contains('active');
+
+// ══════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════
+const getParts = () => Object.entries(C.partidos).map(([k,v])=>({...v,_key:k}));
+const getEqs = () => Object.entries(C.equipos).map(([k,v])=>({...v,_key:k}));
+const getProd = () => Object.entries(C.productos).map(([k,v])=>({...v,_key:k}));
+const getVentas = () => Object.entries(C.ventas).map(([k,v])=>({...v,_key:k})).sort((a,b)=>b.ts-a.ts);
+const getArbs = () => Object.entries(C.arbitros).map(([k,v])=>({...v,_key:k}));
+const getInsc = () => Object.entries(C.inscripciones).map(([k,v])=>({...v,_key:k}));
+const fmt = s=>{ const m=Math.floor(s/60),ss=Math.floor(s%60); return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; };
+const fmtDate = d=>{ if(!d)return'—'; const dt=new Date(d+'T12:00:00'); const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']; const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']; return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`; };
+
+function filteredParts(){ return getParts().filter(p => p.torneo===currentTorneo && p.cat===currentCat); }
+
+function uploadImg(inputId, prevId, lblId, maxPx){
+  const inp = document.createElement('input'); inp.type='file'; inp.accept='image/*';
+  inp.onchange = e=>{
+    const f=e.target.files[0]; if(!f)return;
+    const r=new FileReader(); r.onload=ev=>{
+      const img=new Image(); img.onload=()=>{
+        const c=document.createElement('canvas'); let w=img.width,h=img.height;
+        if(w>h){if(w>maxPx){h=h*maxPx/w;w=maxPx;}}else{if(h>maxPx){w=w*maxPx/h;h=maxPx;}}
+        c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+        const data=c.toDataURL('image/jpeg',.65);
+        document.getElementById(inputId).value=data;
+        const prev=document.getElementById(prevId); prev.src=data; prev.style.display='block';
+        document.getElementById(lblId).style.display='none';
+      }; img.src=ev.target.result;
+    }; r.readAsDataURL(f);
+  }; inp.click();
+}
+
+// ══════════════════════════════════════
+//  TABLA DE POSICIONES
+// ══════════════════════════════════════
+function buildTablaData(){
+  const teams = {};
+  const parts = filteredParts().filter(p=>p.status==='terminado');
+  parts.forEach(p=>{
+    [p.localNombre||p.local, p.visitaNombre||p.visita].forEach(t=>{
+      if(t && !teams[t]) teams[t]={nombre:t,logo:null,pj:0,g:0,e:0,pe:0,gf:0,gc:0,pts:0,forma:[]};
+    });
+    const ln=p.localNombre||p.local, vn=p.visitaNombre||p.visita;
+    if(!ln||!vn)return;
+    const tl=teams[ln],tv=teams[vn];
+    const gL=p.gL||0,gV=p.gV||0;
+    tl.pj++;tv.pj++;tl.gf+=gL;tl.gc+=gV;tv.gf+=gV;tv.gc+=gL;
+    // get logos from equipos
+    const eqL=getEqs().find(e=>e.nombre===ln&&e.torneo===currentTorneo&&e.cat===currentCat);
+    const eqV=getEqs().find(e=>e.nombre===vn&&e.torneo===currentTorneo&&e.cat===currentCat);
+    if(eqL?.logo) tl.logo=eqL.logo;
+    if(eqV?.logo) tv.logo=eqV.logo;
+    if(gL>gV){tl.g++;tl.pts+=3;tv.pe++;tl.forma.push('W');tv.forma.push('L');}
+    else if(gL<gV){tv.g++;tv.pts+=3;tl.pe++;tv.forma.push('W');tl.forma.push('L');}
+    else{tl.e++;tv.e++;tl.pts++;tv.pts++;tl.forma.push('D');tv.forma.push('D');}
+  });
+  return Object.values(teams).sort((a,b)=>b.pts-a.pts||(b.gf-b.gc)-(a.gf-a.gc)||b.gf-a.gf);
+}
+
+function renderTabla(){
+  const body=document.getElementById('tablaBody'); if(!body)return;
+  const data=buildTablaData();
+  // FINALISSIMA check — if top 2 both have PJ >= 10
+  const fbBanner=document.getElementById('finalissimaBanner');
+  if(data.length>=2 && data[0].pj>=10 && data[1].pj>=10){
+    const t1=data[0], t2=data[1];
+    const l1=t1.logo?`<img class="fb-team-logo" src="${t1.logo}"/>`:`<div class="fb-team-ph">⚽</div>`;
+    const l2=t2.logo?`<img class="fb-team-logo" src="${t2.logo}"/>`:`<div class="fb-team-ph">⚽</div>`;
+    fbBanner.innerHTML=`<div class="finalissima-banner">
+      <div class="fb-title">⚽ FINALISSIMA ⚽</div>
+      <div class="fb-sub">Los 2 mejores equipos definen al campeón</div>
+      <div class="fb-teams">
+        <div class="fb-team">${l1}<div class="fb-team-name">${t1.nombre}</div></div>
+        <div class="fb-vs">VS</div>
+        <div class="fb-team">${l2}<div class="fb-team-name">${t2.nombre}</div></div>
+      </div>
+    </div>`;
+  } else { fbBanner.innerHTML=''; }
+
+  if(!data.length){ body.innerHTML='<tr><td colspan="11" class="tabla-empty">Sin partidos terminados en esta categoría</td></tr>'; return; }
+  body.innerHTML=data.map((t,i)=>{
+    const pos=i+1, cls=pos===1?'p1':pos===2?'p2':pos===3?'p3':'pr';
+    const dg=t.gf-t.gc, dgCls=dg>0?'dp':dg<0?'dn':'dz';
+    const forma=t.forma.slice(-5).map(f=>`<div class="fp-${f.toLowerCase()}">${f}</div>`).join('');
+    const logo=t.logo?`<img class="tc-logo" src="${t.logo}"/>`:`<div class="tc-ph">⚽</div>`;
+    return `<tr>
+      <td><span class="pos-num ${cls}">${pos}</span></td>
+      <td class="tal"><div class="tc">${logo}<span class="tc-name">${t.nombre}</span></div></td>
+      <td>${t.pj}</td><td>${t.g}</td><td>${t.e}</td><td>${t.pe}</td>
+      <td>${t.gf}</td><td>${t.gc}</td>
+      <td class="${dgCls}">${dg>0?'+':''}${dg}</td>
+      <td class="pts-c">${t.pts}</td>
+      <td><div class="fp">${forma}</div></td>
+    </tr>`;
+  }).join('');
+  renderGoleadores();
+}
+
+function renderGoleadores(){
+  const el=document.getElementById('goleadoresList'); if(!el)return;
+  const byP={};
+  filteredParts().filter(p=>p.status==='terminado').forEach(p=>{
+    const goles=p.goles?Object.values(p.goles):[];
+    goles.forEach(g=>{
+      const team=g.equipo==='local'?(p.localNombre||p.local):(p.visitaNombre||p.visita);
+      const key=g.jugador+'|'+team;
+      if(!byP[key]) byP[key]={jugador:g.jugador,equipo:team,goles:0};
+      byP[key].goles++;
+    });
+  });
+  const sorted=Object.values(byP).sort((a,b)=>b.goles-a.goles).slice(0,15);
+  if(!sorted.length){el.innerHTML='<div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div>';return;}
+  el.innerHTML=sorted.map((g,i)=>{
+    const pos=i+1, cls=pos===1?'p1':pos===2?'p2':pos===3?'p3':'pr';
+    return `<div class="gol-row">
+      <div class="gol-pos ${cls}">${pos}</div>
+      <div class="gol-info"><div class="gol-player">${g.jugador}</div><div class="gol-team">${g.equipo}</div></div>
+      <div class="gol-count">${g.goles}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+//  ÚLTIMOS PARTIDOS
+// ══════════════════════════════════════
+function setFechaUltimos(dias){
+  const el=document.getElementById('partidos_fecha_desde'); if(!el)return;
+  if(dias===0){el.value='';renderPartidos();return;}
+  const d=new Date(); d.setDate(d.getDate()-dias);
+  el.value=d.toISOString().split('T')[0];
+  renderPartidos();
+}
+
+function renderPartidos(){
+  const el=document.getElementById('partidosList'); if(!el)return;
+  // Date filter — default 3 days
+  const filterEl=document.getElementById('partidos_fecha_desde');
+  if(filterEl&&!filterEl.value){
+    const d=new Date(); d.setDate(d.getDate()-3);
+    filterEl.value=d.toISOString().split('T')[0];
+  }
+  const desdeDate=filterEl?.value||null;
+  let parts=filteredParts().sort((a,b)=>{
+    const ad=(b.fecha||'')+(b.horaIni||''); const bd=(a.fecha||'')+(a.horaIni||'');
+    return ad.localeCompare(bd);
+  });
+  if(desdeDate) parts=parts.filter(p=>(p.fecha||'')>=desdeDate);
+  if(!parts.length){el.innerHTML=`<div class="empty"><span class="empty-icon">⚽</span>Sin partidos${desdeDate?' desde '+fmtDate(desdeDate):' en esta categoría'}</div>`;return;}
+  el.innerHTML=parts.map(p=>{
+    const eqL=getEqs().find(e=>e.nombre===(p.localNombre||p.local)&&e.torneo===currentTorneo&&e.cat===currentCat);
+    const eqV=getEqs().find(e=>e.nombre===(p.visitaNombre||p.visita)&&e.torneo===currentTorneo&&e.cat===currentCat);
+    const wL=p.status==='terminado'&&(p.gL||0)>(p.gV||0);
+    const wV=p.status==='terminado'&&(p.gV||0)>(p.gL||0);
+    const goles=p.goles?Object.values(p.goles):[];
+    const scorersHtml=buildScorersHtml(goles,p.localNombre||p.local,p.visitaNombre||p.visita);
+    const lLogo=eqL?.logo?`<img class="team-logo" src="${eqL.logo}"/>`:`<div class="team-ph">⚽</div>`;
+    const vLogo=eqV?.logo?`<img class="team-logo" src="${eqV.logo}"/>`:`<div class="team-ph">⚽</div>`;
+    const statusClass=p.status==='terminado'?'ms-done':p.status==='jugando'?'ms-live':'ms-pen';
+    const statusTxt=p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente';
+    return `<div class="match-card" onclick="openPartidoDetail('${p._key}')">
+      <div class="mc-top">
+        <span>📅 ${fmtDate(p.fecha)} · ⏰ ${p.horaIni||'--:--'} ${p.horaFin?'→'+p.horaFin:''} · 🏟️ ${p.cancha||'—'}</span>
+        <span class="mc-status ${statusClass}">${statusTxt}</span>
+      </div>
+      <div class="mc-body">
+        <div class="scoreboard">
+          <div class="team-side">${lLogo}<div class="team-name">${p.localNombre||p.local||'Local'}</div><div class="team-score ${wL?'winner':''}">${p.gL||0}</div></div>
+          <div class="score-sep">:</div>
+          <div class="team-side">${vLogo}<div class="team-name">${p.visitaNombre||p.visita||'Visita'}</div><div class="team-score ${wV?'winner':''}">${p.gV||0}</div></div>
+        </div>
+      </div>
+      ${scorersHtml?`<div class="scorers-strip">${scorersHtml}</div>`:''}
+      <div class="mc-footer">
+        ${p.arbitroNombre?`<span class="mc-meta">🦺 ${p.arbitroNombre}</span>`:''}
+        ${p.cancha?`<span class="mc-meta">🏟️ ${p.cancha}</span>`:''}
+        ${isAdmin?`<span class="mc-meta" style="margin-left:auto"><button class="btn btn-out btn-sm" onclick="event.stopPropagation();openEditPartido('${p._key}')">✏️ Editar</button> <button class="btn btn-r btn-sm" onclick="event.stopPropagation();deletePartido('${p._key}')">🗑️</button></span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildScorersHtml(goles, local, visita){
+  if(!goles||!goles.length)return'';
+  const byP={};
+  goles.forEach(g=>{
+    const team=g.equipo==='local'?local:visita;
+    const key=g.jugador+'|'+g.equipo;
+    if(!byP[key]) byP[key]={jugador:g.jugador,count:0};
+    byP[key].count++;
+  });
+  return Object.values(byP).map(p=>{
+    const cnt=p.count>1?` ×${p.count}`:'';
+    return `<span class="scorer-tag">⚽ ${p.jugador}${cnt}</span>`;
+  }).join('');
+}
+
+function deletePartido(key){
+  if(!confirm('¿Eliminar este partido?'))return;
+  db.ref(`partidos/${key}`).remove();
+  showToast('Partido eliminado','tr');
+}
+
+function guardarMarcadorEdit(){
+  const gL=parseInt(document.getElementById('edit_gL')?.value)||0;
+  const gV=parseInt(document.getElementById('edit_gV')?.value)||0;
+  db.ref(`partidos/${activePartidoKey}`).update({gL,gV});
+  showToast('Marcador actualizado','tg');
+}
+
+function eliminarGolEspecifico(partKey, golKey, equipo){
+  const p=C.partidos[partKey]; if(!p)return;
+  db.ref(`partidos/${partKey}/goles/${golKey}`).remove();
+  const campo=equipo==='local'?'gL':'gV';
+  db.ref(`partidos/${partKey}/${campo}`).set(Math.max(0,(p[campo]||1)-1));
+  showToast('Gol eliminado','tr');
+}
+
+function reabrirPartido(key){
+  if(!confirm('¿Reabrir este partido? Volverá a estado "jugando"'))return;
+  db.ref(`partidos/${key}/status`).set('jugando');
+  showToast('Partido reabierto','ta');
+}
+
+// ══════════════════════════════════════
+//  PARTIDO DETAIL (MODAL)
+// ══════════════════════════════════════
+function openPartidoDetail(key){
+  activePartidoKey=key;
+  renderPartidoDetail();
+  openModal('modalPartidoDetail');
+}
+
+function renderPartidoDetail(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const arb=p.arbId?C.arbitros[p.arbId]:null;
+  const done=p.status==='terminado';
+  const goles=p.goles?Object.values(p.goles):[];
+  const eqL=getEqs().find(e=>e.nombre===(p.localNombre||p.local)&&e.torneo===currentTorneo&&e.cat===currentCat);
+  const eqV=getEqs().find(e=>e.nombre===(p.visitaNombre||p.visita)&&e.torneo===currentTorneo&&e.cat===currentCat);
+  const lLogo=eqL?.logo?`<img class="team-logo" src="${eqL.logo}"/>`:`<div class="team-ph">⚽</div>`;
+  const vLogo=eqV?.logo?`<img class="team-logo" src="${eqV.logo}"/>`:`<div class="team-ph">⚽</div>`;
+  document.getElementById('pdTitle').textContent=`${p.localNombre||p.local} vs ${p.visitaNombre||p.visita}`;
+  const lineup_local=p.alineLocal||[];
+  const lineup_visita=p.alineVisita||[];
+  let adminActions = '';
+  if(isAdmin && !done){
+    adminActions=`<div class="crono-wrap">
+      <div class="crono-display" id="cronoDisp">${fmt(p.elapsed||0)}</div>
+      <div class="crono-ctrls">
+        <button class="btn ${p.timerRunning?'btn-b':'btn-g'} btn-sm" id="btnTimer" onclick="toggleTimer()">${p.timerRunning?'⏸ Pausar':'▶ Iniciar'}</button>
+        <button class="btn btn-r btn-sm" onclick="terminarPartido()">🏁 Terminar</button>
+      </div>
+    </div>
+    <div class="form-2" style="margin:10px 0">
+      <div class="sh" style="grid-column:1/-1;margin-bottom:6px"><div class="st">⚽ Registrar Gol</div></div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:5px">${p.localNombre||p.local}</div>
+        <button class="gol-btn add" onclick="openGolModal('local')">⚽ GOL LOCAL</button>
+        <button class="gol-btn undo" style="margin-top:4px" onclick="quitarGol('local')">↩ Quitar</button>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:5px">${p.visitaNombre||p.visita}</div>
+        <button class="gol-btn add" onclick="openGolModal('visita')">⚽ GOL VISITA</button>
+        <button class="gol-btn undo" style="margin-top:4px" onclick="quitarGol('visita')">↩ Quitar</button>
+      </div>
+    </div>`;
+  }
+  if(isAdmin && done){
+    adminActions=`
+    <div style="background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:12px;margin:8px 0">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">✏️ EDITAR PARTIDO TERMINADO</div>
+      <div class="form-2" style="margin-bottom:8px">
+        <div class="fg"><label class="fl">Goles ${p.localNombre||p.local}</label><input class="fi" id="edit_gL" type="number" value="${p.gL||0}" min="0"/></div>
+        <div class="fg"><label class="fl">Goles ${p.visitaNombre||p.visita}</label><input class="fi" id="edit_gV" type="number" value="${p.gV||0}" min="0"/></div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <button class="btn btn-g btn-sm" onclick="openGolModal('local')">⚽ + Gol ${p.localNombre||p.local}</button>
+        <button class="btn btn-g btn-sm" onclick="openGolModal('visita')">⚽ + Gol ${p.visitaNombre||p.visita}</button>
+        <button class="btn btn-out btn-sm" onclick="guardarMarcadorEdit()">💾 Guardar marcador</button>
+      </div>
+      ${goles.length?`<div style="font-size:10px;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:6px">ELIMINAR GOLES</div>
+      <div>${Object.entries(p.goles||{}).map(([gk,g])=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)"><span style="font-size:12px;flex:1">⚽ ${g.jugador} · ${g.equipo==='local'?(p.localNombre||p.local):(p.visitaNombre||p.visita)}</span><button class="btn btn-r btn-sm" onclick="eliminarGolEspecifico('${activePartidoKey}','${gk}','${g.equipo}')">✕</button></div>`).join('')}</div>`:''}
+    </div>
+    <button class="btn btn-a btn-full" style="margin:4px 0" onclick="openModal('modalPagoArb');initPagoArb()">💰 Pagos de Arbitraje</button>
+    <button class="btn btn-out btn-full" style="margin-top:4px" onclick="reabrirPartido('${activePartidoKey}')">🔄 Reabrir partido</button>`;
+  }
+  document.getElementById('modalPartidoContent').innerHTML=`
+    <div style="text-align:center;margin-bottom:10px">
+      <span class="mc-status ${p.status==='terminado'?'ms-done':p.status==='jugando'?'ms-live':'ms-pen'}">
+        ${p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente'}
+      </span>
+    </div>
+    <div class="scoreboard" style="margin-bottom:10px">
+      <div class="team-side">${lLogo}<div class="team-name">${p.localNombre||p.local}</div><div class="team-score ${done&&(p.gL||0)>(p.gV||0)?'winner':''}" id="mgl">${p.gL||0}</div></div>
+      <div class="score-sep">:</div>
+      <div class="team-side">${vLogo}<div class="team-name">${p.visitaNombre||p.visita}</div><div class="team-score ${done&&(p.gV||0)>(p.gL||0)?'winner':''}" id="mgv">${p.gV||0}</div></div>
+    </div>
+    ${goles.length?`<div class="card" style="margin-bottom:10px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:7px">GOLES</div>
+      ${goles.map(g=>`<div style="font-size:12px;padding:3px 0;display:flex;gap:7px"><span>⚽</span><strong>${g.jugador}</strong><span style="color:var(--muted)">${g.equipo==='local'?p.localNombre||p.local:p.visitaNombre||p.visita}</span></div>`).join('')}
+    </div>`:''}
+    ${adminActions}
+    ${lineup_local.length||lineup_visita.length?`<div class="form-2" style="margin-top:8px">
+      <div class="lineup-box"><div class="lineup-title">${p.localNombre||p.local}</div>${lineup_local.map((pl,i)=>{const gc=goles.filter(g=>g.equipo==='local'&&g.jugador===pl).length;return`<div style="font-size:12px;padding:3px 0;display:flex;justify-content:space-between"><span>${i+1}. ${pl}</span>${gc?`<span style="color:var(--acc);font-weight:800">${gc} ⚽</span>`:''}</div>`;}).join('')}</div>
+      <div class="lineup-box"><div class="lineup-title">${p.visitaNombre||p.visita}</div>${lineup_visita.map((pl,i)=>{const gc=goles.filter(g=>g.equipo==='visita'&&g.jugador===pl).length;return`<div style="font-size:12px;padding:3px 0;display:flex;justify-content:space-between"><span>${i+1}. ${pl}</span>${gc?`<span style="color:var(--acc);font-weight:800">${gc} ⚽</span>`:''}</div>`;}).join('')}</div>
+    </div>`:''}
+    ${arb?`<div style="background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:10px;text-align:center;margin-top:8px">
+      <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:3px">ÁRBITRO</div>
+      <div style="font-size:14px;font-weight:800">${arb.nombre}</div>
+      <div style="color:var(--amber);font-size:12px;margin-top:2px">$${p.costArb||250}/equipo</div>
+    </div>`:''}`;
+  if(p.timerRunning) startTimerUI(activePartidoKey);
+}
+
+// GOL LOGIC
+function openGolModal(side){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  pendingGolSide=side;
+  document.getElementById('golModalTitle').textContent=`⚽ Gol de ${side==='local'?p.localNombre||p.local:p.visitaNombre||p.visita}`;
+  const lineup=side==='local'?(p.alineLocal||[]):(p.alineVisita||[]);
+  document.getElementById('gol_jugador').innerHTML=`<option value="">— Seleccionar —</option>`+lineup.map(pl=>`<option value="${pl}">${pl}</option>`).join('');
+  document.getElementById('gol_manual').value='';
+  document.getElementById('gol_equipo').value=side;
+  openModal('modalGol');
+}
+
+function confirmGol(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const side=document.getElementById('gol_equipo').value;
+  const manual=document.getElementById('gol_manual').value.trim();
+  const fromList=document.getElementById('gol_jugador').value;
+  const jugador=manual||fromList;
+  if(!jugador){showToast('Indica el jugador','ta');return;}
+  const field=side==='local'?'gL':'gV';
+  db.ref(`partidos/${activePartidoKey}/${field}`).set((p[field]||0)+1);
+  db.ref(`partidos/${activePartidoKey}/goles`).push({jugador,equipo:side,ts:Date.now()});
+  closeModal('modalGol');
+  showToast(`⚽ GOL de ${jugador}!`,'tg');
+}
+
+function quitarGol(side){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const field=side==='local'?'gL':'gV';
+  const cur=p[field]||0; if(cur<=0)return;
+  const goles=p.goles?Object.entries(p.goles):[];
+  const last=goles.filter(([,g])=>g.equipo===side).sort((a,b)=>b[1].ts-a[1].ts)[0];
+  if(last) db.ref(`partidos/${activePartidoKey}/goles/${last[0]}`).remove();
+  db.ref(`partidos/${activePartidoKey}/${field}`).set(cur-1);
+}
+
+// TIMER
+function toggleTimer(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  if(p.timerRunning){
+    const ne=(p.elapsed||0)+(Date.now()-(p.timerStart||Date.now()))/1000;
+    clearInterval(timers[activePartidoKey]);
+    db.ref(`partidos/${activePartidoKey}`).update({timerRunning:false,elapsed:ne});
+  } else {
+    db.ref(`partidos/${activePartidoKey}`).update({timerRunning:true,timerStart:Date.now(),status:'jugando'});
+  }
+}
+
+function startTimerUI(key){
+  clearInterval(timers[key]);
+  timers[key]=setInterval(()=>{
+    const p=C.partidos[key]; if(!p||!p.timerRunning){clearInterval(timers[key]);return;}
+    const el=document.getElementById('cronoDisp');
+    if(el) el.textContent=fmt((p.elapsed||0)+(Date.now()-(p.timerStart||Date.now()))/1000);
+  },500);
+}
+
+function terminarPartido(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  const elapsed=p.timerRunning?(p.elapsed||0)+(Date.now()-(p.timerStart||Date.now()))/1000:(p.elapsed||0);
+  clearInterval(timers[activePartidoKey]);
+  db.ref(`partidos/${activePartidoKey}`).update({status:'terminado',timerRunning:false,elapsed});
+  closeModal('modalPartidoDetail');
+  showToast('🏁 Partido terminado','tg');
+}
+
+// ══════════════════════════════════════
+//  REGISTRAR / EDITAR PARTIDO
+// ══════════════════════════════════════
+function resetPartidoForm(){
+  document.getElementById('mp_key').value='';
+  document.getElementById('mpModalTitle').textContent='Registrar Partido';
+  const now=new Date();
+  document.getElementById('mp_fecha').value=now.toISOString().split('T')[0];
+  document.getElementById('mp_hora_ini').value=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('mp_hora_fin').value='';
+  document.getElementById('mp_gL').value=0; document.getElementById('mp_gV').value=0;
+  document.getElementById('mp_status').value='pendiente';
+  document.getElementById('mp_costo').value=250;
+  document.getElementById('lineup_local').innerHTML='';
+  document.getElementById('lineup_visita').innerHTML='';
+  document.getElementById('mp_torneo').value=currentTorneo;
+  document.getElementById('mp_cat').value=currentCat;
+  // populate árbitros
+  const sel=document.getElementById('mp_arbitro');
+  sel.innerHTML='<option value="">Sin árbitro</option>'+getArbs().map(a=>`<option value="${a._key}">${a.nombre}</option>`).join('');
+  // populate equipos
+  const eqs=getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat);
+  const opts='<option value="">Seleccionar...</option>'+eqs.map(e=>`<option value="${e._key}">${e.nombre}</option>`).join('');
+  document.getElementById('mp_local').innerHTML=opts;
+  document.getElementById('mp_visita').innerHTML=opts;
+}
+
+function openEditPartido(key){
+  const p=C.partidos[key]; if(!p)return;
+  resetPartidoForm();
+  document.getElementById('mp_key').value=key;
+  document.getElementById('mpModalTitle').textContent='Editar Partido';
+  document.getElementById('mp_torneo').value=p.torneo||'villa';
+  document.getElementById('mp_cat').value=p.cat||'liga_alta';
+  document.getElementById('mp_cancha').value=p.cancha||'Villa Universidad';
+  document.getElementById('mp_arbitro').value=p.arbId||'';
+  document.getElementById('mp_fecha').value=p.fecha||'';
+  document.getElementById('mp_hora_ini').value=p.horaIni||'';
+  document.getElementById('mp_hora_fin').value=p.horaFin||'';
+  document.getElementById('mp_gL').value=p.gL||0;
+  document.getElementById('mp_gV').value=p.gV||0;
+  document.getElementById('mp_status').value=p.status||'pendiente';
+  document.getElementById('mp_costo').value=p.costArb||250;
+  // set lineup
+  (p.alineLocal||[]).forEach(pl=>addPlayer('local',pl));
+  (p.alineVisita||[]).forEach(pl=>addPlayer('visita',pl));
+  // select equipos
+  const eqs=getEqs();
+  const lKey=eqs.find(e=>e.nombre===(p.localNombre||p.local))? eqs.find(e=>e.nombre===(p.localNombre||p.local))._key:'';
+  const vKey=eqs.find(e=>e.nombre===(p.visitaNombre||p.visita))? eqs.find(e=>e.nombre===(p.visitaNombre||p.visita))._key:'';
+  document.getElementById('mp_local').value=lKey;
+  document.getElementById('mp_visita').value=vKey;
+  openModal('modalPartido');
+}
+
+function addPlayer(side, val=''){
+  const cont=document.getElementById(`lineup_${side}`);
+  const idx=cont.children.length+1;
+  const div=document.createElement('div'); div.className='player-input-row';
+  div.innerHTML=`<span style="font-size:10px;color:var(--muted);width:16px;text-align:center;line-height:28px">${idx}</span><input class="fi" value="${val}" placeholder="Jugador ${idx}" style="flex:1"/>`;
+  cont.appendChild(div);
+}
+
+function getLineup(side){
+  return Array.from(document.getElementById(`lineup_${side}`).querySelectorAll('input')).map(i=>i.value.trim()).filter(v=>v);
+}
+
+function savePartido(){
+  const localKey=document.getElementById('mp_local').value;
+  const visitaKey=document.getElementById('mp_visita').value;
+  const eqL=localKey?C.equipos[localKey]:null;
+  const eqV=visitaKey?C.equipos[visitaKey]:null;
+  if(!eqL||!eqV){showToast('Selecciona ambos equipos','ta');return;}
+  const torneo=document.getElementById('mp_torneo').value;
+  const cat=document.getElementById('mp_cat').value;
+  const arbId=document.getElementById('mp_arbitro').value||null;
+  const arb=arbId?C.arbitros[arbId]:null;
+  const key=document.getElementById('mp_key').value;
+  const data={
+    torneo, cat,
+    local:localKey, localNombre:eqL.nombre,
+    visita:visitaKey, visitaNombre:eqV.nombre,
+    cancha:document.getElementById('mp_cancha').value,
+    arbId, arbitroNombre:arb?.nombre||null,
+    fecha:document.getElementById('mp_fecha').value,
+    horaIni:document.getElementById('mp_hora_ini').value,
+    horaFin:document.getElementById('mp_hora_fin').value||null,
+    gL:parseInt(document.getElementById('mp_gL').value)||0,
+    gV:parseInt(document.getElementById('mp_gV').value)||0,
+    status:document.getElementById('mp_status').value,
+    costArb:parseInt(document.getElementById('mp_costo').value)||250,
+    alineLocal:getLineup('local'),
+    alineVisita:getLineup('visita'),
+    updatedAt:Date.now()
+  };
+  if(key) db.ref(`partidos/${key}`).update(data);
+  else db.ref('partidos').push({...data,goles:{},arbPago:{local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}},creadoAt:Date.now()});
+  closeModal('modalPartido');
+  showToast(key?'Partido actualizado':'Partido registrado','tg');
+}
+
+// ══════════════════════════════════════
+//  PAGO ARBITRAJE
+// ══════════════════════════════════════
+function initPagoArb(){
+  const p=C.partidos[activePartidoKey]; if(!p)return;
+  document.getElementById('pa_key').value=activePartidoKey;
+  document.getElementById('pa_local_title').textContent=`🏠 ${p.localNombre||p.local}`;
+  document.getElementById('pa_visita_title').textContent=`✈️ ${p.visitaNombre||p.visita}`;
+  payMethods={local:null,visita:null};
+  ['local','visita'].forEach(s=>{
+    ['ef','tr','pp','mx'].forEach(m=>document.getElementById(`btn_${s[0]}_${m}`).className='pmo');
+    document.getElementById(`pa_${s[0]}_amounts`).style.display='none';
+    document.getElementById(`pa_${s[0]}_status`).textContent='';
+    const prev=p.arbPago?.[s];
+    if(prev){const tot=(prev.ef||0)+(prev.tr||0)+(prev.pp||0);if(tot>0)document.getElementById(`pa_${s[0]}_status`).textContent=`Registrado: $${tot}`;}
+  });
+}
+
+function setPM(side, method){
+  const s=side[0];
+  ['ef','tr','pp','mx'].forEach(m=>document.getElementById(`btn_${s}_${m}`).className='pmo');
+  document.getElementById(`btn_${s}_${method}`).className=`pmo sel-${method==='mx'?'mx':method}`;
+  if(side==='local') payMethods.local=method; else payMethods.visita=method;
+  const amts=document.getElementById(`pa_${s}_amounts`);
+  const status=document.getElementById(`pa_${s}_status`);
+  if(method==='pp'){amts.style.display='none';document.getElementById(`${s}_pp_a`).value=250;status.textContent='✅ Prepago: $250';}
+  else if(method==='ef'){amts.style.display='none';document.getElementById(`${s}_ef_a`).value=250;status.textContent='💵 Efectivo: $250';}
+  else if(method==='tr'){amts.style.display='none';document.getElementById(`${s}_tr_a`).value=250;status.textContent='📱 Transf.: $250';}
+  else{amts.style.display='grid';['ef','tr','pp'].forEach(x=>document.getElementById(`${s}_${x}_a`).value=0);status.textContent='Ingresa montos (deben sumar $250)';}
+}
+
+function guardarPagoArb(){
+  const key=document.getElementById('pa_key').value;
+  const ga=id=>parseInt(document.getElementById(id)?.value)||0;
+  const build=side=>{
+    const m=side==='local'?payMethods.local:payMethods.visita; const s=side[0];
+    if(!m)return null;
+    if(m==='ef')return{ef:250,tr:0,pp:0};
+    if(m==='tr')return{ef:0,tr:250,pp:0};
+    if(m==='pp')return{ef:0,tr:0,pp:250};
+    return{ef:ga(`${s}_ef_a`),tr:ga(`${s}_tr_a`),pp:ga(`${s}_pp_a`)};
+  };
+  const lp=build('local'),vp=build('visita');
+  const updates={};
+  if(lp) updates[`partidos/${key}/arbPago/local`]=lp;
+  if(vp) updates[`partidos/${key}/arbPago/visita`]=vp;
+  if(lp&&vp) updates[`partidos/${key}/arbPagado`]=true;
+  db.ref().update(updates);
+  closeModal('modalPagoArb');
+  showToast('Pagos guardados','tg');
+}
+
+// ══════════════════════════════════════
+//  EQUIPOS
+// ══════════════════════════════════════
+function renderEquiposPage(){
+  const el=document.getElementById('equiposView'); if(!el)return;
+  const eqs=getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat);
+  if(!eqs.length){el.innerHTML='<div class="empty"><span class="empty-icon">🏆</span>Sin equipos registrados en esta categoría</div>';return;}
+  el.innerHTML=`<div class="equipos-grid">${eqs.map(e=>`
+    <div class="equipo-card" onclick="openEquipoDetail('${e._key}')">
+      ${e.logo?`<img class="eq-logo" src="${e.logo}"/>`:`<div class="eq-ph" style="background:${e.color||'var(--card2)'}22">⚽</div>`}
+      <div class="eq-name">${e.nombre}</div>
+      <div class="eq-cat">${CAT_NAMES[e.cat]||e.cat}</div>
+      ${isAdmin?`<div style="display:flex;gap:4px;margin-top:6px;justify-content:center"><button class="btn btn-out btn-sm" onclick="event.stopPropagation();editEquipo('${e._key}')">✏️</button><button class="btn btn-r btn-sm" onclick="event.stopPropagation();deleteEquipo('${e._key}')">🗑️</button></div>`:''}
+    </div>`).join('')}</div>`;
+}
+
+function openEquipoDetail(key){
+  const e=C.equipos[key]; if(!e)return;
+  document.getElementById('edTitle').textContent=e.nombre;
+  // Build stats
+  const eqParts=filteredParts().filter(p=>p.status==='terminado'&&(p.local===key||p.visita===key||p.localNombre===e.nombre||p.visitaNombre===e.nombre));
+  let pj=0,g=0,em=0,pe=0,gf=0,gc=0,pts=0;
+  eqParts.forEach(p=>{
+    const isLocal=p.local===key||p.localNombre===e.nombre;
+    const myG=isLocal?(p.gL||0):(p.gV||0);
+    const oppG=isLocal?(p.gV||0):(p.gL||0);
+    pj++;gf+=myG;gc+=oppG;
+    if(myG>oppG){g++;pts+=3;}else if(myG<oppG){pe++;}else{em++;pts++;}
+  });
+  // top scorers from this team
+  const byP={};
+  eqParts.forEach(p=>{
+    const goles=p.goles?Object.values(p.goles):[];
+    const isLocal=p.local===key||p.localNombre===e.nombre;
+    goles.filter(g=>g.equipo===(isLocal?'local':'visita')).forEach(g=>{
+      if(!byP[g.jugador]) byP[g.jugador]=0; byP[g.jugador]++;
+    });
+  });
+  const topScorers=Object.entries(byP).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  // table position
+  const tablaData=buildTablaData();
+  const pos=tablaData.findIndex(t=>t.nombre===e.nombre)+1;
+  document.getElementById('equipoDetailContent').innerHTML=`
+    <div class="eq-detail-header">
+      ${e.logo?`<img class="eq-detail-logo" src="${e.logo}"/>`:`<div class="eq-detail-ph" style="background:${e.color||'var(--acc3)'}">⚽</div>`}
+      <div>
+        <div class="eq-detail-name">${e.nombre}</div>
+        <div style="font-size:11px;color:var(--muted);font-weight:600">${TORNEO_NAMES[e.torneo]||''} · ${CAT_NAMES[e.cat]||''}</div>
+        ${e.tel?`<div style="font-size:11px;color:var(--muted);font-weight:600">📞 ${e.tel}</div>`:''}
+      </div>
+    </div>
+    <div class="eq-stat-grid">
+      <div class="eq-stat"><div class="eq-stat-n" style="color:var(--amber)">${pos||'—'}</div><div class="eq-stat-l">Posición</div></div>
+      <div class="eq-stat"><div class="eq-stat-n">${pj}</div><div class="eq-stat-l">Partidos</div></div>
+      <div class="eq-stat"><div class="eq-stat-n">${pts}</div><div class="eq-stat-l">Puntos</div></div>
+      <div class="eq-stat"><div class="eq-stat-n">${g}</div><div class="eq-stat-l">Ganados</div></div>
+      <div class="eq-stat"><div class="eq-stat-n">${gf}</div><div class="eq-stat-l">Goles F.</div></div>
+      <div class="eq-stat"><div class="eq-stat-n" style="color:var(--red)">${gc}</div><div class="eq-stat-l">Goles C.</div></div>
+    </div>
+    ${topScorers.length?`<div class="sh"><div class="st">⚽ Goleadores del equipo</div></div>
+    <div class="card">
+      ${topScorers.map(([n,c],i)=>`<div class="gol-row">
+        <div class="gol-pos ${i===0?'p1':i===1?'p2':i===2?'p3':'pr'}">${i+1}</div>
+        <div class="gol-info">
+          <div class="gol-player">${n} ${i===0?'<span style="font-size:16px" title="Goleador del equipo">🏅</span>':''}</div>
+        </div>
+        <div class="gol-count">${c}</div>
+      </div>`).join('')}
+    </div>`:''}
+    ${(e.alineacion||[]).length?`
+    <div class="sh" style="margin-top:8px"><div class="st">👕 Plantilla</div></div>
+    <div class="card">
+      ${(e.alineacion||[]).map((pl,i)=>{
+        const gc=byP[pl]||0;
+        const esGoleador=topScorers.length>0&&topScorers[0][0]===pl&&gc>0;
+        return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);width:22px;text-align:center">${i+1}</span>
+          <span style="font-size:13px;font-weight:700;flex:1">${pl}${esGoleador?' 🏅':''}</span>
+          ${gc?`<span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--acc)">${gc} ⚽</span>`:''}
+        </div>`;
+      }).join('')}
+    </div>`:''}
+    <div class="sh" style="margin-top:8px"><div class="st">📅 Historial de partidos</div></div>
+    <div class="card">
+      ${eqParts.length?eqParts.map(p=>{
+        const isLocal=p.local===key||p.localNombre===e.nombre;
+        const myG=isLocal?(p.gL||0):(p.gV||0);
+        const oppG=isLocal?(p.gV||0):(p.gL||0);
+        const opp=isLocal?(p.visitaNombre||p.visita):(p.localNombre||p.local);
+        const res=myG>oppG?'G':myG<oppG?'P':'E';
+        const rc=res==='G'?'var(--acc)':res==='P'?'var(--red)':'var(--muted)';
+        return `<div class="gol-row"><div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:${rc};width:24px">${res}</div><div class="gol-info"><div style="font-size:12px;font-weight:700">vs ${opp}</div><div style="font-size:10px;color:var(--muted);font-weight:600">${fmtDate(p.fecha)}</div></div><div style="font-family:Bebas Neue,sans-serif;font-size:22px;color:var(--text)">${myG}:${oppG}</div></div>`;
+      }).join(''):'<div class="empty" style="padding:14px">Sin partidos</div>'}
+    </div>`;
+  openModal('modalEquipoDetail');
+}
+
+function resetEquipoForm(){
+  document.getElementById('eq_key').value='';
+  document.getElementById('eqModalTitle').textContent='Registrar Equipo';
+  ['eq_nombre','eq_tel','eq_logo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('eq_color').value='#16a34a';
+  document.getElementById('eq_torneo').value=currentTorneo;
+  document.getElementById('eq_cat').value=currentCat;
+  document.getElementById('eq_logo_prev').style.display='none';
+  document.getElementById('eq_logo_lbl').style.display='block';
+  document.getElementById('eq_lineup_list').innerHTML='';
+}
+
+function addEqPlayer(val=''){
+  const cont=document.getElementById('eq_lineup_list');
+  const idx=cont.children.length+1;
+  const div=document.createElement('div');
+  div.style='display:flex;align-items:center;gap:6px;margin-bottom:6px';
+  div.innerHTML=`
+    <span style="font-size:11px;color:var(--muted);width:22px;text-align:center;font-weight:700;line-height:32px">${idx}</span>
+    <input class="fi" value="${val}" placeholder="Nombre del jugador" style="flex:1"/>
+    <button onclick="this.parentElement.remove();renumberPlayers()" style="background:none;border:1.5px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:700">✕</button>`;
+  cont.appendChild(div);
+}
+
+function renumberPlayers(){
+  document.querySelectorAll('#eq_lineup_list > div').forEach((div,i)=>{
+    const span=div.querySelector('span');
+    if(span) span.textContent=i+1;
+  });
+}
+
+function getEqLineup(){
+  return Array.from(document.getElementById('eq_lineup_list').querySelectorAll('input'))
+    .map(i=>i.value.trim()).filter(v=>v);
+}
+
+function editEquipo(key){
+  const e=C.equipos[key]; if(!e)return;
+  resetEquipoForm();
+  document.getElementById('eq_key').value=key;
+  document.getElementById('eqModalTitle').textContent='Editar Equipo';
+  document.getElementById('eq_nombre').value=e.nombre||'';
+  document.getElementById('eq_tel').value=e.tel||'';
+  document.getElementById('eq_torneo').value=e.torneo||'villa';
+  document.getElementById('eq_cat').value=e.cat||'liga_alta';
+  document.getElementById('eq_color').value=e.color||'#16a34a';
+  if(e.logo){document.getElementById('eq_logo').value=e.logo;const p=document.getElementById('eq_logo_prev');p.src=e.logo;p.style.display='block';document.getElementById('eq_logo_lbl').style.display='none';}
+  // load lineup
+  (e.alineacion||[]).forEach(pl=>addEqPlayer(pl));
+  openModal('modalEquipo');
+}
+
+function saveEquipo(){
+  const n=document.getElementById('eq_nombre').value.trim();
+  if(!n){showToast('Ingresa el nombre','ta');return;}
+  const key=document.getElementById('eq_key').value;
+  const data={
+    nombre:n,
+    tel:document.getElementById('eq_tel').value.trim(),
+    torneo:document.getElementById('eq_torneo').value,
+    cat:document.getElementById('eq_cat').value,
+    color:document.getElementById('eq_color').value,
+    logo:document.getElementById('eq_logo').value||null,
+    alineacion:getEqLineup(),
+    updatedAt:Date.now()
+  };
+  if(key) db.ref(`equipos/${key}`).update(data);
+  else db.ref('equipos').push({...data,creadoAt:Date.now()});
+  closeModal('modalEquipo');
+  showToast(key?'Equipo actualizado':'Equipo registrado','tg');
+}
+
+function deleteEquipo(key){
+  if(!confirm('¿Eliminar equipo?'))return;
+  db.ref(`equipos/${key}`).remove();
+  showToast('Equipo eliminado','tr');
+}
+
+// ══════════════════════════════════════
+//  TIENDA
+// ══════════════════════════════════════
+function renderTienda(){ renderTiendaStats(); renderPOS(); renderInventario(); renderHistorialVentas(); }
+
+function renderTiendaStats(){
+  const ventas=getVentas();
+  const tv=ventas.reduce((s,v)=>s+v.total,0);
+  const it=ventas.reduce((s,v)=>s+(v.items||[]).reduce((a,i)=>a+i.qty,0),0);
+  const ls=getProd().filter(p=>p.stock<=5).length;
+  const el=document.getElementById('tiendaStats');
+  if(el) el.innerHTML=`
+    <div class="stat-box" style="border-top:3px solid var(--acc)"><div class="sn" style="color:var(--acc)">$${tv}</div><div class="sl2">Ventas hoy</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--blue)"><div class="sn" style="color:var(--blue)">${it}</div><div class="sl2">Vendidos</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--red)"><div class="sn" style="color:var(--red)">${ls}</div><div class="sl2">Stock bajo</div></div>`;
+}
+
+function renderPOS(){
+  const el=document.getElementById('posGrid'); if(!el)return;
+  el.innerHTML=getProd().map(p=>`
+    <div class="pos-item ${p.stock<=5?'low':''}" onclick="addToCart('${p._key}')">
+      ${p.stock<=5?'<div class="low-dot"></div>':''}
+      ${p.imagen?`<img class="pi-img" src="${p.imagen}"/>`:`<span class="pi-em">${p.emoji||'📦'}</span>`}
+      <div class="pi-n">${p.nombre}</div>
+      <div class="pi-p">$${p.precio}</div>
+      <div class="pi-s">${p.stock} pzs</div>
+    </div>`).join('');
+}
+
+function addToCart(key){
+  const pr=C.productos[key];
+  if(!pr||pr.stock===0){showToast('Sin stock','tr');return;}
+  const ex=cart.find(c=>c.key===key);
+  if(ex){if(ex.qty>=pr.stock){showToast('Stock agotado','tr');return;}ex.qty++;}
+  else cart.push({key,imagen:pr.imagen,emoji:pr.emoji,nombre:pr.nombre,precio:pr.precio,qty:1});
+  renderCart();
+  showToast(`${pr.emoji||'📦'} ${pr.nombre} +1`,'tg');
+}
+
+function changeQty(key,d){const idx=cart.findIndex(c=>c.key===key);if(idx<0)return;cart[idx].qty+=d;if(cart[idx].qty<=0)cart.splice(idx,1);renderCart();}
+function clearCart(){cart.length=0;renderCart();}
+
+function renderCart(){
+  const el=document.getElementById('cartItems'); if(!el)return;
+  if(!cart.length){el.innerHTML='<div class="cart-empty-msg">Toca un producto para agregarlo</div>';document.getElementById('cartTotal').textContent='$0';return;}
+  el.innerHTML=cart.map(it=>`
+    <div class="cart-item">
+      ${it.imagen?`<img class="ci-img" src="${it.imagen}"/>`:`<span class="ci-em">${it.emoji||'📦'}</span>`}
+      <div class="ci-info"><div class="ci-name">${it.nombre}</div><div class="ci-sub">$${it.precio} × ${it.qty} = $${it.precio*it.qty}</div></div>
+      <div class="ci-qty">
+        <button class="qty-btn" onclick="changeQty('${it.key}',-1)">−</button>
+        <span class="qty-n">${it.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${it.key}',1)">+</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('cartTotal').textContent=`$${cart.reduce((s,c)=>s+c.precio*c.qty,0)}`;
+}
+
+function cobrar(){
+  if(!cart.length){showToast('Carrito vacío','tr');return;}
+  const total=cart.reduce((s,c)=>s+c.precio*c.qty,0);
+  const updates={};
+  cart.forEach(it=>{const pr=C.productos[it.key];if(pr)updates[`productos/${it.key}/stock`]=Math.max(0,pr.stock-it.qty);});
+  db.ref().update(updates);
+  const now=new Date();
+  db.ref('ventas').push({
+    hora:now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}),
+    items:cart.map(i=>({emoji:i.emoji||'📦',nombre:i.nombre,precio:i.precio,qty:i.qty})),
+    total, ts:Date.now(), nota:''
+  });
+  showToast(`Cobrado $${total}`,'tg');
+  cart.length=0; renderCart();
+}
+
+function renderInventario(){
+  const el=document.getElementById('inventarioList'); if(!el)return;
+  const prods=getProd();
+  if(!prods.length){el.innerHTML='<div class="empty"><span class="empty-icon">📦</span>Sin productos</div>';return;}
+  el.innerHTML=prods.map(p=>`
+    <div class="inv-row">
+      ${p.imagen?`<img class="inv-img" src="${p.imagen}"/>`:`<span class="inv-em">${p.emoji||'📦'}</span>`}
+      <div class="inv-info"><div class="inv-name">${p.nombre}</div><div class="inv-det">$${p.precio} · ${p.stock} pzs</div></div>
+      <div class="inv-ctrl">
+        <input class="inv-adj" id="adj_${p._key}" type="number" value="5" min="1"/>
+        <button class="btn btn-out btn-sm" onclick="adjStock('${p._key}',1)">+</button>
+        <button class="btn btn-out btn-sm" onclick="adjStock('${p._key}',-1)">−</button>
+        <button class="btn btn-out btn-sm" onclick="editProd('${p._key}')">✏️</button>
+        <button class="btn btn-r btn-sm" onclick="deleteProd('${p._key}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function adjStock(key,sign){const p=C.productos[key];if(!p)return;const amt=parseInt(document.getElementById('adj_'+key)?.value)||5;db.ref(`productos/${key}/stock`).set(Math.max(0,p.stock+(sign*amt)));}
+
+function editProd(key){
+  const p=C.productos[key];if(!p)return;
+  document.getElementById('prod_key').value=key;
+  document.getElementById('prodModalTitle').textContent='Editar Producto';
+  document.getElementById('prod_nombre').value=p.nombre||'';
+  document.getElementById('prod_emoji').value=p.emoji||'';
+  document.getElementById('prod_precio').value=p.precio||'';
+  document.getElementById('prod_stock').value=p.stock||0;
+  document.getElementById('prod_img').value=p.imagen||'';
+  if(p.imagen){const pr=document.getElementById('prod_img_prev');pr.src=p.imagen;pr.style.display='block';document.getElementById('prod_img_lbl').style.display='none';}
+  openModal('modalAddProd');
+}
+
+function deleteProd(key){if(!confirm('¿Eliminar producto?'))return;db.ref(`productos/${key}`).remove();showToast('Producto eliminado','tr');}
+
+function saveProd(){
+  const n=document.getElementById('prod_nombre').value.trim();
+  const p=parseInt(document.getElementById('prod_precio').value)||0;
+  if(!n||p<=0){showToast('Nombre y precio requeridos','ta');return;}
+  const key=document.getElementById('prod_key').value;
+  const data={nombre:n,emoji:document.getElementById('prod_emoji').value.trim()||'📦',precio:p,stock:parseInt(document.getElementById('prod_stock').value)||0,imagen:document.getElementById('prod_img').value||null};
+  if(key) db.ref(`productos/${key}`).update(data);
+  else db.ref('productos').push(data);
+  closeModal('modalAddProd');
+  document.getElementById('prod_key').value='';
+  document.getElementById('prodModalTitle').textContent='Nuevo Producto';
+  ['prod_nombre','prod_emoji','prod_precio','prod_stock','prod_img'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('prod_img_prev').style.display='none';
+  document.getElementById('prod_img_lbl').style.display='block';
+  showToast(key?'Producto actualizado':'Producto agregado','tg');
+}
+
+function renderHistorialVentas(){
+  const el=document.getElementById('historialVentas'); if(!el)return;
+  const v=getVentas().slice(0,20);
+  if(!v.length){el.innerHTML='<div class="empty"><span class="empty-icon">🧾</span>Sin ventas aún</div>';return;}
+  el.innerHTML=v.map(x=>`
+    <div class="venta-row">
+      <div style="flex:1">
+        <div class="v-hora">${x.hora}</div>
+        <div class="v-items">${(x.items||[]).map(i=>`${i.emoji||'📦'}×${i.qty}`).join('  ')}${x.nota?` — ${x.nota}`:''}</div>
+      </div>
+      <div class="v-monto">$${x.total}</div>
+      <div class="v-actions">
+        <button class="btn btn-out btn-sm" onclick="openEditVenta('${x._key}')">✏️</button>
+        <button class="btn btn-r btn-sm" onclick="deleteVenta('${x._key}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function openEditVenta(key){
+  const v=C.ventas[key];if(!v)return;
+  document.getElementById('ev_key').value=key;
+  document.getElementById('ev_total').value=v.total||0;
+  document.getElementById('ev_nota').value=v.nota||'';
+  openModal('modalEditVenta');
+}
+function saveEditVenta(){
+  const key=document.getElementById('ev_key').value;
+  const total=parseInt(document.getElementById('ev_total').value)||0;
+  const nota=document.getElementById('ev_nota').value.trim();
+  db.ref(`ventas/${key}`).update({total,nota});
+  closeModal('modalEditVenta');
+  showToast('Venta actualizada','tg');
+}
+function deleteVenta(key){if(!confirm('¿Eliminar esta venta?'))return;db.ref(`ventas/${key}`).remove();showToast('Venta eliminada','tr');}
+
+// ══════════════════════════════════════
+//  INSCRIPCIONES
+// ══════════════════════════════════════
+function renderInscripciones(){
+  const el=document.getElementById('inscList'); if(!el)return;
+  renderInscStats();
+  const inscs=getInsc();
+  if(!inscs.length){el.innerHTML='<div class="empty"><span class="empty-icon">💰</span>Sin equipos registrados</div>';return;}
+
+  // Group by torneo → cat
+  const groups={};
+  inscs.forEach(insc=>{
+    const tk=insc.torneo||'villa'; const ck=insc.cat||'liga_alta';
+    if(!groups[tk]) groups[tk]={};
+    if(!groups[tk][ck]) groups[tk][ck]=[];
+    groups[tk][ck].push(insc);
+  });
+
+  let html='';
+  Object.keys(groups).forEach(tk=>{
+    const tnombre=TORNEO_NAMES[tk]||tk;
+    const tInscs=Object.values(groups[tk]).flat();
+    const tPagado=tInscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];return s+abs.reduce((a,b)=>a+b.monto,0);},0);
+    const tMonto=tInscs.reduce((s,i)=>s+(i.montoTotal||0),0);
+    html+=`<div style="background:var(--acc);color:#fff;border-radius:10px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px">${tnombre}</div>
+      <div style="font-size:10px;opacity:.8;font-weight:600">${tInscs.length} equipos</div></div>
+      <div style="text-align:right"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px">$${tPagado}</div>
+      <div style="font-size:10px;opacity:.8;font-weight:600">de $${tMonto}</div></div>
+    </div>`;
+    Object.keys(groups[tk]).forEach(ck=>{
+      const cInscs=groups[tk][ck];
+      const cPagado=cInscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];return s+abs.reduce((a,b)=>a+b.monto,0);},0);
+      const cMonto=cInscs.reduce((s,i)=>s+(i.montoTotal||0),0);
+      html+=`<div style="background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:8px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px">📋 ${CAT_NAMES[ck]||ck}</div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted)">${cInscs.length} eq · $${cPagado}/$${cMonto}</div>
+      </div>`;
+      cInscs.forEach(insc=>{
+        const total=insc.montoTotal||0;
+        const abonos=insc.abonos?Object.values(insc.abonos):[];
+        const pagado=abonos.reduce((s,a)=>s+a.monto,0);
+        const deuda=total-pagado;
+        const pct=total>0?Math.min(100,Math.round(pagado/total*100)):0;
+        const abonosHtml=abonos.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||'')).map(a=>`
+          <div class="abono-row">
+            <div class="abono-fecha">📅 ${fmtDate(a.fecha)||'—'}</div>
+            <span class="abono-method am-${a.metodo==='transferencia'?'tr':a.metodo==='prepago'?'pp':'ef'}">${a.metodo==='transferencia'?'Transf.':a.metodo==='prepago'?'Prepago':'Efectivo'}</span>
+            <div class="abono-monto">$${a.monto}</div>
+            ${a.notas?`<div style="font-size:10px;color:var(--muted)">${a.notas}</div>`:''}
+          </div>`).join('');
+        html+=`<div class="insc-card">
+          <div class="insc-header">
+            ${insc.logo?`<img class="insc-logo" src="${insc.logo}"/>`:`<div class="insc-ph">⚽</div>`}
+            <div class="insc-info">
+              <div class="insc-name">${insc.nombre}</div>
+              <div class="insc-meta">${CAT_NAMES[insc.cat]||''}</div>
+            </div>
+            <div class="insc-total">
+              <div class="insc-pagado">$${pagado}</div>
+              ${deuda>0?`<div class="insc-deuda">Debe: $${deuda}</div>`:`<div style="font-size:10px;font-weight:800;color:var(--acc)">✅ Pagado</div>`}
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;margin-bottom:4px">
+            <span>Progreso</span><span>${pct}% de $${total}</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+            <button class="btn btn-g btn-sm" onclick="openAbonoModal('${insc._key}')">+ Abonar</button>
+            <button class="btn btn-out btn-sm" onclick="editInscEquipo('${insc._key}')">✏️</button>
+            <button class="btn btn-r btn-sm" onclick="deleteInsc('${insc._key}')">🗑️</button>
+          </div>
+          ${abonos.length?`<div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Historial de abonos</div>${abonosHtml}`:'<div style="font-size:11px;color:var(--muted)">Sin abonos</div>'}
+        </div>`;
+      });
+    });
+  });
+  el.innerHTML=html;
+}
+
+function renderInscStats(){
+  const inscs=getInsc();
+  const totalMonto=inscs.reduce((s,i)=>s+(i.montoTotal||0),0);
+  const totalPagado=inscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];return s+abs.reduce((a,b)=>a+b.monto,0);},0);
+  const pendiente=totalMonto-totalPagado;
+  const el=document.getElementById('inscStats');
+  if(el) el.innerHTML=`
+    <div class="stat-box" style="border-top:3px solid var(--acc)"><div class="sn" style="color:var(--acc)">$${totalPagado}</div><div class="sl2">Recaudado</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--red)"><div class="sn" style="color:var(--red)">$${pendiente}</div><div class="sl2">Pendiente</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--blue)"><div class="sn" style="color:var(--blue)">${inscs.length}</div><div class="sl2">Equipos</div></div>`;
+}
+
+function saveInscEquipo(){
+  const n=document.getElementById('ie_nombre').value.trim();
+  if(!n){showToast('Ingresa el nombre','ta');return;}
+  const key=document.getElementById('ie_key').value;
+  const data={nombre:n,torneo:document.getElementById('ie_torneo').value,cat:document.getElementById('ie_cat').value,montoTotal:parseInt(document.getElementById('ie_monto').value)||0,logo:document.getElementById('ie_logo').value||null,updatedAt:Date.now()};
+  if(key) db.ref(`inscripciones/${key}`).update(data);
+  else db.ref('inscripciones').push({...data,abonos:{},creadoAt:Date.now()});
+  closeModal('modalInscEquipo');
+  resetInscForm();
+  showToast(key?'Actualizado':'Equipo inscrito','tg');
+}
+
+function resetInscForm(){
+  document.getElementById('ie_key').value=''; document.getElementById('ieModalTitle').textContent='Nuevo Equipo — Inscripción';
+  ['ie_nombre','ie_monto','ie_logo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ie_torneo').value='villa'; document.getElementById('ie_cat').value='liga_alta';
+  document.getElementById('ie_logo_prev').style.display='none'; document.getElementById('ie_logo_lbl').style.display='block';
+}
+
+function editInscEquipo(key){
+  const i=C.inscripciones[key];if(!i)return;
+  document.getElementById('ie_key').value=key; document.getElementById('ieModalTitle').textContent='Editar Equipo';
+  document.getElementById('ie_nombre').value=i.nombre||''; document.getElementById('ie_torneo').value=i.torneo||'villa';
+  document.getElementById('ie_cat').value=i.cat||'liga_alta'; document.getElementById('ie_monto').value=i.montoTotal||0;
+  document.getElementById('ie_logo').value=i.logo||'';
+  if(i.logo){const p=document.getElementById('ie_logo_prev');p.src=i.logo;p.style.display='block';document.getElementById('ie_logo_lbl').style.display='none';}
+  openModal('modalInscEquipo');
+}
+
+function deleteInsc(key){if(!confirm('¿Eliminar esta inscripción?'))return;db.ref(`inscripciones/${key}`).remove();showToast('Inscripción eliminada','tr');}
+
+function openAbonoModal(key){
+  document.getElementById('ab_insc_key').value=key;
+  document.getElementById('ab_monto').value='';
+  document.getElementById('ab_fecha').value=new Date().toISOString().split('T')[0];
+  document.getElementById('ab_notas').value='';
+  document.getElementById('ab_metodo').value='efectivo';
+  openModal('modalAbono');
+}
+
+function saveAbono(){
+  const key=document.getElementById('ab_insc_key').value;
+  const monto=parseInt(document.getElementById('ab_monto').value)||0;
+  if(!monto){showToast('Ingresa el monto','ta');return;}
+  db.ref(`inscripciones/${key}/abonos`).push({monto,fecha:document.getElementById('ab_fecha').value,metodo:document.getElementById('ab_metodo').value,notas:document.getElementById('ab_notas').value.trim(),ts:Date.now()});
+  closeModal('modalAbono');
+  showToast('Abono registrado','tg');
+}
+
+// ══════════════════════════════════════
+//  ÁRBITROS
+// ══════════════════════════════════════
+function renderArbitros(){
+  const el=document.getElementById('arbitrosList'); if(!el)return;
+  const arbs=getArbs();
+  if(!arbs.length){el.innerHTML='<div class="empty"><span class="empty-icon">🦺</span>Sin árbitros</div>';}
+  else el.innerHTML=arbs.map(a=>{
+    const ps=getParts().filter(p=>p.arbId===a._key&&p.status==='terminado');
+    const cobrado=ps.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.ef||0)+(g.local?.tr||0)+(g.local?.pp||0)+(g.visita?.ef||0)+(g.visita?.tr||0)+(g.visita?.pp||0);},0);
+    const porPagar=ps.filter(p=>!p.arbPagado).length*(a.tarifa||250);
+    return `<div class="arb-card">
+      <div class="arb-av">🦺</div>
+      <div class="arb-info">
+        <div class="arb-name">${a.nombre}</div>
+        <div class="arb-meta">📞 ${a.tel||'—'} · $${a.tarifa||250}/partido · ${ps.length} partidos</div>
+        ${porPagar>0?`<div style="font-size:10px;font-weight:800;color:var(--amber);margin-top:2px">⚠️ $${porPagar} por pagar</div>`:'<div style="font-size:10px;font-weight:800;color:var(--acc);margin-top:2px">✅ Al corriente</div>'}
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="arb-earned">$${cobrado}</div>
+        <div style="font-size:9px;color:var(--muted);font-weight:700">COBRADO</div>
+        <button class="btn btn-out btn-sm" onclick="editArbitro('${a._key}')">✏️</button>
+        <button class="btn btn-r btn-sm" onclick="deleteArbitro('${a._key}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Cobros del día
+  const parts=getParts().filter(p=>p.status==='terminado');
+  const totalEf=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.ef||0)+(g.visita?.ef||0);},0);
+  const totalTr=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.tr||0)+(g.visita?.tr||0);},0);
+  const totalPp=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.pp||0)+(g.visita?.pp||0);},0);
+  const totalDia=totalEf+totalTr+totalPp;
+  const cobEl=document.getElementById('cobrosDelDia');
+  if(cobEl) cobEl.innerHTML=`
+    <div class="money-row"><span class="money-lbl">💵 Efectivo</span><span class="money-val">$${totalEf}</span></div>
+    <div class="money-row"><span class="money-lbl">📱 Transferencia</span><span class="money-val">$${totalTr}</span></div>
+    <div class="money-row"><span class="money-lbl">✅ Prepago</span><span class="money-val">$${totalPp}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total cobrado</span><span class="money-val" style="font-size:22px">$${totalDia}</span></div>
+    <div class="money-row"><span class="money-lbl">🦺 Pago árbitros (${parts.length}×$250)</span><span class="money-val" style="color:var(--red)">−$${parts.length*250}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Ganancia neta</span><span class="money-val" style="color:var(--acc);font-size:22px">$${totalDia-(parts.length*250)}</span></div>
+    <div style="margin-top:12px">
+      <button class="btn btn-r btn-sm" onclick="resetArbitrajes()">🗑️ Reiniciar estadísticas de arbitrajes</button>
+    </div>`;
+
+  // Asignación por partido
+  const sinArb=getParts().filter(p=>p.status==='terminado'&&!p.arbId);
+  const asignEl=document.getElementById('asignacionArb');
+  if(asignEl){
+    if(!sinArb.length){asignEl.innerHTML='<div style="text-align:center;color:var(--muted);padding:12px;font-size:12px;font-weight:600">✅ Todos los partidos tienen árbitro asignado</div>';return;}
+    asignEl.innerHTML=sinArb.map(p=>`<div class="pago-row">
+      <div class="pago-info"><div class="pago-match">${p.localNombre||p.local} vs ${p.visitaNombre||p.visita}</div><div class="pago-meta">📅 ${fmtDate(p.fecha)}</div></div>
+      <select class="fi" id="arb_sel_${p._key}" style="max-width:130px;font-size:11px;padding:4px 6px">
+        <option value="">— Árbitro —</option>
+        ${arbs.map(a=>`<option value="${a._key}">${a.nombre}</option>`).join('')}
+      </select>
+      <button class="btn btn-g btn-sm" onclick="asignarArbitro('${p._key}')">✓</button>
+    </div>`).join('');
+  }
+
+  // Pagos pendientes
+  const pend=getParts().filter(p=>p.status==='terminado'&&p.arbId&&!p.arbPagado);
+  const pp=document.getElementById('pagosPend');
+  if(!pp)return;
+  if(!pend.length){pp.innerHTML='<div style="text-align:center;color:var(--muted);padding:12px;font-size:12px;font-weight:600">✅ Sin pagos pendientes</div>';return;}
+  pp.innerHTML=pend.map(p=>{const arb=C.arbitros[p.arbId];return `<div class="pago-row">
+    <div class="pago-info"><div class="pago-match">${p.localNombre||p.local} vs ${p.visitaNombre||p.visita}</div><div class="pago-meta">🦺 ${arb?arb.nombre:'N/A'} · ${fmtDate(p.fecha)}</div></div>
+    <span class="pago-amt">$${(p.costArb||250)*2}</span>
+    <button class="btn btn-g btn-sm" onclick="activePartidoKey='${p._key}';initPagoArb();openModal('modalPagoArb')">Pagar</button>
+  </div>`;}).join('');
+}
+
+function asignarArbitro(partKey){
+  const arbId=document.getElementById(`arb_sel_${partKey}`)?.value;
+  if(!arbId){showToast('Selecciona un árbitro','ta');return;}
+  const arb=C.arbitros[arbId];
+  db.ref(`partidos/${partKey}`).update({arbId,arbitroNombre:arb?.nombre||''});
+  showToast('Árbitro asignado','tg');
+}
+
+function editArbitro(key){
+  const a=C.arbitros[key]; if(!a)return;
+  document.getElementById('na_n').value=a.nombre||'';
+  document.getElementById('na_t').value=a.tel||'';
+  document.getElementById('na_f').value=a.tarifa||250;
+  // reuse modal but save as update
+  document.getElementById('na_n').dataset.editKey=key;
+  openModal('modalNuevoArb');
+}
+
+function deleteArbitro(key){
+  if(!confirm('¿Eliminar este árbitro?'))return;
+  db.ref(`arbitros/${key}`).remove();
+  showToast('Árbitro eliminado','tr');
+}
+
+function resetArbitrajes(){
+  if(!confirm('⚠️ ¿Reiniciar TODOS los cobros de arbitraje? Esta acción no se puede deshacer.'))return;
+  const updates={};
+  getParts().forEach(p=>{
+    updates[`partidos/${p._key}/arbPago`]={local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}};
+    updates[`partidos/${p._key}/arbPagado`]=false;
+  });
+  db.ref().update(updates);
+  showToast('Estadísticas de arbitraje reiniciadas','ta');
+}
+
+function saveArbitro(){
+  const n=document.getElementById('na_n').value.trim(); if(!n){showToast('Ingresa el nombre','ta');return;}
+  const editKey=document.getElementById('na_n').dataset.editKey;
+  const data={nombre:n,tel:document.getElementById('na_t').value.trim(),tarifa:parseInt(document.getElementById('na_f').value)||250};
+  if(editKey){ db.ref(`arbitros/${editKey}`).update(data); delete document.getElementById('na_n').dataset.editKey; }
+  else db.ref('arbitros').push(data);
+  closeModal('modalNuevoArb');
+  ['na_n','na_t','na_f'].forEach(id=>document.getElementById(id).value='');
+  showToast(editKey?'Árbitro actualizado':'Árbitro registrado','tg');
+}
+
+// ══════════════════════════════════════
+//  RESUMEN & ANÁLISIS FINANCIERO
+// ══════════════════════════════════════
+function renderResumen(){
+  const ventas=getVentas(), parts=getParts(), inscs=getInsc();
+  const tv=ventas.reduce((s,v)=>s+v.total,0);
+  const numV=ventas.length;
+  const totalEf=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.ef||0)+(g.visita?.ef||0);},0);
+  const totalTr=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.tr||0)+(g.visita?.tr||0);},0);
+  const totalPp=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.pp||0)+(g.visita?.pp||0);},0);
+  const totalArb=totalEf+totalTr+totalPp;
+  const totalInscPagado=inscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];return s+abs.reduce((a,b)=>a+b.monto,0);},0);
+  const totalInscPendiente=inscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];const pag=abs.reduce((a,b)=>a+b.monto,0);return s+Math.max(0,(i.montoTotal||0)-pag);},0);
+  const totalGeneral=tv+totalArb;
+  const totalGastoArb=parts.filter(p=>p.status==='terminado').length*250;
+  const utilidadNeta=totalGeneral-totalGastoArb;
+
+  const rg=document.getElementById('resumenGrid');
+  if(rg) rg.innerHTML=`
+    <div class="res-card" style="border-top:3px solid var(--acc)"><div class="res-n" style="color:var(--acc)">$${tv}</div><div class="res-l">Ventas tienda</div></div>
+    <div class="res-card" style="border-top:3px solid var(--blue)"><div class="res-n" style="color:var(--blue)">${numV}</div><div class="res-l">Número de ventas</div></div>
+    <div class="res-card" style="border-top:3px solid var(--amber)"><div class="res-n" style="color:var(--amber)">$${totalArb}</div><div class="res-l">Arbitrajes</div></div>
+    <div class="res-card" style="border-top:3px solid var(--acc)"><div class="res-n" style="color:var(--acc)">$${totalInscPagado}</div><div class="res-l">Inscripciones</div></div>
+    <div class="res-card card-gold" style="grid-column:1/-1"><div class="res-n" style="color:var(--gold);font-size:40px">$${totalGeneral}</div><div class="res-l">Total del día</div></div>`;
+
+  // ANÁLISIS FINANCIERO
+  const prods=getProd();
+  const totalProductos=prods.length;
+  const stockBajo=prods.filter(p=>p.stock<=5).length;
+  const ticketPromedio=numV>0?Math.round(tv/numV):0;
+  const rotatcion=tv>0&&totalArb>0?Math.round((tv/totalArb)*100)/100:0;
+  const cobertura=totalInscPagado+totalArb>0?(utilidadNeta/(totalInscPagado+totalArb)*100).toFixed(1):0;
+
+  // Top productos
+  const vpp={};
+  ventas.forEach(v=>(v.items||[]).forEach(i=>{if(!vpp[i.nombre])vpp[i.nombre]={emoji:i.emoji||'📦',qty:0,total:0};vpp[i.nombre].qty+=i.qty;vpp[i.nombre].total+=i.precio*i.qty;}));
+  const topProds=Object.entries(vpp).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+
+  const fi=document.getElementById('finInsights');
+  if(fi) fi.innerHTML=`
+    <div class="fin-ratio"><div class="fin-ratio-title">💵 Ticket Promedio de Venta</div><div class="fin-ratio-val">$${ticketPromedio}</div><div class="fin-ratio-desc">Valor promedio que se cobra por cada transacción en la tienda. ${ticketPromedio<20?'Considera combos o promociones para aumentarlo.':'Buen ticket promedio — sigue ofreciendo variedad.'}</div></div>
+    <div class="fin-ratio"><div class="fin-ratio-title">⚖️ Relación Tienda / Arbitraje</div><div class="fin-ratio-val">${rotatcion}x</div><div class="fin-ratio-desc">Por cada $1 de arbitraje, la tienda genera $${rotatcion}. ${rotatcion<1?'La tienda genera menos que el arbitraje — enfoca promociones.':`La tienda es ${rotatcion}x más productiva que el arbitraje hoy.`}</div></div>
+    <div class="fin-ratio" style="grid-column:1"><div class="fin-ratio-title">📈 Utilidad Neta del Día</div><div class="fin-ratio-val" style="color:${utilidadNeta>0?'var(--acc)':'var(--red)'}">$${utilidadNeta}</div><div class="fin-ratio-desc">Ingresos totales menos costo de árbitros ($${totalGastoArb}). ${utilidadNeta>0?'✅ Día rentable.':'⚠️ Los costos superan los ingresos — revisa precios.'}</div></div>
+    ${stockBajo>0?`<div class="insight-box warn"><div class="insight-title">⚠️ Stock Bajo — Acción Requerida</div><div class="insight-text">${stockBajo} producto(s) con 5 o menos unidades. Reabastece antes del próximo torneo para evitar perder ventas.</div></div>`:''}
+    ${totalInscPendiente>0?`<div class="insight-box alert"><div class="insight-title">💰 Inscripciones Pendientes: $${totalInscPendiente}</div><div class="insight-text">Hay equipos con deuda de inscripción. Considera no permitir participar a equipos con saldo pendiente.</div></div>`:''}
+    <div class="insight-box"><div class="insight-title">🏆 Estrategia Recomendada</div><div class="insight-text">${topProds.length>0?`Tu producto más vendido es "${topProds[0][0]}" ($${topProds[0][1].total}). `:''} ${ticketPromedio<30?'Ofrece combos como "Agua + Sabritas = $40" para aumentar el ticket promedio.':'Mantén el surtido de productos populares siempre disponible.'}</div></div>`;
+
+  // Inscripciones resumen
+  const ri=document.getElementById('resInsc');
+  if(ri) ri.innerHTML=`
+    <div class="money-row"><span class="money-lbl">✅ Total recaudado</span><span class="money-val">$${totalInscPagado}</span></div>
+    <div class="money-row"><span class="money-lbl">⏳ Total pendiente</span><span class="money-val" style="color:var(--red)">$${totalInscPendiente}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total inscripciones</span><span class="money-val">$${totalInscPagado+totalInscPendiente}</span></div>`;
+
+  // Top ventas
+  const rv=document.getElementById('resVentas');
+  if(rv) rv.innerHTML=!topProds.length?'<div style="color:var(--muted);font-size:12px">Sin ventas</div>':
+    topProds.map(([n,d])=>`<div class="money-row"><span class="money-lbl">${d.emoji} ${n} (${d.qty})</span><span class="money-val">$${d.total}</span></div>`).join('');
+
+  // Arbitrajes
+  const ra=document.getElementById('resArb');
+  if(ra) ra.innerHTML=`
+    <div class="money-row"><span class="money-lbl">💵 Efectivo</span><span class="money-val">$${totalEf}</span></div>
+    <div class="money-row"><span class="money-lbl">📱 Transferencia</span><span class="money-val">$${totalTr}</span></div>
+    <div class="money-row"><span class="money-lbl">✅ Prepago</span><span class="money-val">$${totalPp}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total arbitrajes</span><span class="money-val">$${totalArb}</span></div>`;
+}
+
+// ══════════════════════════════════════
+//  THEME
+// ══════════════════════════════════════
+function toggleTheme(){
+  const h=document.getElementById('html'); const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeBtn').textContent=dark?'☀️':'🌙';
+  localStorage.setItem('ld_theme',dark?'light':'dark');
+}
+function applyTheme(){
+  const t=localStorage.getItem('ld_theme')||'light';
+  document.getElementById('html').setAttribute('data-theme',t);
+  const btn=document.getElementById('themeBtn'); if(btn) btn.textContent=t==='dark'?'🌙':'☀️';
+}
+
+
+// ══════════════════════════════════════
+//  CALENDARIO IA MODULE
+// ══════════════════════════════════════
+let calPreviewData = [];
+let cpReasonSelected = '';
+let activeProgKey = null;
+let calDayFilter = null;
+
+// Show calendario page — handled by showPage() above
+
+function initCalendario(){
+  buildCalWeekPills();
+  renderCalProximos();
+  renderCalStats();
+  renderRestricciones();
+  populateReagendaSel();
+  // sync torneo/cat with current selection
+  const gt=document.getElementById('gen_torneo');
+  const gc=document.getElementById('gen_cat');
+  if(gt) gt.value=currentTorneo;
+  if(gc) gc.value=currentCat;
+  genUpdateEquipos();
+  // set default dates
+  const today=new Date();
+  const d1=document.getElementById('gen_fecha_inicio');
+  const d2=document.getElementById('gen_fecha_fin');
+  if(d1&&!d1.value) d1.value=today.toISOString().split('T')[0];
+  if(d2&&!d2.value){const end=new Date(today);end.setDate(today.getDate()+6);d2.value=end.toISOString().split('T')[0];}
+}
+
+function buildCalWeekPills(){
+  const el=document.getElementById('calWeekPills'); if(!el)return;
+  const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const today=new Date();
+  el.innerHTML='';
+  for(let i=-1;i<13;i++){
+    const d=new Date(today); d.setDate(today.getDate()+i);
+    const btn=document.createElement('div');
+    btn.className='week-pill'+(i===0?' sel':'');
+    btn.innerHTML=`<div class="wp-name">${days[d.getDay()]}</div><div class="wp-num">${d.getDate()}</div>`;
+    btn.dataset.date=d.toISOString().split('T')[0];
+    btn.onclick=()=>{
+      document.querySelectorAll('.week-pill').forEach(x=>x.classList.remove('sel'));
+      btn.classList.add('sel'); calDayFilter=btn.dataset.date; renderCalProximos();
+    };
+    el.appendChild(btn);
+  }
+}
+
+function filterProximos(date){ calDayFilter=date; renderCalProximos(); }
+
+function renderCalStats(){
+  const el=document.getElementById('calStats'); if(!el)return;
+  const progs=getProgs();
+  const confirmados=progs.filter(p=>p.status==='confirmado').length;
+  const cancelados=progs.filter(p=>p.status==='cancelado').length;
+  el.innerHTML=`
+    <div class="stat-box" style="border-top:3px solid var(--acc)"><div class="sn" style="color:var(--acc)">${progs.length}</div><div class="sl2">Programados</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--blue)"><div class="sn" style="color:var(--blue)">${confirmados}</div><div class="sl2">Confirmados</div></div>
+    <div class="stat-box" style="border-top:3px solid var(--red)"><div class="sn" style="color:var(--red)">${cancelados}</div><div class="sl2">Cancelados</div></div>`;
+}
+
+const getProgs=()=>Object.entries(C.partidos||{}).filter(([,v])=>v.programado).map(([k,v])=>({...v,_key:k})).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||'')||(a.hora||'').localeCompare(b.hora||''));
+const getRestr=()=>Object.entries(C.restricciones||{}).map(([k,v])=>({...v,_key:k}));
+
+function renderCalProximos(){
+  const el=document.getElementById('calProximosList'); if(!el)return;
+  let progs=getProgs().filter(p=>p.status!=='terminado');
+  if(calDayFilter) progs=progs.filter(p=>p.fecha===calDayFilter);
+  if(!progs.length){el.innerHTML='<div class="empty"><span class="empty-icon">📅</span>Sin partidos programados'+(calDayFilter?' este día':'')+'</div>';return;}
+  el.innerHTML=progs.map(p=>{
+    const eqL=getEqs().find(e=>e.nombre===p.localNombre);
+    const eqV=getEqs().find(e=>e.nombre===p.visitaNombre);
+    const isCancelled=p.status==='cancelado';
+    return `<div class="prox-match" style="${isCancelled?'opacity:.6':''}">
+      <div class="pm-top">
+        <div class="pm-date">📅 ${fmtDate(p.fecha)}</div>
+        <div class="pm-cancha">🏟️ ${p.cancha||'—'}</div>
+      </div>
+      <div class="pm-body">
+        <div class="pm-teams">
+          <div class="pm-team">
+            ${eqL?.logo?`<img class="pm-logo" src="${eqL.logo}"/>`:'<div class="pm-ph">⚽</div>'}
+            <div class="pm-name">${p.localNombre||'Local'}</div>
+          </div>
+          <div class="pm-vs">VS</div>
+          <div class="pm-team" style="align-items:flex-end">
+            ${eqV?.logo?`<img class="pm-logo" src="${eqV.logo}"/>`:'<div class="pm-ph">⚽</div>'}
+            <div class="pm-name">${p.visitaNombre||'Visita'}</div>
+          </div>
+        </div>
+        <div class="pm-time">${p.hora||'--:--'}</div>
+        ${p.cancelReason?`<div style="font-size:11px;color:var(--red);font-weight:700;text-align:center;margin-top:4px">❌ ${p.cancelReason}</div>`:''}
+        ${p.iaReason?`<div style="font-size:10px;color:var(--muted);font-style:italic;text-align:center;margin-top:2px">🤖 ${p.iaReason}</div>`:''}
+      </div>
+      <div class="pm-footer">
+        <span class="${isCancelled?'ps-cancelled':p.status==='confirmado'?'ps-confirmed':'ps-programado'}">
+          ${isCancelled?'❌ Cancelado':p.status==='confirmado'?'✅ Confirmado':'📅 Programado'}
+        </span>
+        <div style="display:flex;gap:5px">
+          ${!isCancelled?`<button class="btn btn-r btn-sm" onclick="openCancelarProg('${p._key}')">Cancelar</button>`:''}
+          ${isCancelled?`<button class="btn btn-b btn-sm" onclick="quickReagendar('${p._key}')">🔄 Reagendar</button>`:''}
+          <button class="btn btn-out btn-sm" onclick="toggleProgConfirm('${p._key}','${p.status}')">
+            ${p.status==='confirmado'?'↩ Desconf.':'✓ Confirmar'}
+          </button>
+          <button class="btn btn-r btn-sm" onclick="deleteProgPartido('${p._key}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  renderCalStats();
+}
+
+function toggleProgConfirm(key, status){
+  const ns=status==='confirmado'?'programado':'confirmado';
+  db.ref(`partidos/${key}/status`).set(ns);
+  showToast(ns==='confirmado'?'✅ Confirmado':'Desconfirmado','tg');
+}
+
+function deleteProgPartido(key){
+  if(!confirm('¿Eliminar partido programado?'))return;
+  db.ref(`partidos/${key}`).remove();
+  showToast('Eliminado','tr');
+}
+
+// CANCELAR PARTIDO PROGRAMADO
+function openCancelarProg(key){
+  activeProgKey=key;
+  const p=C.partidos[key]; if(!p)return;
+  document.getElementById('cp_key').value=key;
+  cpReasonSelected='';
+  document.querySelectorAll('.cancel-opt').forEach(x=>x.classList.remove('sel'));
+  document.getElementById('cp_notas').value='';
+  document.getElementById('cp_match_info').innerHTML=`
+    ⚽ <strong>${p.localNombre||p.local}</strong> vs <strong>${p.visitaNombre||p.visita}</strong><br/>
+    <span style="color:var(--muted);font-size:11px">📅 ${fmtDate(p.fecha)} · ⏰ ${p.hora||'—'} · 🏟️ ${p.cancha||'—'}</span>`;
+  openModal('modalCancelarProg');
+}
+
+function selCPReason(el, reason){
+  document.querySelectorAll('.cancel-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel'); cpReasonSelected=reason;
+  document.getElementById('cp_reason_val').value=reason;
+}
+
+function confirmarCPCancelacion(){
+  const key=document.getElementById('cp_key').value;
+  if(!cpReasonSelected){showToast('Selecciona un motivo','ta');return;}
+  const notas=document.getElementById('cp_notas').value.trim();
+  db.ref(`partidos/${key}`).update({
+    status:'cancelado', programado:true,
+    cancelReason:cpReasonSelected+(notas?` — ${notas}`:''),
+    canceledAt:Date.now()
+  });
+  closeModal('modalCancelarProg');
+  showToast('Partido cancelado','tr');
+  populateReagendaSel();
+}
+
+async function cpCancelarYReagendar(){
+  if(!cpReasonSelected){showToast('Selecciona un motivo','ta');return;}
+  confirmarCPCancelacion();
+  setTimeout(()=>quickReagendar(document.getElementById('cp_key').value),500);
+}
+
+function populateReagendaSel(){
+  const sel=document.getElementById('reagenda_sel'); if(!sel)return;
+  const cancelados=Object.entries(C.partidos||{}).filter(([,p])=>p.programado&&p.status==='cancelado');
+  sel.innerHTML='<option value="">— Seleccionar —</option>'+
+    cancelados.map(([k,p])=>`<option value="${k}">${p.localNombre||p.local} vs ${p.visitaNombre||p.visita} (${fmtDate(p.fecha)})</option>`).join('');
+}
+
+async function reagendarConIA(){
+  const key=document.getElementById('reagenda_sel').value;
+  if(!key){showToast('Selecciona un partido','ta');return;}
+  await quickReagendar(key);
+}
+
+async function quickReagendar(key){
+  const p=C.partidos[key]; if(!p)return;
+  showToast('🤖 IA buscando mejor horario...','tb');
+  const restr=getRestr();
+  const otrosPartidos=getProgs().filter(x=>x._key!==key&&x.status!=='cancelado');
+  const lRestr=restr.find(r=>r.equipoNombre===(p.localNombre||p.local))||{};
+  const vRestr=restr.find(r=>r.equipoNombre===(p.visitaNombre||p.visita))||{};
+  const prompt=buildReagendarPrompt(p,lRestr,vRestr,otrosPartidos);
+  try{
+    const resp=await callClaude(prompt,800);
+    const data=JSON.parse(resp.replace(/```json|```/g,'').trim());
+    const eqL=getEqs().find(e=>e.nombre===(p.localNombre||p.local));
+    const eqV=getEqs().find(e=>e.nombre===(p.visitaNombre||p.visita));
+    document.getElementById('propuestaIAContent').innerHTML=`
+      <div style="background:var(--acc3);border:1px solid rgba(22,163,74,.3);border-radius:10px;padding:14px;text-align:center;margin-bottom:14px">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--acc);margin-bottom:6px">NUEVO HORARIO PROPUESTO</div>
+        <div style="font-size:14px;font-weight:800">${p.localNombre||p.local} vs ${p.visitaNombre||p.visita}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--acc);margin:4px 0">${data.hora}</div>
+        <div style="font-size:13px;font-weight:700">📅 ${fmtDate(data.fecha)} · 🏟️ ${data.cancha}</div>
+        <div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:5px">🤖 ${data.razon}</div>
+      </div>
+      <button class="btn btn-g btn-full" onclick="aceptarReagendado('${key}','${data.fecha}','${data.hora}','${data.cancha}','${data.razon.replace(/'/g,'').substring(0,60)}')">✅ Aceptar nuevo horario</button>
+      <button class="btn btn-out btn-full" style="margin-top:7px" onclick="closeModal('modalPropuestaIA')">Cancelar</button>`;
+    openModal('modalPropuestaIA');
+  }catch(e){
+    showToast('Error IA — intenta de nuevo','tr');
+    console.error(e);
+  }
+}
+
+function aceptarReagendado(key,fecha,hora,cancha,razon){
+  db.ref(`partidos/${key}`).update({
+    status:'programado', fecha, hora, cancha,
+    iaReason:`Reagendado por IA: ${razon}`,
+    cancelReason:null, reagendadoAt:Date.now()
+  });
+  closeModal('modalPropuestaIA');
+  showToast('✅ Partido reagendado','tg');
+  populateReagendaSel();
+}
+
+function buildReagendarPrompt(p,lR,vR,otros){
+  return `Eres experto en torneos de fútbol. Un partido fue cancelado. Encuentra el MEJOR nuevo horario.
+
+PARTIDO CANCELADO:
+- ${p.localNombre||p.local} vs ${p.visitaNombre||p.visita}
+- Fecha original: ${p.fecha} · Hora: ${p.hora} · Cancha: ${p.cancha}
+- Motivo: ${p.cancelReason||'No especificado'}
+
+RESTRICCIONES EQUIPO LOCAL (${p.localNombre||p.local}):
+${lR.diaFijo?`Horario fijo: ${lR.diaFijo} ${lR.horaFija}`:'Sin horario fijo'}
+Días restringidos: ${(lR.diasRestringidos||[]).join(', ')||'Ninguno'}
+Hora mínima: ${lR.horaMin||'08:00'} · Máxima: ${lR.horaMax||'22:00'}
+
+RESTRICCIONES EQUIPO VISITANTE (${p.visitaNombre||p.visita}):
+${vR.diaFijo?`Horario fijo: ${vR.diaFijo} ${vR.horaFija}`:'Sin horario fijo'}
+Días restringidos: ${(vR.diasRestringidos||[]).join(', ')||'Ninguno'}
+Hora mínima: ${vR.horaMin||'08:00'} · Máxima: ${vR.horaMax||'22:00'}
+
+PARTIDOS YA PROGRAMADOS (no chocar):
+${otros.slice(0,8).map(x=>`${x.fecha} ${x.hora} — ${x.localNombre} vs ${x.visitaNombre} (${x.cancha})`).join('\n')||'Ninguno'}
+
+CANCHAS: Villa Universidad, Isla Músala
+
+Responde SOLO JSON válido sin texto extra:
+{"fecha":"YYYY-MM-DD","hora":"HH:MM","cancha":"Villa Universidad o Isla Músala","razon":"Explicación breve"}`;
+}
+
+function genUpdateEquipos(){
+  const tk=document.getElementById('gen_torneo')?.value||currentTorneo;
+  const ck=document.getElementById('gen_cat')?.value||currentCat;
+  const eqs=getEqs().filter(e=>e.torneo===tk&&e.cat===ck);
+  const el=document.getElementById('gen_equipos_lista'); if(!el)return;
+  if(!eqs.length){el.innerHTML='<span style="color:rgba(255,255,255,.5)">Sin equipos en esta categoría</span>';return;}
+  el.innerHTML=eqs.map(e=>`<label style="display:flex;align-items:center;gap:6px;padding:3px 0;cursor:pointer">
+    <input type="checkbox" class="gen-eq-chk" value="${e._key}" checked style="accent-color:#4ade80"/>
+    <span>${e.nombre}</span>
+  </label>`).join('');
+}
+
+// GENERADOR IA
+async function generarCalendario(){
+  const tk=document.getElementById('gen_torneo')?.value||currentTorneo;
+  const ck=document.getElementById('gen_cat')?.value||currentCat;
+  const fechaIni=document.getElementById('gen_fecha_inicio')?.value;
+  const fechaFin=document.getElementById('gen_fecha_fin')?.value;
+  const hIni=document.getElementById('gen_h_ini').value||'08:00';
+  const hFin=document.getElementById('gen_h_fin').value||'22:00';
+  const dur=parseInt(document.getElementById('gen_duracion').value)||90;
+  const descanso=parseInt(document.getElementById('gen_descanso')?.value)||15;
+  const notas=document.getElementById('gen_notas').value.trim();
+
+  // Canchas seleccionadas
+  const useVilla=document.getElementById('gen_c_villa')?.checked!==false;
+  const useMusala=document.getElementById('gen_c_musala')?.checked!==false;
+  if(!useVilla&&!useMusala){showToast('Selecciona al menos una cancha','ta');return;}
+  const canchasDisp=[];
+  if(useVilla) canchasDisp.push('Villa Universidad');
+  if(useMusala) canchasDisp.push('Isla Músala');
+
+  // Equipos seleccionados
+  const selectedKeys=Array.from(document.querySelectorAll('.gen-eq-chk:checked')).map(c=>c.value);
+  const todosEquipos=getEqs().filter(e=>e.torneo===tk&&e.cat===ck);
+  const equipos=selectedKeys.length>0?todosEquipos.filter(e=>selectedKeys.includes(e._key)):todosEquipos;
+
+  if(!fechaIni){showToast('Selecciona la fecha de inicio','ta');return;}
+  if(equipos.length<2){showToast('Necesitas al menos 2 equipos seleccionados','ta');return;}
+
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Generando...';
+
+  // Rango de fechas (máx 14 días para no saturar el prompt)
+  const startDate=new Date(fechaIni+'T12:00:00');
+  const endDate=fechaFin?new Date(fechaFin+'T12:00:00'):new Date(startDate.getTime()+6*24*60*60*1000);
+  const weekDates=[];
+  for(let d=new Date(startDate);d<=endDate&&weekDates.length<14;d.setDate(d.getDate()+1)){
+    weekDates.push({date:d.toISOString().split('T')[0],day:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d.getDay()]});
+  }
+
+  const restr=getRestr();
+  const equiposStr=equipos.map(e=>{
+    const r=restr.find(x=>x.equipoNombre===e.nombre)||{};
+    return `- ${e.nombre}: fijo=${r.diaFijo?r.diaFijo+' '+r.horaFija:'no'}, restringidos=[${(r.diasRestringidos||[]).join(',')||'ninguno'}], min=${r.horaMin||'08:00'}, max=${r.horaMax||'22:00'}${r.notas?', nota='+r.notas:''}`;
+  }).join('\n');
+
+  const prompt=`Eres un asistente que genera calendarios de fútbol. Responde ÚNICAMENTE con un array JSON, sin texto adicional, sin markdown, sin explicaciones.
+
+Torneo: ${TORNEO_NAMES[tk]} - ${CAT_NAMES[ck]}
+Fechas: ${weekDates.map(d=>d.day+' '+d.date).join(', ')}
+Horario: ${hIni} a ${hFin}
+Canchas disponibles: ${canchasDisp.join(' y ')}
+Duración: ${dur} min por partido
+Descanso mínimo entre partidos en misma cancha: ${descanso} min
+${notas?'Nota especial: '+notas:''}
+
+Equipos y restricciones:
+${equiposStr}
+
+Reglas: cada equipo juega máximo 1 partido, no puede haber 2 partidos simultáneos en la misma cancha, respeta horarios fijos y restricciones.
+
+Formato de respuesta (SOLO el array JSON):
+[{"local":"NombreEquipo","visita":"NombreEquipo","fecha":"YYYY-MM-DD","hora":"HH:MM","cancha":"NombreCancha","tipoHorario":"fijo o flexible","razon":"motivo breve"}]`;
+
+  try{
+    const resp=await callClaude(prompt,3000);
+    // Clean response — extract JSON array
+    let cleaned=resp.trim();
+    const startIdx=cleaned.indexOf('[');
+    const endIdx=cleaned.lastIndexOf(']');
+    if(startIdx===-1||endIdx===-1) throw new Error('No se encontró array JSON en la respuesta');
+    cleaned=cleaned.substring(startIdx,endIdx+1);
+    calPreviewData=JSON.parse(cleaned);
+    if(!Array.isArray(calPreviewData)||calPreviewData.length===0) throw new Error('El array está vacío');
+    renderCalPreview(calPreviewData);
+    document.getElementById('calPreviewSection').style.display='block';
+    document.getElementById('calPreviewSection').scrollIntoView({behavior:'smooth'});
+    showToast(`✅ ${calPreviewData.length} partidos generados`,'tg');
+  }catch(e){
+    showToast('Error generando calendario — intenta de nuevo','tr');
+    console.error('Error IA:',e);
+  } finally {
+    btn.disabled=false;
+    btn.innerHTML='✨ GENERAR CALENDARIO CON IA';
+  }
+}
+
+function renderCalPreview(data){
+  const el=document.getElementById('calPreviewList'); if(!el)return;
+  if(!data||!data.length){el.innerHTML='<div class="empty"><span class="empty-icon">🤖</span>La IA no generó partidos</div>';return;}
+  el.innerHTML=data.map((p,i)=>{
+    const eqL=getEqs().find(e=>e.nombre===p.local);
+    const eqV=getEqs().find(e=>e.nombre===p.visita);
+    return `<div class="cal-preview-match">
+      <div class="cpm-top">
+        <div class="cpm-date">📅 ${fmtDate(p.fecha)} · ⏰ ${p.hora}</div>
+        <div class="cpm-cancha">🏟️ ${p.cancha}</div>
+      </div>
+      <div class="cpm-body">
+        <div class="cpm-teams">
+          <div class="cpm-team">
+            ${eqL?.logo?`<img class="cpm-team-logo" src="${eqL.logo}"/>`:'<div class="cpm-team-ph">⚽</div>'}
+            <div class="cpm-team-name">${p.local}</div>
+          </div>
+          <div class="cpm-vs">VS</div>
+          <div class="cpm-team" style="justify-content:flex-end">
+            <div class="cpm-team-name" style="text-align:right">${p.visita}</div>
+            ${eqV?.logo?`<img class="cpm-team-logo" src="${eqV.logo}"/>`:'<div class="cpm-team-ph">⚽</div>'}
+          </div>
+        </div>
+        <div class="cpm-reason">🤖 ${p.razon}</div>
+        <div class="cpm-actions">
+          <button class="btn btn-out btn-sm" onclick="editCalPreview(${i})">✏️ Editar hora</button>
+          <button class="btn btn-r btn-sm" onclick="removeCalPreview(${i})">✕ Quitar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removeCalPreview(i){ calPreviewData.splice(i,1); renderCalPreview(calPreviewData); }
+function editCalPreview(i){
+  const p=calPreviewData[i];
+  const nh=prompt(`Nueva hora para ${p.local} vs ${p.visita}:`,p.hora);
+  if(nh&&/^\d{2}:\d{2}$/.test(nh)){calPreviewData[i].hora=nh;renderCalPreview(calPreviewData);}
+}
+function limpiarPreview(){calPreviewData=[];document.getElementById('calPreviewSection').style.display='none';}
+
+function aprobarCalendario(){
+  if(!calPreviewData.length){showToast('Sin partidos para publicar','ta');return;}
+  const batch={};
+  calPreviewData.forEach(p=>{
+    const key=db.ref('partidos').push().key;
+    const eqL=getEqs().find(e=>e.nombre===p.local);
+    const eqV=getEqs().find(e=>e.nombre===p.visita);
+    batch[`partidos/${key}`]={
+      torneo:currentTorneo, cat:currentCat,
+      local:eqL?eqL._key:null, localNombre:p.local,
+      visita:eqV?eqV._key:null, visitaNombre:p.visita,
+      fecha:p.fecha, hora:p.hora, cancha:p.cancha,
+      tipoHorario:p.tipoHorario||'flexible',
+      iaReason:p.razon, status:'programado',
+      programado:true, gL:0, gV:0,
+      arbPago:{local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}},
+      goles:{}, creadoAt:Date.now()
+    };
+  });
+  db.ref().update(batch).then(()=>{
+    showToast(`✅ ${calPreviewData.length} partidos publicados`,'tg');
+    calPreviewData=[];
+    document.getElementById('calPreviewSection').style.display='none';
+    populateReagendaSel();
+    renderCalProximos();
+  });
+}
+
+// RESTRICCIONES DE EQUIPOS
+function renderRestricciones(){
+  const el=document.getElementById('restriccionesList'); if(!el)return;
+  const restrs=getRestr();
+  if(!restrs.length){el.innerHTML='<div class="empty"><span class="empty-icon">⚙️</span>Sin restricciones configuradas</div>';return;}
+  el.innerHTML=restrs.map(r=>`
+    <div class="arb-card">
+      <div class="arb-av">⚽</div>
+      <div class="arb-info">
+        <div class="arb-name">${r.equipoNombre||'—'}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">
+          ${r.diaFijo?`<span class="restrict-tag rt-fixed">📅 Fijo: ${r.diaFijo} ${r.horaFija||''}</span>`:''}
+          ${r.estado==='cancelado'?`<span class="restrict-tag rt-cancel">⚠️ Cancelado esta semana</span>`:''}
+          ${(r.diasRestringidos||[]).map(d=>`<span class="restrict-tag rt-restrict">🚫 No ${d}</span>`).join('')}
+          ${r.horaMin?`<span class="restrict-tag rt-restrict">⏰ Desde ${r.horaMin}</span>`:''}
+          ${r.horaMax?`<span class="restrict-tag rt-restrict">⏰ Hasta ${r.horaMax}</span>`:''}
+        </div>
+        ${r.notas?`<div style="font-size:10px;color:var(--muted);margin-top:3px;font-style:italic">📝 ${r.notas}</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button class="btn btn-out btn-sm" onclick="editRestr('${r._key}')">✏️</button>
+        <button class="btn btn-r btn-sm" onclick="deleteRestr('${r._key}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function saveEquipoRestr(){
+  const equipoKey=document.getElementById('er_equipo').value;
+  const equipoNombre=equipoKey?C.equipos[equipoKey]?.nombre:'';
+  if(!equipoKey||!equipoNombre){showToast('Selecciona un equipo','ta');return;}
+  const dias=['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
+    .filter(d=>{const id='er_'+d.substring(0,3);return document.getElementById(id)?.checked;});
+  const key=document.getElementById('er_key').value;
+  const data={
+    equipoKey, equipoNombre,
+    diaFijo:document.getElementById('er_dia_fijo').value||null,
+    horaFija:document.getElementById('er_hora_fija').value||null,
+    canchaFija:document.getElementById('er_cancha_fija').value||null,
+    estado:document.getElementById('er_estado').value,
+    diasRestringidos:dias,
+    horaMin:document.getElementById('er_hora_min').value||null,
+    horaMax:document.getElementById('er_hora_max').value||null,
+    notas:document.getElementById('er_notas').value.trim()||null,
+    updatedAt:Date.now()
+  };
+  if(key) db.ref(`restricciones/${key}`).update(data);
+  else db.ref('restricciones').push(data);
+  closeModal('modalEquipoRestr');
+  showToast('Restricciones guardadas','tg');
+}
+
+function editRestr(key){
+  if(!C.restricciones) return;
+  const r=C.restricciones[key]; if(!r)return;
+  document.getElementById('er_key').value=key;
+  document.getElementById('er_dia_fijo').value=r.diaFijo||'';
+  document.getElementById('er_hora_fija').value=r.horaFija||'';
+  document.getElementById('er_cancha_fija').value=r.canchaFija||'';
+  document.getElementById('er_estado').value=r.estado||'activo';
+  document.getElementById('er_hora_min').value=r.horaMin||'';
+  document.getElementById('er_hora_max').value=r.horaMax||'';
+  document.getElementById('er_notas').value=r.notas||'';
+  ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'].forEach(d=>{
+    const cb=document.getElementById('er_'+d.substring(0,3));
+    if(cb) cb.checked=(r.diasRestringidos||[]).includes(d);
+  });
+  // populate select
+  populateErEquipo(r.equipoKey);
+  openModal('modalEquipoRestr');
+}
+
+function deleteRestr(key){ db.ref(`restricciones/${key}`).remove(); showToast('Restricción eliminada','tr'); }
+
+function populateErEquipo(preselect){
+  const sel=document.getElementById('er_equipo'); if(!sel)return;
+  const eqs=getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat);
+  sel.innerHTML='<option value="">— Seleccionar equipo —</option>'+
+    eqs.map(e=>`<option value="${e._key}" ${e._key===preselect?'selected':''}>${e.nombre}</option>`).join('');
+}
+
+// populate equipo select when opening restriction modal
+function populateErEquipo(preselect){
+  const sel=document.getElementById('er_equipo'); if(!sel)return;
+  const eqs=getEqs().filter(e=>e.torneo===currentTorneo&&e.cat===currentCat);
+  sel.innerHTML='<option value="">— Seleccionar equipo —</option>'+
+    eqs.map(e=>`<option value="${e._key}" ${e._key===preselect?'selected':''}>${e.nombre}</option>`).join('');
+}
+
+// ══════════════════════════════════════
+//  REINICIAR ESTADÍSTICAS
+// ══════════════════════════════════════
+let lastResetBackup = null;
+
+function openResetModal(tipo){
+  document.getElementById('reset_tipo').value=tipo;
+  const descs={
+    ventas:'Eliminar ventas de la Tienda',
+    partidos:'Eliminar partidos y resultados',
+    inscripciones:'Eliminar abonos de inscripciones',
+    arbitrajes:'Reiniciar cobros de arbitraje',
+    todo:'Eliminar TODO (ventas, partidos, inscripciones, arbitrajes)'
+  };
+  document.getElementById('resetModalTitle').textContent=`⚠️ ${descs[tipo]||'Reiniciar'}`;
+  document.getElementById('resetModalDesc').textContent=descs[tipo]||'';
+  document.getElementById('reset_desde_fecha').value='';
+  document.getElementById('reset_hasta_fecha').value='';
+  document.getElementById('reset_desde_hora').value='';
+  document.getElementById('reset_hasta_hora').value='';
+  document.getElementById('resetPreviewInfo').textContent='';
+  document.getElementById('undoResetBtn').style.display=lastResetBackup?'block':'none';
+  openModal('modalReset');
+}
+
+function confirmarReset(){
+  const tipo=document.getElementById('reset_tipo').value;
+  const desdeFecha=document.getElementById('reset_desde_fecha').value;
+  const hastaFecha=document.getElementById('reset_hasta_fecha').value;
+  const desdeHora=document.getElementById('reset_desde_hora').value;
+  const hastaHora=document.getElementById('reset_hasta_hora').value;
+
+  const inRango=(ts, fecha)=>{
+    if(!desdeFecha&&!hastaFecha) return true;
+    if(fecha){
+      if(desdeFecha&&fecha<desdeFecha) return false;
+      if(hastaFecha&&fecha>hastaFecha) return false;
+      return true;
+    }
+    if(!ts) return true;
+    const d=new Date(ts);
+    const fStr=d.toISOString().split('T')[0];
+    const hStr=d.toTimeString().substring(0,5);
+    if(desdeFecha&&fStr<desdeFecha) return false;
+    if(hastaFecha&&fStr>hastaFecha) return false;
+    if(desdeHora&&hStr<desdeHora) return false;
+    if(hastaHora&&hStr>hastaHora) return false;
+    return true;
+  };
+
+  // Save backup for undo
+  lastResetBackup={tipo, data:{}, timestamp:Date.now()};
+
+  const batch={};
+
+  if(tipo==='ventas'||tipo==='todo'){
+    getVentas().filter(v=>inRango(v.ts, null)).forEach(v=>{
+      lastResetBackup.data[`ventas/${v._key}`]=v;
+      batch[`ventas/${v._key}`]=null;
+    });
+  }
+  if(tipo==='partidos'||tipo==='todo'){
+    getParts().filter(p=>inRango(p.creadoAt,p.fecha)).forEach(p=>{
+      lastResetBackup.data[`partidos/${p._key}`]=p;
+      batch[`partidos/${p._key}`]=null;
+    });
+  }
+  if(tipo==='inscripciones'||tipo==='todo'){
+    getInsc().forEach(i=>{
+      const abonos=i.abonos?Object.entries(i.abonos):[];
+      abonos.filter(([,a])=>inRango(a.ts,a.fecha)).forEach(([k,a])=>{
+        lastResetBackup.data[`inscripciones/${i._key}/abonos/${k}`]=a;
+        batch[`inscripciones/${i._key}/abonos/${k}`]=null;
+      });
+    });
+  }
+  if(tipo==='arbitrajes'||tipo==='todo'){
+    getParts().filter(p=>inRango(p.creadoAt,p.fecha)).forEach(p=>{
+      lastResetBackup.data[`partidos/${p._key}/arbPago`]=p.arbPago||{};
+      batch[`partidos/${p._key}/arbPago`]={local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}};
+      batch[`partidos/${p._key}/arbPagado`]=false;
+    });
+  }
+
+  const count=Object.keys(batch).length;
+  if(!count){showToast('No hay registros en ese rango','ta');return;}
+
+  db.ref().update(batch).then(()=>{
+    closeModal('modalReset');
+    showToast(`✅ ${count} registros eliminados`,'tg');
+    document.getElementById('undoResetBtn').style.display='block';
+    renderResumen();
+  });
+}
+
+function deshacerReset(){
+  if(!lastResetBackup){showToast('No hay acción para deshacer','ta');return;}
+  const batch={};
+  Object.entries(lastResetBackup.data).forEach(([path,val])=>{batch[path]=val;});
+  db.ref().update(batch).then(()=>{
+    showToast('↩️ Acción deshecha correctamente','tb');
+    lastResetBackup=null;
+    closeModal('modalReset');
+    renderResumen();
+  });
+}
+
+// ══════════════════════════════════════
+//  CAMBIAR TORNEO
+// ══════════════════════════════════════
+function cambiarTorneo(){
+  localStorage.removeItem('ld_torneo');
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('splash').style.display='flex';
+  // reset nav to tabla
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  const tablaPage=document.getElementById('page-tabla');
+  if(tablaPage) tablaPage.classList.add('active');
+}
+
+// ══════════════════════════════════════
+//  MODAL & TOAST
+// ══════════════════════════════════════
+function openModal(id){
+  const el=document.getElementById(id); if(!el)return;
+  el.classList.add('open');
+  if(id==='modalEquipoRestr') populateErEquipo('');
+}
+function closeModal(id){
+  const el=document.getElementById(id); if(el) el.classList.remove('open');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.modal-overlay').forEach(m=>{
+    m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
+  });
+});
+// Also run immediately in case DOM is ready
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
+});
+
+let toastT;
+function showToast(msg, type='tg'){
+  const t=document.getElementById('toast'); t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ══════════════════════════════════════
+//  CLAUDE API
+// ══════════════════════════════════════
+async function callClaude(prompt, maxTokens=1500){
+  const response=await fetch('/api/claude',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:maxTokens,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  if(!response.ok){
+    const err=await response.json().catch(()=>({}));
+    throw new Error(err.error||`Error ${response.status}`);
+  }
+  const data=await response.json();
+  if(data.error) throw new Error(data.error);
+  return data.content[0].text;
+}
+</script>
+</body>
+</html>
