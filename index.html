@@ -528,7 +528,7 @@ textarea.fi{resize:vertical;min-height:60px;}
     <div class="hdr-icon">⚽</div>
     <div class="hdr-brand">
       <div class="hdr-name" id="hdrName">LIGADIGITAL</div>
-      <div class="hdr-cat" id="hdrCat">📱 Joel "El Chingón" Rivera · 6672246719</div>
+      <div class="hdr-cat" id="hdrCat">Joel "El Chingón" Rivera · 6672246719 📱</div>
     </div>
     <div class="hdr-right">
       <button class="ico-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
@@ -551,6 +551,7 @@ textarea.fi{resize:vertical;min-height:60px;}
     <button class="nav-tab active" onclick="showPage('tabla',this)">📊 Tabla</button>
     <button class="nav-tab" onclick="showPage('partidos',this)">⚽ Últimos Partidos</button>
     <button class="nav-tab" onclick="showPage('equipos',this)">🏆 Equipos</button>
+    <button class="nav-tab" onclick="showPage('historial',this)">🏅 Historial</button>
     <button class="nav-tab admin-only" id="navTienda" onclick="showPage('tienda',this)">🛒 Tienda</button>
     <button class="nav-tab admin-only" id="navInsc" onclick="showPage('inscripciones',this)">💰 Inscripciones</button>
     <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">👥 Capital Humano</button>
@@ -574,8 +575,12 @@ textarea.fi{resize:vertical;min-height:60px;}
 <!-- ═══════ TABLA ═══════ -->
 <div class="page active" id="page-tabla">
   <div id="finalissimaBanner"></div>
-  <div class="sh"><div class="st">📊 Tabla de Posiciones</div><div class="sl"></div></div>
-  <div class="tabla-wrap card" style="padding:0">
+  <div class="sh">
+    <div class="st">📊 Tabla de Posiciones</div>
+    <div class="sl"></div>
+    <button class="btn btn-out btn-sm" onclick="compartirTabla()" title="Compartir tabla">📤</button>
+  </div>
+  <div class="tabla-wrap card" style="padding:0" id="tablaCaptura">
     <table class="tabla">
       <thead><tr>
         <th>#</th><th class="tal">Equipo</th>
@@ -585,8 +590,12 @@ textarea.fi{resize:vertical;min-height:60px;}
       <tbody id="tablaBody"><tr><td colspan="11" class="tabla-empty">Sin partidos terminados</td></tr></tbody>
     </table>
   </div>
-  <div class="sh" style="margin-top:18px"><div class="st">🥅 Máximos Goleadores</div><div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 15</span></div></div>
-  <div class="card"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
+  <div class="sh" style="margin-top:18px">
+    <div class="st">🥅 Máximos Goleadores</div>
+    <div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 15</span></div>
+    <button class="btn btn-out btn-sm" onclick="compartirGoleadores()" title="Compartir goleadores">📤</button>
+  </div>
+  <div class="card" id="goleadoresCaptura"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
 </div>
 
 <!-- ═══════ ÚLTIMOS PARTIDOS ═══════ -->
@@ -613,6 +622,21 @@ textarea.fi{resize:vertical;min-height:60px;}
     <button class="btn btn-g btn-full" onclick="openModal('modalEquipo');resetEquipoForm()">+ REGISTRAR EQUIPO</button>
   </div>
   <div id="equiposView"></div>
+</div>
+
+<!-- ═══════ HISTORIAL DE TEMPORADAS ═══════ -->
+<div class="page" id="page-historial">
+  <div style="background:linear-gradient(135deg,#ca8a04,#d97706);border-radius:14px;padding:16px;margin-bottom:16px;text-align:center">
+    <div style="font-size:28px;margin-bottom:6px">🏆</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:#fff">Historial de Temporadas</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.7);font-weight:600;margin-top:3px">Campeones · Goleadores · Tablas finales</div>
+  </div>
+
+  <div id="adminAddTemporada" style="display:none;margin-bottom:14px">
+    <button class="btn btn-g btn-full" onclick="openModal('modalGuardarTemporada')">📸 GUARDAR TEMPORADA ACTUAL</button>
+  </div>
+
+  <div id="historialList"><div class="empty"><span class="empty-icon">🏆</span>Sin temporadas guardadas aún</div></div>
 </div>
 
 <!-- ═══════ TIENDA ═══════ -->
@@ -692,7 +716,10 @@ textarea.fi{resize:vertical;min-height:60px;}
     <div class="card" style="padding:10px 13px;margin-bottom:10px">
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('hoy')" id="trabBtn_hoy">Hoy</button>
-        <button class="btn btn-g btn-sm" onclick="setTrabPeriodo('mes')" id="trabBtn_mes">Este mes</button>
+        <button class="btn btn-g btn-sm" onclick="setTrabPeriodo('3dias')" id="trabBtn_3dias">3 días</button>
+        <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('semana')" id="trabBtn_semana">Semana</button>
+        <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('mes')" id="trabBtn_mes">Mes</button>
+        <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('anual')" id="trabBtn_anual">Año</button>
         <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('todo')" id="trabBtn_todo">Todo</button>
       </div>
     </div>
@@ -1378,6 +1405,46 @@ textarea.fi{resize:vertical;min-height:60px;}
   </div>
 </div>
 
+<!-- Modal Guardar Temporada -->
+<div class="modal-overlay" id="modalGuardarTemporada">
+  <div class="modal" style="border-top-color:var(--gold)">
+    <div class="modal-head"><div class="modal-title" style="color:var(--gold)">🏆 Guardar Temporada</div><button class="modal-close" onclick="closeModal('modalGuardarTemporada')">✕</button></div>
+    <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:14px">Guarda una foto permanente de esta temporada.</div>
+    <div class="fg"><label class="fl">Nombre de la temporada</label><input class="fi" id="temp_nombre" placeholder="Ej: Torneo Villa 2026 — Liga Alta"/></div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Torneo</label>
+        <select class="fi" id="temp_torneo"><option value="villa">Villa Universidad</option><option value="musala">Isla Músala</option></select>
+      </div>
+      <div class="fg"><label class="fl">Categoría</label>
+        <select class="fi" id="temp_cat">
+          <option value="liga_alta">Liga Alta</option><option value="liga_media">Liga Media</option>
+          <option value="liga_baja_a">Liga Baja A</option><option value="liga_baja_b">Liga Baja B</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">🥇 Campeón</label><input class="fi" id="temp_campeon" placeholder="Nombre del equipo campeón"/></div>
+    <div class="fg"><label class="fl">🥈 Subcampeón</label><input class="fi" id="temp_subcampeon" placeholder="Nombre del subcampeón"/></div>
+    <div class="fg"><label class="fl">⚽ Goleador del torneo</label><input class="fi" id="temp_goleador" placeholder="Jugador · Equipo · Goles"/></div>
+    <div class="fg"><label class="fl">Notas</label><input class="fi" id="temp_notas" placeholder="Ej: 8 equipos, 10 jornadas..."/></div>
+    <button class="btn btn-g btn-full" onclick="guardarTemporada()">💾 Guardar temporada</button>
+  </div>
+</div>
+
+<!-- Modal Compartir -->
+<div class="modal-overlay" id="modalCompartir">
+  <div class="modal" style="border-top-color:var(--blue)">
+    <div class="modal-head"><div class="modal-title" style="color:var(--blue)" id="compartirTitle">📤 Compartir</div><button class="modal-close" onclick="closeModal('modalCompartir')">✕</button></div>
+    <div id="compartirPreview" style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;max-height:260px;overflow-y:auto;font-size:11px;white-space:pre-wrap;font-family:monospace;line-height:1.6"></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-full" onclick="compartirWhatsApp()" style="background:#25D366;color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer">📱 Enviar por WhatsApp</button>
+      <button class="btn btn-full" onclick="copiarTextoCompartir()" style="background:var(--blue);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer">📋 Copiar texto</button>
+      <button class="btn btn-out btn-full" onclick="closeModal('modalCompartir')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
 // ══════════════════════════════════════
 //  FIREBASE CONFIG
@@ -1489,6 +1556,8 @@ function onAuthChange(user){
     document.querySelectorAll('.admin-only').forEach(x=>x.classList.add('show'));
     document.getElementById('adminAddPartido').style.display='block';
     document.getElementById('adminAddEquipo').style.display='block';
+    const aTemp=document.getElementById('adminAddTemporada');
+    if(aTemp) aTemp.style.display='block';
   } else {
     document.getElementById('adminBadge').style.display='none';
     document.getElementById('loginBtn').style.display='block';
@@ -1531,7 +1600,7 @@ function updateCatTabs(){
 function launchApp(){
   document.getElementById('appShell').style.display = 'block';
   document.getElementById('hdrName').textContent = TORNEO_NAMES[currentTorneo];
-  document.getElementById('hdrCat').textContent = '📱 Joel "El Chingón" Rivera · 6672246719';
+  document.getElementById('hdrCat').textContent = 'Joel "El Chingón" Rivera · 6672246719 📱';
   updateCatTabs();
   document.getElementById('mp_torneo').value = currentTorneo;
   document.getElementById('mp_cat').value = currentCat;
@@ -1650,6 +1719,7 @@ function showPage(p, btn){
   if(p==='tabla') renderTabla();
   if(p==='equipos') renderEquiposPage();
   if(p==='calendario') initCalendario();
+  if(p==='historial') renderHistorial();
 }
 
 function selectCat(cat, btn){
@@ -2943,7 +3013,7 @@ const ROL_NAMES = {tienda:'🛒 Tiendita',herrero:'🔧 Herrero',electricista:'�
 
 function setTrabPeriodo(p){
   trabPeriodo=p;
-  ['hoy','mes','todo'].forEach(x=>{const b=document.getElementById(`trabBtn_${x}`);if(b)b.className=x===p?'btn btn-g btn-sm':'btn btn-out btn-sm';});
+  ['hoy','3dias','semana','mes','anual','todo'].forEach(x=>{const b=document.getElementById(`trabBtn_${x}`);if(b)b.className=x===p?'btn btn-g btn-sm':'btn btn-out btn-sm';});
   renderTrabajadores();
 }
 
@@ -2951,7 +3021,10 @@ function getTrabFilteredGastos(){
   const all=getGastos();
   const now=new Date(); const hoy=now.toISOString().split('T')[0];
   if(trabPeriodo==='hoy') return all.filter(g=>g.fecha===hoy);
+  if(trabPeriodo==='3dias'){const d=new Date();d.setDate(d.getDate()-3);const f=d.toISOString().split('T')[0];return all.filter(g=>(g.fecha||'')>=f);}
+  if(trabPeriodo==='semana'){const d=new Date();d.setDate(d.getDate()-7);const f=d.toISOString().split('T')[0];return all.filter(g=>(g.fecha||'')>=f);}
   if(trabPeriodo==='mes'){const d=new Date();d.setMonth(d.getMonth()-1);const f=d.toISOString().split('T')[0];return all.filter(g=>(g.fecha||'')>=f);}
+  if(trabPeriodo==='anual'){const d=new Date();d.setFullYear(d.getFullYear()-1);const f=d.toISOString().split('T')[0];return all.filter(g=>(g.fecha||'')>=f);}
   return all;
 }
 
@@ -3192,6 +3265,189 @@ function renderResumen(){
       `<div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total · ${periodLabel}</span><span class="money-val" style="color:var(--red)">$${totalGastosTrab}</span></div>`;
   }
 }
+// ══════════════════════════════════════
+//  HISTORIAL DE TEMPORADAS
+// ══════════════════════════════════════
+function renderHistorial(){
+  // Show save button only for admins
+  const saveBtn=document.getElementById('adminAddTemporada');
+  if(saveBtn) saveBtn.style.display=isAdmin?'block':'none';
+  if(isAdmin){
+    // Pre-fill torneo/cat with current
+    const tt=document.getElementById('temp_torneo');
+    const tc=document.getElementById('temp_cat');
+    if(tt) tt.value=currentTorneo;
+    if(tc) tc.value=currentCat;
+    // Auto-fill goleador
+    const tabData=buildTablaData();
+    const byP={};
+    filteredParts().filter(p=>p.status==='terminado').forEach(p=>{
+      const goles=p.goles?Object.values(p.goles):[];
+      goles.forEach(g=>{
+        const team=g.equipo==='local'?(p.localNombre||p.local):(p.visitaNombre||p.visita);
+        const key=g.jugador+'|'+team;
+        if(!byP[key])byP[key]={jugador:g.jugador,equipo:team,goles:0};
+        byP[key].goles++;
+      });
+    });
+    const top=Object.values(byP).sort((a,b)=>b.goles-a.goles)[0];
+    const gField=document.getElementById('temp_goleador');
+    if(gField&&top&&!gField.value) gField.value=`${top.jugador} · ${top.equipo} · ${top.goles} goles`;
+    if(tabData.length>0){
+      const c1Field=document.getElementById('temp_campeon');
+      const c2Field=document.getElementById('temp_subcampeon');
+      if(c1Field&&!c1Field.value) c1Field.value=tabData[0]?.nombre||'';
+      if(c2Field&&!c2Field.value) c2Field.value=tabData[1]?.nombre||'';
+    }
+  }
+
+  // Load temporadas from Firebase
+  db.ref('historial').once('value', s=>{
+    const el=document.getElementById('historialList'); if(!el)return;
+    if(!s.exists()){el.innerHTML='<div class="empty"><span class="empty-icon">🏆</span>Sin temporadas guardadas aún.<br/><span style="font-size:11px;color:var(--muted)">Guarda la temporada actual desde el botón de arriba.</span></div>';return;}
+    const temps=Object.entries(s.val()).map(([k,v])=>({...v,_key:k})).sort((a,b)=>b.ts-a.ts);
+    el.innerHTML=temps.map(t=>`
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--amber))"></div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text)">${t.nombre||'Temporada'}</div>
+            <div style="font-size:10px;font-weight:700;color:var(--muted);margin-top:2px">${TORNEO_NAMES[t.torneo]||t.torneo} · ${CAT_NAMES[t.cat]||t.cat}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:1px">📅 ${fmtDate(t.fecha)||new Date(t.ts).toLocaleDateString('es-MX')}</div>
+          </div>
+          ${isAdmin?`<button class="btn btn-r btn-sm" onclick="deleteTemporada('${t._key}')">🗑️</button>`:''}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:linear-gradient(135deg,rgba(202,138,4,.12),rgba(202,138,4,.04));border:1px solid rgba(202,138,4,.3);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:18px;margin-bottom:3px">🥇</div>
+            <div style="font-size:10px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase">Campeón</div>
+            <div style="font-size:13px;font-weight:800;margin-top:3px;color:var(--text)">${t.campeon||'—'}</div>
+          </div>
+          <div style="background:rgba(148,163,184,.07);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:18px;margin-bottom:3px">🥈</div>
+            <div style="font-size:10px;font-weight:800;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Subcampeón</div>
+            <div style="font-size:13px;font-weight:800;margin-top:3px;color:var(--text)">${t.subcampeon||'—'}</div>
+          </div>
+        </div>
+        ${t.goleador?`<div style="background:var(--acc3);border:1px solid rgba(22,163,74,.25);border-radius:9px;padding:9px;text-align:center;margin-bottom:8px">
+          <span style="font-size:11px;font-weight:800;color:var(--acc)">⚽ Goleador: </span><span style="font-size:12px;font-weight:700">${t.goleador}</span>
+        </div>`:''}
+        ${t.tabla&&t.tabla.length?`<div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">TABLA FINAL</div>
+          ${t.tabla.slice(0,5).map((eq,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:${i===0?'var(--gold)':i===1?'#94a3b8':i===2?'#b45309':'var(--muted)'};width:18px;text-align:center">${i+1}</span>
+            <span style="flex:1;font-weight:700">${eq.nombre}</span>
+            <span style="color:var(--muted)">${eq.pj}J</span>
+            <span style="font-weight:800;color:var(--acc)">${eq.pts}pts</span>
+          </div>`).join('')}
+        </div>`:''}
+        ${t.notas?`<div style="font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">📝 ${t.notas}</div>`:''}
+      </div>`).join('');
+  });
+}
+
+function guardarTemporada(){
+  const nombre=document.getElementById('temp_nombre').value.trim();
+  if(!nombre){showToast('Ingresa un nombre para la temporada','ta');return;}
+  const torneo=document.getElementById('temp_torneo').value;
+  const cat=document.getElementById('temp_cat').value;
+  // Save current tabla snapshot
+  const tablaData=buildTablaData();
+  const data={
+    nombre, torneo, cat,
+    campeon:document.getElementById('temp_campeon').value.trim(),
+    subcampeon:document.getElementById('temp_subcampeon').value.trim(),
+    goleador:document.getElementById('temp_goleador').value.trim(),
+    notas:document.getElementById('temp_notas').value.trim(),
+    tabla:tablaData.slice(0,10).map(t=>({nombre:t.nombre,pj:t.pj,pts:t.pts,gf:t.gf,gc:t.gc})),
+    fecha:new Date().toISOString().split('T')[0],
+    ts:Date.now()
+  };
+  db.ref('historial').push(data);
+  closeModal('modalGuardarTemporada');
+  ['temp_nombre','temp_campeon','temp_subcampeon','temp_goleador','temp_notas'].forEach(id=>document.getElementById(id).value='');
+  showToast('✅ Temporada guardada en el historial','tg');
+  renderHistorial();
+}
+
+function deleteTemporada(key){
+  if(!confirm('¿Eliminar esta temporada del historial?'))return;
+  db.ref(`historial/${key}`).remove();
+  showToast('Temporada eliminada','tr');
+  renderHistorial();
+}
+
+// ══════════════════════════════════════
+//  COMPARTIR TABLA Y GOLEADORES
+// ══════════════════════════════════════
+let compartirTextoActual = '';
+
+function compartirTabla(){
+  const torneo=TORNEO_NAMES[currentTorneo]||currentTorneo;
+  const cat=CAT_NAMES[currentCat]||currentCat;
+  const tablaData=buildTablaData();
+  if(!tablaData.length){showToast('Sin datos en la tabla','ta');return;}
+  let txt=`📊 *TABLA DE POSICIONES*\n`;
+  txt+=`🏆 ${torneo} · ${cat}\n`;
+  txt+=`${'─'.repeat(28)}\n`;
+  tablaData.forEach((t,i)=>{
+    const med=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+    txt+=`${med} ${t.nombre}\n   ${t.pj}J · ${t.pts}pts · ${t.gf}GF/${t.gc}GC\n`;
+  });
+  txt+=`${'─'.repeat(28)}\n📱 Joel "El Chingón" Rivera · 6672246719`;
+  abrirCompartirModal('📊 Tabla de Posiciones', txt);
+}
+
+function compartirGoleadores(){
+  const torneo=TORNEO_NAMES[currentTorneo]||currentTorneo;
+  const cat=CAT_NAMES[currentCat]||currentCat;
+  const byP={};
+  filteredParts().filter(p=>p.status==='terminado').forEach(p=>{
+    const goles=p.goles?Object.values(p.goles):[];
+    goles.forEach(g=>{
+      const team=g.equipo==='local'?(p.localNombre||p.local):(p.visitaNombre||p.visita);
+      const key=g.jugador+'|'+team;
+      if(!byP[key])byP[key]={jugador:g.jugador,equipo:team,goles:0};
+      byP[key].goles++;
+    });
+  });
+  const sorted=Object.values(byP).sort((a,b)=>b.goles-a.goles).slice(0,10);
+  if(!sorted.length){showToast('Sin goles registrados','ta');return;}
+  let txt=`🥅 *MÁXIMOS GOLEADORES*\n`;
+  txt+=`🏆 ${torneo} · ${cat}\n`;
+  txt+=`${'─'.repeat(28)}\n`;
+  sorted.forEach((g,i)=>{
+    const med=i===0?'🏅':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+    txt+=`${med} ${g.jugador} — ${g.goles} ⚽\n   ${g.equipo}\n`;
+  });
+  txt+=`${'─'.repeat(28)}\n📱 Joel "El Chingón" Rivera · 6672246719`;
+  abrirCompartirModal('🥅 Máximos Goleadores', txt);
+}
+
+function abrirCompartirModal(titulo, texto){
+  compartirTextoActual=texto;
+  document.getElementById('compartirTitle').textContent=`📤 ${titulo}`;
+  document.getElementById('compartirPreview').textContent=texto;
+  openModal('modalCompartir');
+}
+
+function compartirWhatsApp(){
+  const encoded=encodeURIComponent(compartirTextoActual);
+  window.open(`https://wa.me/?text=${encoded}`,'_blank');
+}
+
+function copiarTextoCompartir(){
+  navigator.clipboard.writeText(compartirTextoActual).then(()=>{
+    showToast('📋 Copiado al portapapeles','tg');
+  }).catch(()=>{
+    // fallback
+    const ta=document.createElement('textarea');
+    ta.value=compartirTextoActual;
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    showToast('📋 Copiado','tg');
+  });
+}
+
 // ══════════════════════════════════════
 //  THEME
 // ══════════════════════════════════════
