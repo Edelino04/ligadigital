@@ -548,7 +548,7 @@ textarea.fi{resize:vertical;min-height:60px;}
     <button class="nav-tab" onclick="showPage('equipos',this)">🏆 Equipos</button>
     <button class="nav-tab admin-only" id="navTienda" onclick="showPage('tienda',this)">🛒 Tienda</button>
     <button class="nav-tab admin-only" id="navInsc" onclick="showPage('inscripciones',this)">💰 Inscripciones</button>
-    <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">🦺 Árbitros</button>
+    <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">👥 Capital Humano</button>
     <button class="nav-tab admin-only" id="navCal" onclick="showPage('calendario',this)">🤖 Calendario IA</button>
     <button class="nav-tab admin-only" id="navRes" onclick="showPage('resumen',this)">📋 Resumen</button>
   </div>
@@ -641,33 +641,82 @@ textarea.fi{resize:vertical;min-height:60px;}
   <div id="inscList"></div>
 </div>
 
-<!-- ═══════ ÁRBITROS ═══════ -->
+<!-- ═══════ CAPITAL HUMANO ═══════ -->
 <div class="page" id="page-arbitros">
-  <button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="openModal('modalNuevoArb')">+ REGISTRAR ÁRBITRO</button>
-  <div id="arbitrosList"></div>
 
-  <div class="sh" style="margin-top:14px"><div class="st">🏟️ Asignar árbitro a partido</div><div class="sl"></div></div>
-  <div class="card"><div id="asignacionArb"></div></div>
-
-  <div class="sh" style="margin-top:14px"><div class="st">💰 Cobros registrados</div><div class="sl"></div></div>
-  <!-- Filtro de período -->
-  <div class="card" style="padding:10px 13px;margin-bottom:10px">
-    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">📅 Ver período</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn btn-out btn-sm" onclick="setArbPeriodo('hoy')" id="arbBtn_hoy">Hoy</button>
-      <button class="btn btn-g btn-sm" onclick="setArbPeriodo('3dias')" id="arbBtn_3dias">Últimos 3 días</button>
-      <button class="btn btn-out btn-sm" onclick="setArbPeriodo('semana')" id="arbBtn_semana">Esta semana</button>
-      <button class="btn btn-out btn-sm" onclick="setArbPeriodo('mes')" id="arbBtn_mes">Este mes</button>
-      <button class="btn btn-out btn-sm" onclick="setArbPeriodo('todo')" id="arbBtn_todo">Todo</button>
-    </div>
+  <!-- Header con tabs internos -->
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button class="btn btn-g btn-sm" id="chTab_arb" onclick="switchCHTab('arb')" style="flex:1;padding:10px">🦺 Árbitros</button>
+    <button class="btn btn-out btn-sm" id="chTab_trab" onclick="switchCHTab('trab')" style="flex:1;padding:10px">👷 Trabajadores</button>
   </div>
-  <div class="card" id="cobrosDelDia"></div>
 
-  <div class="sh" style="margin-top:14px"><div class="st">💳 Pagos pendientes</div><div class="sl"></div></div>
-  <div class="card"><div id="pagosPend"></div></div>
+  <!-- SECCIÓN ÁRBITROS -->
+  <div id="ch_arb_section">
+    <button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="openModal('modalNuevoArb')">+ REGISTRAR ÁRBITRO</button>
+    <div id="arbitrosList"></div>
 
-  <div class="sh" style="margin-top:14px"><div class="st">✏️ Editar cobros individuales</div><div class="sl"></div></div>
-  <div class="card"><div id="editCobrosArb"></div></div>
+    <div class="sh" style="margin-top:14px"><div class="st">🏟️ Asignar árbitro a partido</div><div class="sl"></div></div>
+    <div class="card"><div id="asignacionArb"></div></div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">💰 Cobros registrados</div><div class="sl"></div></div>
+    <div class="card" style="padding:10px 13px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">📅 Ver período</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-out btn-sm" onclick="setArbPeriodo('hoy')" id="arbBtn_hoy">Hoy</button>
+        <button class="btn btn-g btn-sm" onclick="setArbPeriodo('3dias')" id="arbBtn_3dias">Últimos 3 días</button>
+        <button class="btn btn-out btn-sm" onclick="setArbPeriodo('semana')" id="arbBtn_semana">Esta semana</button>
+        <button class="btn btn-out btn-sm" onclick="setArbPeriodo('mes')" id="arbBtn_mes">Este mes</button>
+        <button class="btn btn-out btn-sm" onclick="setArbPeriodo('todo')" id="arbBtn_todo">Todo</button>
+      </div>
+    </div>
+    <div class="card" id="cobrosDelDia"></div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">💳 Pagos pendientes</div><div class="sl"></div></div>
+    <div class="card"><div id="pagosPend"></div></div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">✏️ Editar cobros individuales</div><div class="sl"></div></div>
+    <div class="card"><div id="editCobrosArb"></div></div>
+  </div>
+
+  <!-- SECCIÓN TRABAJADORES -->
+  <div id="ch_trab_section" style="display:none">
+    <button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="openModal('modalNuevoTrab')">+ REGISTRAR TRABAJADOR</button>
+    <div id="trabajadoresList"></div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">📋 Registro de pagos a trabajadores</div><div class="sl"></div></div>
+    <div class="card" style="padding:10px 13px;margin-bottom:10px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('hoy')" id="trabBtn_hoy">Hoy</button>
+        <button class="btn btn-g btn-sm" onclick="setTrabPeriodo('mes')" id="trabBtn_mes">Este mes</button>
+        <button class="btn btn-out btn-sm" onclick="setTrabPeriodo('todo')" id="trabBtn_todo">Todo</button>
+      </div>
+    </div>
+    <div class="card" id="resumenTrabajadores"></div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">➕ Registrar gasto / pago</div><div class="sl"></div></div>
+    <div class="card">
+      <div class="fg"><label class="fl">Trabajador</label>
+        <select class="fi" id="gasto_trab_sel"><option value="">— Seleccionar —</option></select>
+      </div>
+      <div class="fg"><label class="fl">Concepto</label><input class="fi" id="gasto_concepto" placeholder="Ej: Reparación de cancha, turno domingo..."/></div>
+      <div class="form-2">
+        <div class="fg"><label class="fl">Monto $</label><input class="fi" id="gasto_monto" type="number" min="0" placeholder="0"/></div>
+        <div class="fg"><label class="fl">Fecha</label><input class="fi" id="gasto_fecha" type="date"/></div>
+      </div>
+      <div class="fg"><label class="fl">Método de pago</label>
+        <select class="fi" id="gasto_metodo">
+          <option value="efectivo">💵 Efectivo</option>
+          <option value="transferencia">📱 Transferencia</option>
+          <option value="pendiente">⏳ Pendiente</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Notas</label><input class="fi" id="gasto_notas" placeholder="Notas adicionales..."/></div>
+      <button class="btn btn-g btn-full" onclick="registrarGastoTrab()">💾 Registrar pago</button>
+    </div>
+
+    <div class="sh" style="margin-top:14px"><div class="st">🕓 Historial de pagos</div><div class="sl"></div></div>
+    <div class="card"><div id="historialGastosTrab"></div></div>
+  </div>
 </div>
 
 <!-- ═══════ CALENDARIO IA ═══════ -->
@@ -1297,7 +1346,28 @@ textarea.fi{resize:vertical;min-height:60px;}
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- Trabajador -->
+<div class="modal-overlay" id="modalNuevoTrab">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="trabModalTitle">👷 Nuevo Trabajador</div><button class="modal-close" onclick="closeModal('modalNuevoTrab')">✕</button></div>
+    <input type="hidden" id="nt_key"/>
+    <div class="fg"><label class="fl">Nombre</label><input class="fi" id="nt_nombre" placeholder="Juan Pérez"/></div>
+    <div class="fg"><label class="fl">Rol / Puesto</label>
+      <select class="fi" id="nt_rol">
+        <option value="tienda">🛒 Tiendita</option>
+        <option value="herrero">🔧 Herrero</option>
+        <option value="electricista">⚡ Electricista</option>
+        <option value="limpieza">🧹 Limpieza</option>
+        <option value="seguridad">🔒 Seguridad</option>
+        <option value="otro">📋 Otro</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Descripción / Notas</label><input class="fi" id="nt_desc" placeholder="Ej: Trabaja domingos en la tienda..."/></div>
+    <div class="fg"><label class="fl">Teléfono (opcional)</label><input class="fi" id="nt_tel" type="tel" placeholder="667-000-0000"/></div>
+    <div class="fg"><label class="fl">Pago fijo por jornada $ (opcional)</label><input class="fi" id="nt_pago" type="number" min="0" placeholder="0"/></div>
+    <button class="btn btn-g btn-full" onclick="saveTrabajador()">💾 Guardar</button>
+  </div>
+</div>
 
 <script>
 // ══════════════════════════════════════
@@ -1324,7 +1394,7 @@ let pendingGolSide = null;
 let payMethods = { local: null, visita: null };
 let cart = [];
 const timers = {};
-const C = { equipos:{}, partidos:{}, productos:{}, ventas:{}, arbitros:{}, inscripciones:{} };
+const C = { equipos:{}, partidos:{}, productos:{}, ventas:{}, arbitros:{}, inscripciones:{}, trabajadores:{}, gastosTrab:{} };
 const TORNEO_NAMES = { villa:'TORNEO VILLA UNIVERSIDAD', musala:'TORNEO ISLA MÚSALA' };
 const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:'Liga Baja A', liga_baja_b:'Liga Baja B' };
 const CANCHAS = ['Villa Universidad','Isla Músala'];
@@ -1466,29 +1536,31 @@ function setupListeners(){
     if(s.exists()) Object.assign(C.restricciones, s.val());
     if(isAdmin && isPageActive('calendario')) renderRestricciones();
   });
+  // Trabajadores
+  db.ref('trabajadores').on('value', s=>{
+    Object.keys(C.trabajadores).forEach(k=>delete C.trabajadores[k]);
+    if(s.exists()) Object.assign(C.trabajadores, s.val());
+    if(isAdmin && isPageActive('arbitros')) renderTrabajadores();
+  });
+  db.ref('gastosTrab').on('value', s=>{
+    Object.keys(C.gastosTrab).forEach(k=>delete C.gastosTrab[k]);
+    if(s.exists()) Object.assign(C.gastosTrab, s.val());
+    if(isAdmin && isPageActive('arbitros')) renderTrabajadores();
+  });
 }
 
 function seedProducts(){
-  // Always reset products to the correct list
   db.ref('productos').once('value', snap=>{
-    const updates={};
-    // Remove all existing products
-    if(snap.exists()) Object.keys(snap.val()).forEach(k=>{updates[`productos/${k}`]=null;});
-    db.ref().update(updates).then(()=>{
-      DEFAULT_PRODUCTS.forEach(p=>db.ref('productos').push(p));
-    });
+    if(snap.exists()) return; // only seed if empty
+    DEFAULT_PRODUCTS.forEach(p=>db.ref('productos').push(p));
   });
 }
 
 function resetProductos(){
-  if(!confirm('¿Resetear productos a la lista oficial con precios correctos?'))return;
-  db.ref('productos').once('value', snap=>{
-    const updates={};
-    if(snap.exists()) Object.keys(snap.val()).forEach(k=>{updates[`productos/${k}`]=null;});
-    db.ref().update(updates).then(()=>{
-      DEFAULT_PRODUCTS.forEach(p=>db.ref('productos').push(p));
-      showToast('Productos actualizados','tg');
-    });
+  if(!confirm('¿Resetear productos a la lista oficial de 25 productos? Se eliminarán todos los productos actuales.'))return;
+  db.ref('productos').remove().then(()=>{
+    DEFAULT_PRODUCTS.forEach(p=>db.ref('productos').push(p));
+    showToast('✅ Productos actualizados a la lista oficial','tg');
   });
 }
 
@@ -1522,7 +1594,7 @@ function showPage(p, btn){
   if(btn) btn.classList.add('active');
   if(p==='tienda') renderTienda();
   if(p==='inscripciones') renderInscripciones();
-  if(p==='arbitros') renderArbitros();
+  if(p==='arbitros'){ renderArbitros(); renderTrabajadores(); }
   if(p==='resumen') renderResumen();
   if(p==='tabla') renderTabla();
   if(p==='equipos') renderEquiposPage();
@@ -1535,6 +1607,7 @@ function selectCat(cat, btn){
   document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderTabla();
+  renderGoleadores();
   renderPartidos();
   renderEquiposPage();
 }
@@ -2795,9 +2868,166 @@ function saveArbitro(){
 }
 
 // ══════════════════════════════════════
-//  RESUMEN & ANÁLISIS FINANCIERO
+//  CAPITAL HUMANO — TAB SWITCHER
 // ══════════════════════════════════════
-let resumenPeriodo = 'dia';
+function switchCHTab(tab){
+  document.getElementById('ch_arb_section').style.display=tab==='arb'?'block':'none';
+  document.getElementById('ch_trab_section').style.display=tab==='trab'?'block':'none';
+  document.getElementById('chTab_arb').className=tab==='arb'?'btn btn-g btn-sm':'btn btn-out btn-sm';
+  document.getElementById('chTab_trab').className=tab==='trab'?'btn btn-g btn-sm':'btn btn-out btn-sm';
+  document.getElementById('chTab_arb').style.flex='1';document.getElementById('chTab_arb').style.padding='10px';
+  document.getElementById('chTab_trab').style.flex='1';document.getElementById('chTab_trab').style.padding='10px';
+  if(tab==='trab') renderTrabajadores();
+  if(tab==='arb') renderArbitros();
+}
+
+// ══════════════════════════════════════
+//  TRABAJADORES
+// ══════════════════════════════════════
+const getTrabs = () => Object.entries(C.trabajadores).map(([k,v])=>({...v,_key:k}));
+const getGastos = () => Object.entries(C.gastosTrab).map(([k,v])=>({...v,_key:k})).sort((a,b)=>b.ts-a.ts);
+
+let trabPeriodo = 'mes';
+const ROL_NAMES = {tienda:'🛒 Tiendita',herrero:'🔧 Herrero',electricista:'⚡ Electricista',limpieza:'🧹 Limpieza',seguridad:'🔒 Seguridad',otro:'📋 Otro'};
+
+function setTrabPeriodo(p){
+  trabPeriodo=p;
+  ['hoy','mes','todo'].forEach(x=>{const b=document.getElementById(`trabBtn_${x}`);if(b)b.className=x===p?'btn btn-g btn-sm':'btn btn-out btn-sm';});
+  renderTrabajadores();
+}
+
+function getTrabFilteredGastos(){
+  const all=getGastos();
+  const now=new Date(); const hoy=now.toISOString().split('T')[0];
+  if(trabPeriodo==='hoy') return all.filter(g=>g.fecha===hoy);
+  if(trabPeriodo==='mes'){const d=new Date();d.setMonth(d.getMonth()-1);const f=d.toISOString().split('T')[0];return all.filter(g=>(g.fecha||'')>=f);}
+  return all;
+}
+
+function renderTrabajadores(){
+  const trabs=getTrabs();
+  const el=document.getElementById('trabajadoresList');
+  if(!el)return;
+  if(!trabs.length){el.innerHTML='<div class="empty"><span class="empty-icon">👷</span>Sin trabajadores registrados</div>';} 
+  else el.innerHTML=trabs.map(t=>{
+    const gastos=getGastos().filter(g=>g.trabajadorKey===t._key);
+    const totalPagado=gastos.filter(g=>g.metodo!=='pendiente').reduce((s,g)=>s+g.monto,0);
+    const pendiente=gastos.filter(g=>g.metodo==='pendiente').reduce((s,g)=>s+g.monto,0);
+    return `<div class="arb-card">
+      <div class="arb-av">${ROL_NAMES[t.rol]?.split(' ')[0]||'👷'}</div>
+      <div class="arb-info">
+        <div class="arb-name">${t.nombre}</div>
+        <div class="arb-meta">${ROL_NAMES[t.rol]||t.rol} · ${t.tel||''}</div>
+        ${t.desc?`<div class="arb-meta" style="font-style:italic">${t.desc}</div>`:''}
+        ${pendiente>0?`<div style="font-size:10px;font-weight:800;color:var(--amber);margin-top:2px">⏳ $${pendiente} pendiente</div>`:''}
+      </div>
+      <div style="text-align:right;display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="arb-earned">$${totalPagado}</div>
+        <div style="font-size:9px;color:var(--muted);font-weight:700">PAGADO</div>
+        <button class="btn btn-out btn-sm" onclick="editTrabajador('${t._key}')">✏️</button>
+        <button class="btn btn-r btn-sm" onclick="deleteTrabajador('${t._key}')">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // populate selector
+  const sel=document.getElementById('gasto_trab_sel');
+  if(sel) sel.innerHTML='<option value="">— Seleccionar —</option>'+trabs.map(t=>`<option value="${t._key}">${t.nombre} (${ROL_NAMES[t.rol]||t.rol})</option>`).join('');
+
+  // resumen período
+  const gastosFilt=getTrabFilteredGastos();
+  const totalPer=gastosFilt.reduce((s,g)=>s+g.monto,0);
+  const pendPer=gastosFilt.filter(g=>g.metodo==='pendiente').reduce((s,g)=>s+g.monto,0);
+  const resEl=document.getElementById('resumenTrabajadores');
+  if(resEl) resEl.innerHTML=`
+    <div class="money-row"><span class="money-lbl">💵 Total pagado en período</span><span class="money-val">$${totalPer-pendPer}</span></div>
+    <div class="money-row"><span class="money-lbl">⏳ Pendiente de pago</span><span class="money-val" style="color:var(--amber)">$${pendPer}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total gasto trabajadores</span><span class="money-val">$${totalPer}</span></div>`;
+
+  // historial
+  const histEl=document.getElementById('historialGastosTrab');
+  if(histEl){
+    if(!gastosFilt.length){histEl.innerHTML='<div style="text-align:center;color:var(--muted);padding:12px;font-size:12px;font-weight:600">Sin pagos en este período</div>';return;}
+    histEl.innerHTML=gastosFilt.map(g=>{
+      const trab=C.trabajadores[g.trabajadorKey];
+      return `<div class="pago-row">
+        <div class="pago-info">
+          <div class="pago-match">${trab?.nombre||'—'} · ${g.concepto||'Sin concepto'}</div>
+          <div class="pago-meta">📅 ${fmtDate(g.fecha)} · ${g.metodo==='efectivo'?'💵 Efectivo':g.metodo==='transferencia'?'📱 Transferencia':'⏳ Pendiente'}${g.notas?' · '+g.notas:''}</div>
+        </div>
+        <span class="pago-amt">$${g.monto}</span>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          ${g.metodo==='pendiente'?`<button class="btn btn-g btn-sm" onclick="marcarGastoPagado('${g._key}')">✓ Pagar</button>`:''}
+          <button class="btn btn-r btn-sm" onclick="deleteGastoTrab('${g._key}')">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  // set default date
+  const fd=document.getElementById('gasto_fecha');
+  if(fd&&!fd.value) fd.value=new Date().toISOString().split('T')[0];
+}
+
+function saveTrabajador(){
+  const n=document.getElementById('nt_nombre').value.trim();
+  if(!n){showToast('Ingresa el nombre','ta');return;}
+  const key=document.getElementById('nt_key').value;
+  const data={nombre:n,rol:document.getElementById('nt_rol').value,desc:document.getElementById('nt_desc').value.trim(),tel:document.getElementById('nt_tel').value.trim(),pago:parseInt(document.getElementById('nt_pago').value)||0,updatedAt:Date.now()};
+  if(key) db.ref(`trabajadores/${key}`).update(data);
+  else db.ref('trabajadores').push({...data,creadoAt:Date.now()});
+  closeModal('modalNuevoTrab');
+  ['nt_nombre','nt_desc','nt_tel','nt_pago','nt_key'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('trabModalTitle').textContent='👷 Nuevo Trabajador';
+  showToast(key?'Trabajador actualizado':'Trabajador registrado','tg');
+}
+
+function editTrabajador(key){
+  const t=C.trabajadores[key]; if(!t)return;
+  document.getElementById('nt_key').value=key;
+  document.getElementById('nt_nombre').value=t.nombre||'';
+  document.getElementById('nt_rol').value=t.rol||'otro';
+  document.getElementById('nt_desc').value=t.desc||'';
+  document.getElementById('nt_tel').value=t.tel||'';
+  document.getElementById('nt_pago').value=t.pago||0;
+  document.getElementById('trabModalTitle').textContent='✏️ Editar Trabajador';
+  openModal('modalNuevoTrab');
+}
+
+function deleteTrabajador(key){
+  if(!confirm('¿Eliminar este trabajador?'))return;
+  db.ref(`trabajadores/${key}`).remove();
+  showToast('Trabajador eliminado','tr');
+}
+
+function registrarGastoTrab(){
+  const trabKey=document.getElementById('gasto_trab_sel').value;
+  if(!trabKey){showToast('Selecciona un trabajador','ta');return;}
+  const monto=parseInt(document.getElementById('gasto_monto').value)||0;
+  if(!monto){showToast('Ingresa el monto','ta');return;}
+  db.ref('gastosTrab').push({
+    trabajadorKey:trabKey,
+    concepto:document.getElementById('gasto_concepto').value.trim(),
+    monto,
+    fecha:document.getElementById('gasto_fecha').value,
+    metodo:document.getElementById('gasto_metodo').value,
+    notas:document.getElementById('gasto_notas').value.trim(),
+    ts:Date.now()
+  });
+  ['gasto_concepto','gasto_monto','gasto_notas'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('gasto_trab_sel').value='';
+  showToast('Pago registrado','tg');
+}
+
+function marcarGastoPagado(key){
+  db.ref(`gastosTrab/${key}/metodo`).set('efectivo');
+  showToast('Marcado como pagado','tg');
+}
+
+function deleteGastoTrab(key){
+  if(!confirm('¿Eliminar este registro de pago?'))return;
+  db.ref(`gastosTrab/${key}`).remove();
+  showToast('Registro eliminado','tr');
+}
 
 function setResumenPeriodo(periodo, btn){
   resumenPeriodo = periodo;
@@ -2872,7 +3102,7 @@ function renderResumen(){
   if(fi) fi.innerHTML=`
     <div class="fin-ratio"><div class="fin-ratio-title">💵 Ticket Promedio · ${periodLabel}</div><div class="fin-ratio-val">$${ticketPromedio}</div><div class="fin-ratio-desc">${ticketPromedio<20?'Considera combos para aumentar el ticket.':'Buen ticket — sigue ofreciendo variedad.'}</div></div>
     <div class="fin-ratio"><div class="fin-ratio-title">⚖️ Relación Tienda / Arbitraje</div><div class="fin-ratio-val">${rotatcion}x</div><div class="fin-ratio-desc">${rotatcion<1?'La tienda genera menos que arbitraje — enfoca promociones.':'La tienda es rentable comparado con arbitraje.'}</div></div>
-    <div class="fin-ratio"><div class="fin-ratio-title">📈 Utilidad Neta · ${periodLabel}</div><div class="fin-ratio-val" style="color:${utilidadNeta>=0?'var(--acc)':'var(--red)'}">$${utilidadNeta}</div><div class="fin-ratio-desc">${utilidadNeta>=0?'✅ Período rentable.':'⚠️ Los costos superan ingresos.'}</div></div>
+    <div class="fin-ratio"><div class="fin-ratio-title">💰 Total Ingresos · ${periodLabel}</div><div class="fin-ratio-val" style="color:var(--acc)">$${totalGeneral}</div><div class="fin-ratio-desc">Suma de ventas + arbitrajes. Sin descontar costos de operación.</div></div>
     ${stockBajo>0?`<div class="insight-box warn"><div class="insight-title">⚠️ Stock Bajo</div><div class="insight-text">${stockBajo} producto(s) con ≤5 unidades. Reabastece antes del próximo torneo.</div></div>`:''}
     ${totalInscPendiente>0?`<div class="insight-box alert"><div class="insight-title">💰 Inscripciones Pendientes: $${totalInscPendiente}</div><div class="insight-text">Hay equipos con deuda de inscripción pendiente.</div></div>`:''}
     <div class="insight-box"><div class="insight-title">🏆 Recomendación</div><div class="insight-text">${topProds.length>0?`Producto más vendido: "${topProds[0][0]}" ($${topProds[0][1].total}). `:''} ${ticketPromedio<30?'Crea combos como "Agua + Sabritas = $40" para subir el ticket.':'Mantén el inventario de productos populares siempre disponible.'}</div></div>`;
