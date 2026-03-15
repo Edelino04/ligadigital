@@ -1408,6 +1408,29 @@ const TORNEO_NAMES = { villa:'TORNEO VILLA UNIVERSIDAD', musala:'TORNEO ISLA MÚ
 const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:'Liga Baja A', liga_baja_b:'Liga Baja B' };
 const CANCHAS = ['Villa Universidad','Isla Músala'];
 
+// ══════════════════════════════════════
+//  MODAL & TOAST (defined early so boot can use them)
+// ══════════════════════════════════════
+function openModal(id){
+  const el=document.getElementById(id); if(!el)return;
+  el.classList.add('open');
+  if(id==='modalEquipoRestr') populateErEquipo('');
+}
+function closeModal(id){
+  const el=document.getElementById(id); if(el) el.classList.remove('open');
+}
+let toastT;
+function showToast(msg, type='tg'){
+  const t=document.getElementById('toast'); if(!t)return;
+  t.textContent=msg; t.className=`toast ${type} show`;
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.modal-overlay').forEach(m=>{
+    m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
+  });
+});
+
 // Default products
 const DEFAULT_PRODUCTS = [
   {emoji:'💧',nombre:'Agua',precio:20,stock:30},
@@ -3863,33 +3886,6 @@ function cambiarTorneo(){
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   const tablaPage=document.getElementById('page-tabla');
   if(tablaPage) tablaPage.classList.add('active');
-}
-
-// ══════════════════════════════════════
-//  MODAL & TOAST
-// ══════════════════════════════════════
-function openModal(id){
-  const el=document.getElementById(id); if(!el)return;
-  el.classList.add('open');
-  if(id==='modalEquipoRestr') populateErEquipo('');
-}
-function closeModal(id){
-  const el=document.getElementById(id); if(el) el.classList.remove('open');
-}
-document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.modal-overlay').forEach(m=>{
-    m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
-  });
-});
-// Also run immediately in case DOM is ready
-document.querySelectorAll('.modal-overlay').forEach(m=>{
-  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
-});
-
-let toastT;
-function showToast(msg, type='tg'){
-  const t=document.getElementById('toast'); t.textContent=msg; t.className=`toast ${type} show`;
-  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 // ══════════════════════════════════════
