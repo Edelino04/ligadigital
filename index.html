@@ -462,40 +462,45 @@ textarea.fi{resize:vertical;min-height:60px;}
 
 <!-- ═══ SPLASH ═══ -->
 <div id="splash">
-  <div style="position:absolute;top:8%;left:8%;font-size:28px;opacity:.1;animation:bounce 1.2s ease-in-out infinite alternate">⚽</div>
-  <div style="position:absolute;top:12%;right:10%;font-size:20px;opacity:.08;animation:bounce 1.8s ease-in-out infinite alternate">🏆</div>
-  <div style="position:absolute;bottom:22%;left:6%;font-size:22px;opacity:.07;animation:bounce 1.5s ease-in-out infinite alternate">⚽</div>
-  <div style="position:absolute;bottom:12%;right:7%;font-size:24px;opacity:.07;animation:bounce 2s ease-in-out infinite alternate">🥅</div>
+  <!-- Floating decorations -->
+  <div style="position:absolute;top:6%;left:6%;font-size:32px;opacity:.08;animation:bounce 1.3s ease-in-out infinite alternate;filter:blur(1px)">⚽</div>
+  <div style="position:absolute;top:10%;right:8%;font-size:22px;opacity:.07;animation:bounce 1.9s ease-in-out infinite alternate">🏆</div>
+  <div style="position:absolute;top:45%;left:3%;font-size:18px;opacity:.06;animation:bounce 1.6s ease-in-out infinite alternate">🥅</div>
+  <div style="position:absolute;bottom:20%;right:5%;font-size:26px;opacity:.07;animation:bounce 2.1s ease-in-out infinite alternate">⚽</div>
+  <div style="position:absolute;bottom:8%;left:10%;font-size:20px;opacity:.06;animation:bounce 1.4s ease-in-out infinite alternate">🏟️</div>
 
-  <div class="sp-logo-wrap">
-    <div class="sp-logo-icon">⚽</div>
-  </div>
-  <div class="sp-title" style="margin-top:14px">LIGA<span>Digital</span></div>
-  <div class="sp-sub" style="margin-bottom:6px">Gestión de Torneos de Fútbol</div>
-  <div class="sp-divider"></div>
-  <div class="sp-label">Selecciona tu torneo</div>
-
-  <div class="sp-opts">
-    <div class="sp-opt" onclick="selectTorneo('villa')">
-      <div class="sp-opt-icon">🏟️</div>
-      <div class="sp-opt-info">
-        <div class="sp-opt-name">TORNEO VILLA UNIVERSIDAD</div>
-        <div class="sp-opt-sub">Organizador: Joel "El Chingón" Rivera</div>
-      </div>
-      <div class="sp-opt-arrow">›</div>
-    </div>
-    <div class="sp-opt" onclick="selectTorneo('musala')">
-      <div class="sp-opt-icon">⚽</div>
-      <div class="sp-opt-info">
-        <div class="sp-opt-name">TORNEO ISLA MÚSALA</div>
-        <div class="sp-opt-sub">Organizador: Joel "El Chingón" Rivera</div>
-      </div>
-      <div class="sp-opt-arrow">›</div>
-    </div>
+  <!-- Brand -->
+  <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:28px">
+    <div style="width:72px;height:72px;background:linear-gradient(135deg,#4ade80 0%,#16a34a 60%,#166534 100%);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 0 8px rgba(74,222,128,.12),0 12px 40px rgba(0,0,0,.4);animation:pulse-logo 2.5s ease-in-out infinite;margin-bottom:16px">⚽</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:7px;color:#fff;line-height:1;text-shadow:0 2px 20px rgba(0,0,0,.4)">LIGA<span style="color:#4ade80;text-shadow:0 0 30px rgba(74,222,128,.6)">Digital</span></div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:5px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-top:4px">Culiacán · Sinaloa · 2026</div>
   </div>
 
-  <div class="sp-admin-link" onclick="openLoginModal()">🔐 Acceso administrador</div>
-  <div class="sp-footer">LigaDigital · Culiacán, Sinaloa · 2026</div>
+  <!-- Divider -->
+  <div style="width:80px;height:2px;background:linear-gradient(90deg,transparent,rgba(74,222,128,.6),transparent);margin:0 auto 20px"></div>
+  <div style="font-size:10px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.35);text-transform:uppercase;text-align:center;margin-bottom:16px">— Elige tu torneo —</div>
+
+  <!-- Tournament cards -->
+  <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px">
+    <div onclick="selectTorneo('villa')" style="background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(22,163,74,.06));border:1.5px solid rgba(74,222,128,.25);border-radius:18px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(74,222,128,.7)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(74,222,128,.25)';this.style.transform='translateY(0)'">
+      <div style="width:50px;height:50px;background:linear-gradient(135deg,#16a34a,#15803d);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 16px rgba(22,163,74,.4)">🏟️</div>
+      <div style="flex:1">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#fff;line-height:1.1">TORNEO VILLA UNIVERSIDAD</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;margin-top:3px;letter-spacing:1px">4 CATEGORÍAS · TEMPORADA 2026</div>
+      </div>
+      <div style="font-size:22px;color:rgba(74,222,128,.5)">›</div>
+    </div>
+    <div onclick="selectTorneo('musala')" style="background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(37,99,235,.06));border:1.5px solid rgba(59,130,246,.25);border-radius:18px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='rgba(96,165,250,.7)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(59,130,246,.25)';this.style.transform='translateY(0)'">
+      <div style="width:50px;height:50px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 16px rgba(37,99,235,.4)">🏝️</div>
+      <div style="flex:1">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#fff;line-height:1.1">TORNEO ISLA MÚSALA</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;margin-top:3px;letter-spacing:1px">3 CATEGORÍAS · TEMPORADA 2026</div>
+      </div>
+      <div style="font-size:22px;color:rgba(96,165,250,.5)">›</div>
+    </div>
+  </div>
+
+  <div class="sp-admin-link" onclick="openLoginModal()" style="margin-top:22px">🔐 Acceso administrador</div>
 </div>
 
 <!-- ═══ LOGIN MODAL ═══ -->
@@ -523,7 +528,7 @@ textarea.fi{resize:vertical;min-height:60px;}
     <div class="hdr-icon">⚽</div>
     <div class="hdr-brand">
       <div class="hdr-name" id="hdrName">LIGADIGITAL</div>
-      <div class="hdr-cat" id="hdrCat">Selecciona categoría</div>
+      <div class="hdr-cat" id="hdrCat">📱 Joel "El Chingón" Rivera · 6672246719</div>
     </div>
     <div class="hdr-right">
       <button class="ico-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
@@ -538,8 +543,8 @@ textarea.fi{resize:vertical;min-height:60px;}
   <div class="cat-tabs">
     <button class="cat-tab active" onclick="selectCat('liga_alta',this)">Liga Alta</button>
     <button class="cat-tab" onclick="selectCat('liga_media',this)">Liga Media</button>
-    <button class="cat-tab" onclick="selectCat('liga_baja_a',this)">Liga Baja A</button>
-    <button class="cat-tab" onclick="selectCat('liga_baja_b',this)">Liga Baja B</button>
+    <button class="cat-tab" id="catTab_baja_a" onclick="selectCat('liga_baja_a',this)">Liga Baja A</button>
+    <button class="cat-tab" id="catTab_baja_b" onclick="selectCat('liga_baja_b',this)">Liga Baja B</button>
   </div>
   <!-- Nav -->
   <div class="nav-tabs">
@@ -853,7 +858,8 @@ textarea.fi{resize:vertical;min-height:60px;}
     <button class="btn btn-g btn-sm" onclick="setResumenPeriodo('dia',this)" id="resPer_dia">📅 Hoy</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('semana',this)" id="resPer_semana">📆 Semana</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('mes',this)" id="resPer_mes">🗓️ Mes</button>
-    <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('general',this)" id="resPer_general">📊 General</button>
+    <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('anual',this)" id="resPer_anual">📊 Anual</button>
+    <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('general',this)" id="resPer_general">🌐 General</button>
   </div>
 
   <div class="sh"><div class="st" id="resumenPeriodoTitle">📋 Resumen del Día</div><div class="sl"></div></div>
@@ -1478,10 +1484,29 @@ function selectTorneo(t){
   launchApp();
 }
 
+function updateCatTabs(){
+  const bajaB = document.getElementById('catTab_baja_b');
+  const bajaA = document.getElementById('catTab_baja_a');
+  if(currentTorneo==='musala'){
+    if(bajaB) bajaB.style.display='none';
+    if(bajaA) bajaA.textContent='Liga Baja';
+    // if current cat is liga_baja_b, reset to liga_baja_a
+    if(currentCat==='liga_baja_b'){
+      currentCat='liga_baja_a';
+      document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+      if(bajaA) bajaA.classList.add('active');
+    }
+  } else {
+    if(bajaB) bajaB.style.display='';
+    if(bajaA) bajaA.textContent='Liga Baja A';
+  }
+}
+
 function launchApp(){
   document.getElementById('appShell').style.display = 'block';
   document.getElementById('hdrName').textContent = TORNEO_NAMES[currentTorneo];
-  document.getElementById('hdrCat').textContent = CAT_NAMES[currentCat];
+  document.getElementById('hdrCat').textContent = '📱 Joel "El Chingón" Rivera · 6672246719';
+  updateCatTabs();
   document.getElementById('mp_torneo').value = currentTorneo;
   document.getElementById('mp_cat').value = currentCat;
   setupListeners();
@@ -3033,7 +3058,7 @@ function setResumenPeriodo(periodo, btn){
   resumenPeriodo = periodo;
   document.querySelectorAll('[id^=resPer_]').forEach(b=>b.className='btn btn-out btn-sm');
   if(btn) btn.className='btn btn-g btn-sm';
-  const titles={dia:'📋 Resumen del Día',semana:'📆 Resumen Semanal',mes:'🗓️ Resumen Mensual',general:'📊 Resumen General'};
+  const titles={dia:'📋 Resumen del Día',semana:'📆 Resumen Semanal',mes:'🗓️ Resumen Mensual',anual:'📊 Resumen Anual',general:'🌐 Resumen General'};
   const t=document.getElementById('resumenPeriodoTitle');
   if(t) t.textContent=titles[periodo]||'📋 Resumen';
   renderResumen();
@@ -3043,30 +3068,110 @@ function getResumenFilteredData(){
   const allVentas=getVentas();
   const allParts=getParts().filter(p=>p.status==='terminado');
   const allInscs=getInsc();
+  const allGastos=getGastos();
   const now=new Date(); const hoy=now.toISOString().split('T')[0];
   const todayStart=new Date(hoy+'T00:00:00').getTime();
   const todayEnd=new Date(hoy+'T23:59:59').getTime();
+
   if(resumenPeriodo==='dia'){
-    return{
-      ventas:allVentas.filter(v=>v.ts&&v.ts>=todayStart&&v.ts<=todayEnd),
-      parts:allParts.filter(p=>p.fecha===hoy),
-      inscs:allInscs,
-      label:'hoy'
-    };
+    const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>a.fecha===hoy)):{}  }));
+    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=todayStart&&v.ts<=todayEnd),parts:allParts.filter(p=>p.fecha===hoy),inscs:abonos,gastos:allGastos.filter(g=>g.fecha===hoy),label:'Hoy'};
   }
   if(resumenPeriodo==='semana'){
-    const d=new Date();d.setDate(d.getDate()-7);const f=d.toISOString().split('T')[0];
-    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=(new Date(f).getTime())),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:allInscs,label:'esta semana'};
+    const d=new Date();d.setDate(d.getDate()-7);const f=d.toISOString().split('T')[0];const fts=new Date(f).getTime();
+    const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>(a.fecha||'')>=f)):{}  }));
+    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=fts),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:abonos,gastos:allGastos.filter(g=>(g.fecha||'')>=f),label:'Semana'};
   }
   if(resumenPeriodo==='mes'){
-    const d=new Date();d.setMonth(d.getMonth()-1);const f=d.toISOString().split('T')[0];
-    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=(new Date(f).getTime())),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:allInscs,label:'este mes'};
+    const d=new Date();d.setMonth(d.getMonth()-1);const f=d.toISOString().split('T')[0];const fts=new Date(f).getTime();
+    const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>(a.fecha||'')>=f)):{}  }));
+    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=fts),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:abonos,gastos:allGastos.filter(g=>(g.fecha||'')>=f),label:'Mes'};
   }
-  return{ventas:allVentas,parts:allParts,inscs:allInscs,label:'general'};
+  if(resumenPeriodo==='anual'){
+    const d=new Date();d.setFullYear(d.getFullYear()-1);const f=d.toISOString().split('T')[0];const fts=new Date(f).getTime();
+    const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>(a.fecha||'')>=f)):{}  }));
+    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=fts),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:abonos,gastos:allGastos.filter(g=>(g.fecha||'')>=f),label:'Año'};
+  }
+  return{ventas:allVentas,parts:allParts,inscs:allInscs,gastos:allGastos,label:'General'};
 }
 
 function renderResumen(){
-  const {ventas,parts,inscs,label}=getResumenFilteredData();
+  const {ventas,parts,inscs,gastos,label}=getResumenFilteredData();
+  const tv=ventas.reduce((s,v)=>s+v.total,0);
+  const numV=ventas.length;
+  const totalEf=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.ef||0)+(g.visita?.ef||0);},0);
+  const totalTr=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.tr||0)+(g.visita?.tr||0);},0);
+  const totalPp=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.pp||0)+(g.visita?.pp||0);},0);
+  const totalArb=totalEf+totalTr+totalPp;
+  const totalInscPagado=inscs.reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];return s+abs.reduce((a,b)=>a+b.monto,0);},0);
+  const totalInscPendiente=getInsc().reduce((s,i)=>{const abs=i.abonos?Object.values(i.abonos):[];const pag=abs.reduce((a,b)=>a+b.monto,0);return s+Math.max(0,(i.montoTotal||0)-pag);},0);
+  const totalGastosTrab=(gastos||[]).reduce((s,g)=>s+g.monto,0);
+  const totalGeneral=tv+totalArb;
+  const periodLabel=label;
+
+  const rg=document.getElementById('resumenGrid');
+  if(rg) rg.innerHTML=`
+    <div class="res-card" style="border-top:3px solid var(--acc)"><div class="res-n" style="color:var(--acc)">$${tv}</div><div class="res-l">Ventas · ${periodLabel}</div></div>
+    <div class="res-card" style="border-top:3px solid var(--blue)"><div class="res-n" style="color:var(--blue)">${numV}</div><div class="res-l">N° Ventas · ${periodLabel}</div></div>
+    <div class="res-card" style="border-top:3px solid var(--amber)"><div class="res-n" style="color:var(--amber)">$${totalArb}</div><div class="res-l">Arbitrajes · ${periodLabel}</div></div>
+    <div class="res-card" style="border-top:3px solid var(--acc)"><div class="res-n" style="color:var(--acc)">$${totalInscPagado}</div><div class="res-l">Inscripciones · ${periodLabel}</div></div>
+    <div class="res-card" style="border-top:3px solid var(--red)"><div class="res-n" style="color:var(--red)">$${totalGastosTrab}</div><div class="res-l">Capital Humano · ${periodLabel}</div></div>
+    <div class="res-card card-gold" style="grid-column:1/-1"><div class="res-n" style="color:var(--gold);font-size:40px">$${totalGeneral}</div><div class="res-l">Total Ingresos · ${periodLabel}</div></div>`;
+
+  const prods=getProd();
+  const stockBajo=prods.filter(p=>p.stock<=5).length;
+  const ticketPromedio=numV>0?Math.round(tv/numV):0;
+  const rotatcion=tv>0&&totalArb>0?Math.round((tv/totalArb)*100)/100:0;
+  const vpp={};
+  ventas.forEach(v=>(v.items||[]).forEach(i=>{if(!vpp[i.nombre])vpp[i.nombre]={emoji:i.emoji||'📦',qty:0,total:0};vpp[i.nombre].qty+=i.qty;vpp[i.nombre].total+=i.precio*i.qty;}));
+  const topProds=Object.entries(vpp).sort((a,b)=>b[1].total-a[1].total).slice(0,5);
+
+  const fi=document.getElementById('finInsights');
+  if(fi) fi.innerHTML=`
+    <div class="fin-ratio"><div class="fin-ratio-title">💵 Ticket Promedio · ${periodLabel}</div><div class="fin-ratio-val">$${ticketPromedio}</div><div class="fin-ratio-desc">${ticketPromedio<20?'Considera combos para aumentar el ticket.':'Buen ticket — sigue ofreciendo variedad.'}</div></div>
+    <div class="fin-ratio"><div class="fin-ratio-title">⚖️ Relación Tienda / Arbitraje</div><div class="fin-ratio-val">${rotatcion}x</div><div class="fin-ratio-desc">${rotatcion<1?'La tienda genera menos que arbitraje — enfoca promociones.':'La tienda es rentable comparado con arbitraje.'}</div></div>
+    <div class="fin-ratio"><div class="fin-ratio-title">💰 Total Ingresos · ${periodLabel}</div><div class="fin-ratio-val" style="color:var(--acc)">$${totalGeneral}</div><div class="fin-ratio-desc">Suma de ventas + arbitrajes del período.</div></div>
+    ${stockBajo>0?`<div class="insight-box warn"><div class="insight-title">⚠️ Stock Bajo</div><div class="insight-text">${stockBajo} producto(s) con ≤5 unidades. Reabastece antes del próximo torneo.</div></div>`:''}
+    ${totalInscPendiente>0?`<div class="insight-box alert"><div class="insight-title">💰 Inscripciones Pendientes: $${totalInscPendiente}</div><div class="insight-text">Hay equipos con deuda de inscripción pendiente.</div></div>`:''}
+    <div class="insight-box"><div class="insight-title">🏆 Recomendación</div><div class="insight-text">${topProds.length>0?`Producto más vendido: "${topProds[0][0]}" ($${topProds[0][1].total}). `:''} ${ticketPromedio<30?'Crea combos como "Agua + Sabritas = $40" para subir el ticket.':'Mantén el inventario de productos populares siempre disponible.'}</div></div>`;
+
+  const ri=document.getElementById('resInsc');
+  if(ri) ri.innerHTML=`
+    <div class="money-row"><span class="money-lbl">✅ Abonos · ${periodLabel}</span><span class="money-val">$${totalInscPagado}</span></div>
+    <div class="money-row"><span class="money-lbl">⏳ Total pendiente (general)</span><span class="money-val" style="color:var(--red)">$${totalInscPendiente}</span></div>`;
+
+  const rv=document.getElementById('resVentas');
+  if(rv) rv.innerHTML=!topProds.length?`<div style="color:var(--muted);font-size:12px;padding:8px">Sin ventas en ${periodLabel}</div>`:
+    topProds.map(([n,d])=>`<div class="money-row"><span class="money-lbl">${d.emoji} ${n} (${d.qty} pzs)</span><span class="money-val">$${d.total}</span></div>`).join('');
+
+  const ra=document.getElementById('resArb');
+  if(ra) ra.innerHTML=`
+    <div class="money-row"><span class="money-lbl">💵 Efectivo</span><span class="money-val">$${totalEf}</span></div>
+    <div class="money-row"><span class="money-lbl">📱 Transferencia</span><span class="money-val">$${totalTr}</span></div>
+    <div class="money-row"><span class="money-lbl">✅ Prepago</span><span class="money-val">$${totalPp}</span></div>
+    <div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total · ${periodLabel}</span><span class="money-val">$${totalArb}</span></div>`;
+
+  // Capital Humano en resumen
+  let raCapHum=document.getElementById('resCapHum');
+  if(!raCapHum){
+    const sh=document.createElement('div');sh.innerHTML=`<div class="sh" style="margin-top:8px"><div class="st">👥 Capital Humano</div><div class="sl"></div></div><div class="card"><div id="resCapHum"></div></div>`;
+    document.getElementById('page-resumen').insertBefore(sh,document.querySelector('#page-resumen .card.card-r'));
+    raCapHum=document.getElementById('resCapHum');
+  }
+  if(raCapHum){
+    const trabGastosPer=gastos||[];
+    const byTrab={};
+    trabGastosPer.forEach(g=>{
+      const t=C.trabajadores[g.trabajadorKey];const n=t?.nombre||'Sin asignar';
+      if(!byTrab[n])byTrab[n]={total:0,pendiente:0};
+      byTrab[n].total+=g.monto;
+      if(g.metodo==='pendiente')byTrab[n].pendiente+=g.monto;
+    });
+    raCapHum.innerHTML=!trabGastosPer.length?`<div style="color:var(--muted);font-size:12px;padding:8px">Sin gastos en ${periodLabel}</div>`:
+      Object.entries(byTrab).map(([n,d])=>`<div class="money-row"><span class="money-lbl">👷 ${n}${d.pendiente>0?` <span style="color:var(--amber);font-size:10px">(⏳ $${d.pendiente} pend.)</span>`:''}</span><span class="money-val">$${d.total}</span></div>`).join('')+
+      `<div class="money-row total-row"><span class="money-lbl" style="font-weight:800">Total · ${periodLabel}</span><span class="money-val" style="color:var(--red)">$${totalGastosTrab}</span></div>`;
+  }
+}
   const tv=ventas.reduce((s,v)=>s+v.total,0);
   const numV=ventas.length;
   const totalEf=parts.reduce((s,p)=>{const g=p.arbPago||{};return s+(g.local?.ef||0)+(g.visita?.ef||0);},0);
