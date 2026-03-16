@@ -1866,15 +1866,16 @@ function onAuthChange(user){
 function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
   isCaptain = !!captainFlag;
   captainEquipoKey = capEquipoKey || null;
+  const canAct = adminFlag || captainFlag;
   const adminBadge = document.getElementById('adminBadge');
-  const loginBtn = document.getElementById('loginBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const usersBtn = document.getElementById('usersBtn');
-  if(adminBadge) adminBadge.style.display = (adminFlag||captainFlag)?'block':'none';
-  if(loginBtn)   loginBtn.style.display   = (adminFlag||captainFlag)?'none':'';
-  if(logoutBtn)  logoutBtn.style.display  = (adminFlag||captainFlag)?'block':'none';
+  const loginBtn   = document.getElementById('loginBtn');
+  const logoutBtn  = document.getElementById('logoutBtn');
+  const usersBtn   = document.getElementById('usersBtn');
+  if(adminBadge) adminBadge.style.display = canAct?'block':'none';
+  if(loginBtn)   loginBtn.style.display   = canAct?'none':'block';
+  if(logoutBtn)  logoutBtn.style.display  = canAct?'block':'none';
   if(usersBtn)   usersBtn.style.display   = ownerFlag?'':'none';
-  // show captain badge if captain but not admin
+  // Captain badge
   let capBadgeEl = document.getElementById('captainBadge');
   if(!capBadgeEl && captainFlag && !adminFlag){
     capBadgeEl = document.createElement('span');
@@ -1884,22 +1885,15 @@ function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
     if(adminBadge && adminBadge.parentNode) adminBadge.parentNode.insertBefore(capBadgeEl, adminBadge.nextSibling);
   }
   if(capBadgeEl) capBadgeEl.style.display = (captainFlag&&!adminFlag)?'':'none';
+  // Admin-only elements
   document.querySelectorAll('.admin-only').forEach(x=>{ adminFlag?x.classList.add('show'):x.classList.remove('show'); });
   const addPartido = document.getElementById('adminAddPartido');
   const addEquipo  = document.getElementById('adminAddEquipo');
+  const aTemp      = document.getElementById('adminAddTemporada');
   if(addPartido) addPartido.style.display = adminFlag?'block':'none';
   if(addEquipo)  addEquipo.style.display  = adminFlag?'block':'none';
-    const aTemp=document.getElementById('adminAddTemporada');
-    if(aTemp) aTemp.style.display='block';
-  } else {
-    document.getElementById('adminBadge').style.display='none';
-    document.getElementById('loginBtn').style.display='block';
-    document.getElementById('logoutBtn').style.display='none';
-    document.querySelectorAll('.admin-only').forEach(x=>x.classList.remove('show'));
-    document.getElementById('adminAddPartido').style.display='none';
-    document.getElementById('adminAddEquipo').style.display='none';
-  }
-  // Show splash if no torneo selected yet
+  if(aTemp)      aTemp.style.display      = adminFlag?'block':'none';
+  // Show splash or app
   const saved = localStorage.getItem('ld_torneo');
   if(saved){ currentTorneo = saved; launchApp(); }
   else { document.getElementById('splash').style.display='flex'; document.getElementById('appShell').style.display='none'; }
