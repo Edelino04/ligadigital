@@ -1743,7 +1743,8 @@ const DEFAULT_PRODUCTS = [
 function onAuthChange(user){
   document.getElementById('loadingScreen').classList.remove('show');
   currentUser = user;
-  isAdmin = !!user;
+  const ADMIN_EMAILS = ['Edanchra@gmail.com', 'admincanchadigital@gmail.com'];
+  isAdmin = !!(user && ADMIN_EMAILS.map(e=>e.toLowerCase()).includes((user.email||'').toLowerCase()));
   if(isAdmin){
     document.getElementById('adminBadge').style.display='block';
     document.getElementById('loginBtn').style.display='none';
