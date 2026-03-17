@@ -685,6 +685,13 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 
 <!-- ═══════ TABLA ═══════ -->
 <div class="page active" id="page-tabla">
+  <!-- Admin: category management -->
+  <div id="adminCatPanel" style="display:none;margin-bottom:12px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn btn-out btn-sm" onclick="openModal('modalGestionCats')" style="border-color:rgba(77,126,245,.4);color:var(--acc)">⚙️ Gestionar Categorías</button>
+      <button class="btn btn-r btn-sm" onclick="openResetCategoria()">🔄 Reiniciar Categoría</button>
+    </div>
+  </div>
   <div class="sh">
     <div class="st">📊 Tabla de Posiciones</div>
     <div class="sl"></div>
@@ -1019,12 +1026,25 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 <!-- ═══════ RESUMEN ═══════ -->
 <div class="page" id="page-resumen">
   <!-- Period selector -->
-  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;scrollbar-width:none">
+  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:8px;scrollbar-width:none">
     <button class="btn btn-g btn-sm" onclick="setResumenPeriodo('dia',this)" id="resPer_dia">📅 Hoy</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('semana',this)" id="resPer_semana">📆 Semana</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('mes',this)" id="resPer_mes">🗓️ Mes</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('anual',this)" id="resPer_anual">📊 Anual</button>
     <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('general',this)" id="resPer_general">🌐 General</button>
+    <button class="btn btn-out btn-sm" onclick="setResumenPeriodo('custom',this)" id="resPer_custom">📆 Rango</button>
+  </div>
+  <!-- Custom date range -->
+  <div id="customRangePanel" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;">
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">📆 Selecciona rango de fechas</div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Desde fecha</label><input class="fi" id="res_desde_fecha" type="date" onchange="renderResumen()"/></div>
+      <div class="fg"><label class="fl">Hasta fecha</label><input class="fi" id="res_hasta_fecha" type="date" onchange="renderResumen()"/></div>
+    </div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">Desde hora (opcional)</label><input class="fi" id="res_desde_hora" type="time" onchange="renderResumen()"/></div>
+      <div class="fg"><label class="fl">Hasta hora (opcional)</label><input class="fi" id="res_hasta_hora" type="time" onchange="renderResumen()"/></div>
+    </div>
   </div>
 
   <div class="sh"><div class="st" id="resumenPeriodoTitle">📋 Resumen del Día</div><div class="sl"></div></div>
@@ -1728,6 +1748,57 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
   </div>
 </div>
 
+<!-- Modal Gestionar Categorías -->
+<div class="modal-overlay" id="modalGestionCats">
+  <div class="modal" style="border-top-color:var(--acc)">
+    <div class="modal-head">
+      <div class="modal-title">⚙️ Gestionar Categorías</div>
+      <button class="modal-close" onclick="closeModal('modalGestionCats')">✕</button>
+    </div>
+    <div style="font-size:10px;color:var(--muted);font-weight:600;margin-bottom:12px">
+      Torneo: <strong id="gcTorneoLabel"></strong>
+    </div>
+    <div id="gcList"></div>
+    <hr class="divider"/>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">➕ Nueva categoría</div>
+    <div class="form-2">
+      <div class="fg"><label class="fl">ID (sin espacios)</label><input class="fi" id="gc_id" placeholder="ej: liga_sub20"/></div>
+      <div class="fg"><label class="fl">Nombre</label><input class="fi" id="gc_nombre" placeholder="ej: Liga Sub-20"/></div>
+    </div>
+    <button class="btn btn-g btn-full" onclick="addCategoria()">➕ Agregar Categoría</button>
+  </div>
+</div>
+
+<!-- Modal Reiniciar Categoría -->
+<div class="modal-overlay" id="modalResetCat">
+  <div class="modal" style="border-top-color:var(--red)">
+    <div class="modal-head">
+      <div class="modal-title" style="color:var(--red)">🔄 Reiniciar Categoría</div>
+      <button class="modal-close" onclick="closeModal('modalResetCat')">✕</button>
+    </div>
+    <div style="background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:12px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:6px">⚠️ Esta acción es irreversible</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600;line-height:1.5">
+        Se eliminarán <strong>todos los partidos, equipos e inscripciones</strong> de la categoría seleccionada. Los árbitros y trabajadores no se eliminan.
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Torneo</label>
+      <select class="fi" id="rc_torneo">
+        <option value="villa">Villa Universidad</option>
+        <option value="musala">Isla Músala</option>
+      </select>
+    </div>
+    <div class="fg" style="margin-top:8px"><label class="fl">Categoría</label>
+      <select class="fi" id="rc_cat"></select>
+    </div>
+    <div class="fg" style="margin-top:8px">
+      <label class="fl">Escribe el nombre de la categoría para confirmar</label>
+      <input class="fi" id="rc_confirm" placeholder="Escribe aquí para confirmar..."/>
+    </div>
+    <button class="btn btn-r btn-full" style="margin-top:12px" onclick="confirmarResetCategoria()">🗑️ REINICIAR CATEGORÍA</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1899,6 +1970,8 @@ function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
   if(addPartido) addPartido.style.display = adminFlag?'block':'none';
   if(addEquipo)  addEquipo.style.display  = adminFlag?'block':'none';
   if(aTemp)      aTemp.style.display      = adminFlag?'block':'none';
+  const catPanel = document.getElementById('adminCatPanel');
+  if(catPanel)   catPanel.style.display   = adminFlag?'block':'none';
   // Show splash or app
   const saved = localStorage.getItem('ld_torneo');
   if(saved){ currentTorneo = saved; launchApp(); }
@@ -1937,6 +2010,7 @@ function launchApp(){
   // Show torneo logo in header
   const hdrLogoEl = document.getElementById('hdrTorneoLogo');
   if(hdrLogoEl) hdrLogoEl.src = TORNEO_LOGOS[currentTorneo];
+  loadCustomCats();
   updateCatTabs();
   document.getElementById('mp_torneo').value = currentTorneo;
   document.getElementById('mp_cat').value = currentCat;
@@ -3750,9 +3824,18 @@ function setResumenPeriodo(periodo, btn){
   resumenPeriodo = periodo;
   document.querySelectorAll('[id^=resPer_]').forEach(b=>b.className='btn btn-out btn-sm');
   if(btn) btn.className='btn btn-g btn-sm';
-  const titles={dia:'📋 Resumen del Día',semana:'📆 Resumen Semanal',mes:'🗓️ Resumen Mensual',anual:'📊 Resumen Anual',general:'🌐 Resumen General'};
+  const titles={dia:'📋 Resumen del Día',semana:'📆 Resumen Semanal',mes:'🗓️ Resumen Mensual',anual:'📊 Resumen Anual',general:'🌐 Resumen General',custom:'📆 Rango Personalizado'};
   const t=document.getElementById('resumenPeriodoTitle');
   if(t) t.textContent=titles[periodo]||'📋 Resumen';
+  const panel=document.getElementById('customRangePanel');
+  if(panel) panel.style.display=(periodo==='custom')?'block':'none';
+  if(periodo==='custom'){
+    // Set defaults if empty
+    const d=document.getElementById('res_desde_fecha');
+    const h=document.getElementById('res_hasta_fecha');
+    if(d&&!d.value){ const nd=new Date(); nd.setDate(nd.getDate()-7); d.value=nd.toISOString().split('T')[0]; }
+    if(h&&!h.value) h.value=new Date().toISOString().split('T')[0];
+  }
   renderResumen();
 }
 
@@ -3783,6 +3866,18 @@ function getResumenFilteredData(){
     const d=new Date();d.setFullYear(d.getFullYear()-1);const f=d.toISOString().split('T')[0];const fts=new Date(f).getTime();
     const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>(a.fecha||'')>=f)):{}  }));
     return{ventas:allVentas.filter(v=>v.ts&&v.ts>=fts),parts:allParts.filter(p=>(p.fecha||'')>=f),inscs:abonos,gastos:allGastos.filter(g=>(g.fecha||'')>=f),label:'Año'};
+  }
+  if(resumenPeriodo==='custom'){
+    const df=document.getElementById('res_desde_fecha')?.value||'2000-01-01';
+    const dt=document.getElementById('res_hasta_fecha')?.value||new Date().toISOString().split('T')[0];
+    const dh=document.getElementById('res_desde_hora')?.value||'00:00';
+    const th=document.getElementById('res_hasta_hora')?.value||'23:59';
+    const tsFrom=new Date(df+'T'+dh+':00').getTime();
+    const tsTo  =new Date(dt+'T'+th+':59').getTime();
+    const inRange=d=>d>=df&&d<=dt;
+    const abonos=allInscs.map(i=>({...i,abonos:i.abonos?Object.fromEntries(Object.entries(i.abonos).filter(([,a])=>inRange(a.fecha||''))):{}}));
+    const label=`${df} → ${dt}`;
+    return{ventas:allVentas.filter(v=>v.ts&&v.ts>=tsFrom&&v.ts<=tsTo),parts:allParts.filter(p=>inRange(p.fecha||'')),inscs:abonos,gastos:allGastos.filter(g=>inRange(g.fecha||'')),label};
   }
   return{ventas:allVentas,parts:allParts,inscs:allInscs,gastos:allGastos,label:'General'};
 }
@@ -4044,24 +4139,12 @@ function deleteTemporada(key){
 let compartirTextoActual = '';
 
 function compartirTabla(){
-  const torneo=TORNEO_NAMES[currentTorneo]||currentTorneo;
-  const cat=CAT_NAMES[currentCat]||currentCat;
   const tablaData=buildTablaData();
   if(!tablaData.length){showToast('Sin datos en la tabla','ta');return;}
-  let txt=`📊 *TABLA DE POSICIONES*\n`;
-  txt+=`🏆 ${torneo} · ${cat}\n`;
-  txt+=`${'─'.repeat(28)}\n`;
-  tablaData.forEach((t,i)=>{
-    const med=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
-    txt+=`${med} ${t.nombre}\n   ${t.pj}J · ${t.pts}pts · ${t.gf}GF/${t.gc}GC\n`;
-  });
-  txt+=`${'─'.repeat(28)}\n📱 Joel "El Chingón" Rivera · 6672246719`;
-  abrirCompartirModal('📊 Tabla de Posiciones', txt);
+  generarPDFTabla(tablaData, 'tabla');
 }
 
 function compartirGoleadores(){
-  const torneo=TORNEO_NAMES[currentTorneo]||currentTorneo;
-  const cat=CAT_NAMES[currentCat]||currentCat;
   const byP={};
   filteredParts().filter(p=>p.status==='terminado').forEach(p=>{
     const goles=p.goles?Object.values(p.goles):[];
@@ -4072,17 +4155,9 @@ function compartirGoleadores(){
       byP[key].goles++;
     });
   });
-  const sorted=Object.values(byP).sort((a,b)=>b.goles-a.goles).slice(0,10);
+  const sorted=Object.values(byP).sort((a,b)=>b.goles-a.goles).slice(0,15);
   if(!sorted.length){showToast('Sin goles registrados','ta');return;}
-  let txt=`🥅 *MÁXIMOS GOLEADORES*\n`;
-  txt+=`🏆 ${torneo} · ${cat}\n`;
-  txt+=`${'─'.repeat(28)}\n`;
-  sorted.forEach((g,i)=>{
-    const med=i===0?'🏅':i===1?'🥈':i===2?'🥉':`${i+1}.`;
-    txt+=`${med} ${g.jugador} — ${g.goles} ⚽\n   ${g.equipo}\n`;
-  });
-  txt+=`${'─'.repeat(28)}\n📱 Joel "El Chingón" Rivera · 6672246719`;
-  abrirCompartirModal('🥅 Máximos Goleadores', txt);
+  generarPDFTabla(sorted, 'goleadores');
 }
 
 function abrirCompartirModal(titulo, texto){
@@ -4773,20 +4848,24 @@ function renderIncomeChart(ventas, arbitraje, gastos, inscripciones, label) {
   if(typeof Chart === 'undefined') return;
   if(incomeChartInstance) { incomeChartInstance.destroy(); incomeChartInstance=null; }
   const isDark = document.getElementById('html').getAttribute('data-theme')==='dark';
-  const textColor = isDark ? '#8ba0c4' : '#374151';
+  const textColor = isDark ? '#a0b4cc' : '#374151';
   const gridColor = isDark ? 'rgba(77,126,245,.1)' : 'rgba(26,58,138,.07)';
   const totalGT = getGastosTienda ? getGastosTienda().reduce((s,g)=>s+g.monto,0) : 0;
   const neto = ventas + arbitraje - gastos - totalGT;
   const data = [ventas, arbitraje, inscripciones, gastos, totalGT, neto];
-  const labels = ['Ventas', 'Arbitraje', 'Insc.', 'Cap.Humano', 'Ret.Tienda', 'Neto'];
+  const labels = ['Ventas','Arbitraje','Inscripciones','Cap. Humano','Ret. Tienda','Neto'];
   const bgColors = [
-    'rgba(13,148,136,.75)','rgba(77,126,245,.75)','rgba(124,58,237,.75)',
-    'rgba(220,38,38,.65)','rgba(217,119,6,.7)',
-    neto>=0?'rgba(22,163,74,.85)':'rgba(220,38,38,.85)'
+    'rgba(13,148,136,.8)','rgba(77,126,245,.8)','rgba(124,58,237,.8)',
+    'rgba(220,38,38,.7)','rgba(217,119,6,.75)',
+    neto>=0?'rgba(22,163,74,.9)':'rgba(220,38,38,.9)'
   ];
   const bdColors = ['#0d9488','#4d7ef5','#7c3aed','#dc2626','#d97706',neto>=0?'#16a34a':'#dc2626'];
+  // Update chart wrap height for horizontal bar
+  const wrap = canvas.closest('.chart-wrap');
+  if(wrap) wrap.style.height = '260px';
   incomeChartInstance = new Chart(canvas, {
     type: 'bar',
+    indexAxis: 'y',
     data: {
       labels,
       datasets: [{
@@ -4794,7 +4873,7 @@ function renderIncomeChart(ventas, arbitraje, gastos, inscripciones, label) {
         backgroundColor: bgColors,
         borderColor: bdColors,
         borderWidth: 1.5,
-        borderRadius: 5,
+        borderRadius: 4,
         borderSkipped: false,
       }]
     },
@@ -4805,20 +4884,24 @@ function renderIncomeChart(ventas, arbitraje, gastos, inscripciones, label) {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            label: ctx => ' $' + Math.abs(ctx.raw).toLocaleString('es-MX')
+            label: ctx => '  $' + Math.abs(ctx.raw).toLocaleString('es-MX')
           }
         }
       },
       scales: {
-        x: {
-          ticks: { color: textColor, font: { size: 11, weight: '700', family: 'Montserrat' }, maxRotation: 0 },
-          grid: { color: gridColor }
-        },
         y: {
           ticks: {
             color: textColor,
+            font: { size: 11, weight: '700', family: 'Montserrat' },
+            padding: 4
+          },
+          grid: { display: false }
+        },
+        x: {
+          ticks: {
+            color: textColor,
             font: { size: 10, family: 'Montserrat' },
-            callback: v => '$'+(Math.abs(v)>=1000?Math.round(Math.abs(v)/100)/10+'k':v)
+            callback: v => '$'+(Math.abs(v)>=1000?Math.round(Math.abs(v)/100)/10+'k':Math.abs(v))
           },
           grid: { color: gridColor }
         }
@@ -5421,6 +5504,256 @@ function renderResDeudas(){
   }
 
   el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  PDF TABLA / GOLEADORES — Beautiful design
+// ══════════════════════════════════════════════
+function generarPDFTabla(data, tipo){
+  const torneo = TORNEO_NAMES[currentTorneo] || currentTorneo;
+  const cat = (CAT_NAMES[currentCat] || currentCat).toUpperCase();
+  const fecha = new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
+  const organizador = 'Joel "El Chingón" Rivera · 📱 6672246719';
+  const torneoLogo = TORNEO_LOGOS[currentTorneo] || '';
+
+  let rowsHtml = '';
+  if(tipo === 'tabla'){
+    rowsHtml = data.map((t,i)=>{
+      const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+      const bg = i===0?'#fef3c7':i===1?'#f1f5f9':i===2?'#fef9f0':'';
+      const fw = i<3?'800':'600';
+      const dg = (t.gf||0)-(t.gc||0);
+      const dgColor = dg>0?'#16a34a':dg<0?'#dc2626':'#64748b';
+      const logoHtml = t.logo?`<img src="${t.logo}" style="width:22px;height:22px;object-fit:cover;border-radius:4px;margin-right:6px;vertical-align:middle"/>`:'';
+      return `<tr style="background:${bg};font-weight:${fw}">
+        <td style="padding:10px 8px;text-align:center;font-size:15px;color:#1a3a8a;font-weight:900">${medal||String(i+1)}</td>
+        <td style="padding:10px 8px;font-size:12px">${logoHtml}${t.nombre}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px">${t.pj||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px;color:#16a34a;font-weight:800">${t.g||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px">${t.em||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px;color:#dc2626">${t.pe||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px">${t.gf||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px">${t.gc||0}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:12px;color:${dgColor}">${dg>0?'+':''}${dg}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:14px;font-weight:900;color:#1a3a8a">${t.pts||0}</td>
+      </tr>`;
+    }).join('');
+  } else {
+    rowsHtml = data.map((g,i)=>{
+      const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+      const bg = i===0?'#fef3c7':i===1?'#f1f5f9':i===2?'#fef9f0':'';
+      const fw = i<3?'800':'600';
+      return `<tr style="background:${bg};font-weight:${fw}">
+        <td style="padding:10px 8px;text-align:center;font-size:15px;color:#1a3a8a;font-weight:900">${medal||String(i+1)}</td>
+        <td style="padding:10px 8px;font-size:12px">${g.jugador}</td>
+        <td style="padding:10px 8px;font-size:11px;color:#64748b">${g.equipo||'—'}</td>
+        <td style="padding:10px 8px;text-align:center;font-size:16px;font-weight:900;color:#1a3a8a">${g.goles} ⚽</td>
+      </tr>`;
+    }).join('');
+  }
+
+  const theadHtml = tipo==='tabla'
+    ? `<tr style="background:linear-gradient(135deg,#1a3a8a,#2554d4);color:#fff">
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">#</th>
+        <th style="padding:10px 8px;text-align:left;font-size:10px;letter-spacing:1px">EQUIPO</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">PJ</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">G</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">E</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">P</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">GF</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">GC</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">DG</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">PTS</th>
+      </tr>`
+    : `<tr style="background:linear-gradient(135deg,#1a3a8a,#2554d4);color:#fff">
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">#</th>
+        <th style="padding:10px 8px;text-align:left;font-size:10px;letter-spacing:1px">JUGADOR</th>
+        <th style="padding:10px 8px;text-align:left;font-size:10px;letter-spacing:1px">EQUIPO</th>
+        <th style="padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px">GOLES</th>
+      </tr>`;
+
+  const titulo = tipo==='tabla'?'TABLA DE POSICIONES':'MÁXIMOS GOLEADORES';
+  const logoHtml = torneoLogo?`<img src="${torneoLogo}" style="height:60px;object-fit:contain;border-radius:8px;margin-bottom:8px"/>`:'';
+
+  const pdfHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fb;padding:20px;}
+    .page{background:#fff;max-width:700px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.12);}
+    .header{background:linear-gradient(135deg,#0a1224,#1a3a8a,#2554d4);padding:28px 24px 20px;text-align:center;position:relative;}
+    .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#fbbf24,#f59e0b,#fbbf24);}
+    .header-badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:10px;}
+    .header-torneo{font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,.3);}
+    .header-cat{font-size:13px;font-weight:700;color:#fbbf24;letter-spacing:3px;margin-bottom:6px;}
+    .header-fecha{font-size:11px;color:rgba(255,255,255,.55);font-weight:600;}
+    table{width:100%;border-collapse:collapse;}
+    tr:nth-child(even):not(:first-child){background:#f8fafc;}
+    tr{border-bottom:1px solid #e2e8f0;}
+    .footer{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top:2px solid #e2e8f0;}
+    .footer-brand{font-size:11px;font-weight:800;color:#1a3a8a;letter-spacing:1px;}
+    .footer-org{font-size:10px;color:#64748b;font-weight:600;}
+    .watermark{font-size:9px;color:#cbd5e1;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+    @media print{body{padding:0;}@page{margin:10mm;}}
+  </style>
+  </head><body>
+  <div class="page">
+    <div class="header">
+      ${logoHtml}
+      <div class="header-badge">⚽ Cancha Digital</div>
+      <div class="header-torneo">${torneo}</div>
+      <div class="header-cat">${cat}</div>
+      <div class="header-fecha">📅 ${fecha}</div>
+    </div>
+    <div style="padding:0">
+      <div style="background:linear-gradient(90deg,#1a3a8a,#2554d4);padding:8px 20px">
+        <span style="font-size:11px;font-weight:900;letter-spacing:3px;color:#fff;text-transform:uppercase">📊 ${titulo}</span>
+      </div>
+      <table>${theadHtml}${rowsHtml}</table>
+    </div>
+    <div class="footer">
+      <div>
+        <div class="footer-brand">⚽ CanchaDigital</div>
+        <div class="footer-org">${organizador}</div>
+      </div>
+      <div class="watermark">canchadigital.mx</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:16px">
+    <button onclick="window.print()" style="background:#1a3a8a;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:1px">🖨️ Imprimir / Guardar PDF</button>
+    <button onclick="window.close()" style="background:#e2e8f0;color:#374151;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-left:8px">✕ Cerrar</button>
+  </div>
+  </body></html>`;
+
+  const win = window.open('','_blank','width=750,height=700,scrollbars=yes');
+  if(win){ win.document.write(pdfHtml); win.document.close(); }
+  else showToast('Permite ventanas emergentes para generar el PDF','ta');
+}
+
+// ══════════════════════════════════════════════
+//  GESTIÓN DE CATEGORÍAS
+// ══════════════════════════════════════════════
+function openGestionCats(){
+  const label = document.getElementById('gcTorneoLabel');
+  if(label) label.textContent = TORNEO_NAMES[currentTorneo]||currentTorneo;
+  renderGcList();
+  openModal('modalGestionCats');
+}
+
+function renderGcList(){
+  const el = document.getElementById('gcList');
+  if(!el) return;
+  const cats = Object.entries(CAT_NAMES);
+  el.innerHTML = cats.map(([k,v])=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:800">${v}</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:600">ID: ${k}</div>
+      </div>
+      <button class="btn btn-out btn-sm" onclick="editarCategoria('${k}','${v}')">✏️</button>
+      ${k!=='liga_alta'&&k!=='liga_media'?`<button class="btn btn-r btn-sm" onclick="eliminarCategoria('${k}')">🗑️</button>`:''}
+    </div>`).join('');
+}
+
+function addCategoria(){
+  const id = document.getElementById('gc_id').value.trim().replace(/\s+/g,'_').toLowerCase();
+  const nombre = document.getElementById('gc_nombre').value.trim();
+  if(!id||!nombre){ showToast('Ingresa ID y nombre','ta'); return; }
+  if(CAT_NAMES[id]){ showToast('Ese ID ya existe','ta'); return; }
+  CAT_NAMES[id] = nombre;
+  // Persist in localStorage
+  localStorage.setItem('ld_cats_'+currentTorneo, JSON.stringify(CAT_NAMES));
+  document.getElementById('gc_id').value='';
+  document.getElementById('gc_nombre').value='';
+  renderGcList();
+  rebuildCatTabs();
+  showToast('Categoría agregada','tg');
+}
+
+function editarCategoria(key, currentName){
+  const nuevo = prompt(`Nuevo nombre para "${currentName}":`, currentName);
+  if(!nuevo||nuevo.trim()===currentName) return;
+  CAT_NAMES[key] = nuevo.trim();
+  localStorage.setItem('ld_cats_'+currentTorneo, JSON.stringify(CAT_NAMES));
+  renderGcList();
+  rebuildCatTabs();
+  showToast('Categoría actualizada','tg');
+}
+
+function eliminarCategoria(key){
+  if(!confirm(`¿Eliminar la categoría "${CAT_NAMES[key]}"?\nSolo se elimina de las pestañas, los datos no se borran.`)) return;
+  delete CAT_NAMES[key];
+  localStorage.setItem('ld_cats_'+currentTorneo, JSON.stringify(CAT_NAMES));
+  if(currentCat===key) currentCat = Object.keys(CAT_NAMES)[0]||'liga_alta';
+  renderGcList();
+  rebuildCatTabs();
+  showToast('Categoría eliminada','tg');
+}
+
+function rebuildCatTabs(){
+  const container = document.querySelector('.cat-tabs');
+  if(!container) return;
+  container.innerHTML = Object.entries(CAT_NAMES).map(([k,v])=>
+    `<button class="cat-tab${currentCat===k?' active':''}" onclick="selectCat('${k}',this)">${v}</button>`
+  ).join('');
+}
+
+// Load custom cats from localStorage on startup
+function loadCustomCats(){
+  const saved = localStorage.getItem('ld_cats_'+currentTorneo);
+  if(saved){
+    try{
+      const obj = JSON.parse(saved);
+      Object.keys(CAT_NAMES).forEach(k=>delete CAT_NAMES[k]);
+      Object.assign(CAT_NAMES, obj);
+    } catch(e){}
+  }
+}
+
+// ══════════════════════════════════════════════
+//  REINICIAR CATEGORÍA
+// ══════════════════════════════════════════════
+function openResetCategoria(){
+  // populate torneo/cat selectors
+  const rcCat = document.getElementById('rc_cat');
+  if(rcCat){
+    rcCat.innerHTML = Object.entries(CAT_NAMES)
+      .map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  }
+  document.getElementById('rc_torneo').value = currentTorneo;
+  document.getElementById('rc_confirm').value = '';
+  openModal('modalResetCat');
+}
+
+function confirmarResetCategoria(){
+  const torneo = document.getElementById('rc_torneo').value;
+  const cat    = document.getElementById('rc_cat').value;
+  const catNombre = CAT_NAMES[cat]||cat;
+  const confirm_val = document.getElementById('rc_confirm').value.trim();
+  if(confirm_val !== catNombre){
+    showToast('El nombre no coincide — escribe exactamente: '+catNombre,'ta');
+    return;
+  }
+  // Delete all partidos for this torneo+cat
+  const toDelParts = Object.entries(C.partidos||{})
+    .filter(([,p])=>p.torneo===torneo&&p.cat===cat)
+    .map(([k])=>k);
+  const toDelEquipos = Object.entries(C.equipos||{})
+    .filter(([,e])=>e.torneo===torneo&&e.cat===cat)
+    .map(([k])=>k);
+  const toDelInscs = Object.entries(C.inscripciones||{})
+    .filter(([,i])=>i.torneo===torneo&&i.cat===cat)
+    .map(([k])=>k);
+
+  const updates = {};
+  toDelParts.forEach(k=>updates[`partidos/${k}`]=null);
+  toDelEquipos.forEach(k=>updates[`equipos/${k}`]=null);
+  toDelInscs.forEach(k=>updates[`inscripciones/${k}`]=null);
+
+  db.ref().update(updates).then(()=>{
+    closeModal('modalResetCat');
+    renderTabla(); renderGoleadores(); renderPartidos(); renderEquiposPage();
+    showToast(`✅ Categoría ${catNombre} reiniciada — lista para nueva temporada`,'tg');
+  }).catch(e=>showToast('Error: '+e.message,'tr'));
 }
 
 </script>
