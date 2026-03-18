@@ -1963,34 +1963,49 @@ function onAuthChange(user){
   currentUser = user;
   const OWNER_EMAILS = ['Edanchra@gmail.com', 'admincanchadigital@gmail.com'];
   const isOwner = !!(user && OWNER_EMAILS.map(e=>e.toLowerCase()).includes((user.email||'').toLowerCase()));
-  if(!user){ isAdmin=false; updateAdminUI(false, false); return; }
-  // Save/update user profile in DB
+
+  if(!user){
+    isAdmin = false;
+    isCaptain = false;
+    captainEquipoKey = null;
+    // Hide viewer overlay if visible
+    const vp = document.getElementById('viewerProfileOverlay');
+    if(vp) vp.style.display = 'none';
+    updateAdminUI(false, false, false, null);
+    return;
+  }
+
   const uid = user.uid;
+
+  // If registrarUsuario already wrote the profile, skip the DB write here
+  if(window._skipAuthWrite) {
+    window._skipAuthWrite = false;
+    return; // registrarUsuario handles the flow
+  }
+
   db.ref('usuarios/'+uid).once('value').then(snap=>{
     if(!snap.exists()){
-      // New user — save with viewer role (or admin if owner)
-      const nombre = window._pendingRegNombre || user.displayName || user.email.split('@')[0];
-      window._pendingRegNombre = null;
+      // Google sign-in new user (not from registrarUsuario form)
+      const nombre = user.displayName || user.email.split('@')[0];
       db.ref('usuarios/'+uid).set({
         email: user.email, nombre,
-        role: isOwner?'admin':'viewer', creadoAt: Date.now(), uid
-      }).catch(e=>{ console.warn('Firebase write failed for user:', e.code, e.message); showToast('Usuario creado. Contacta al admin para asignar tu acceso.','tb'); });
+        role: isOwner ? 'admin' : 'viewer',
+        creadoAt: Date.now(), uid
+      }).catch(e => console.warn('DB write failed:', e.code));
     } else {
-      // Update last login
-      db.ref('usuarios/'+uid+'/lastLogin').set(Date.now());
-      // If owner, always keep as admin
-      if(isOwner) db.ref('usuarios/'+uid+'/role').set('admin');
+      db.ref('usuarios/'+uid+'/lastLogin').set(Date.now()).catch(()=>{});
+      if(isOwner) db.ref('usuarios/'+uid+'/role').set('admin').catch(()=>{});
     }
-    // Read full user data from DB
+    // Read role and launch
     db.ref('usuarios/'+uid).once('value').then(rSnap=>{
       const userData = rSnap.val() || {};
       const role = isOwner ? 'admin' : (userData.role||'viewer');
       isAdmin = (role === 'admin');
-      const capFlag = role === 'captain';
-      const capKey = userData.equipoKey || null;
+      const capFlag = (role === 'captain');
+      const capKey  = userData.equipoKey || null;
       updateAdminUI(isAdmin, isOwner, capFlag, capKey);
-    });
-  });
+    }).catch(()=>{ updateAdminUI(false, isOwner, false, null); });
+  }).catch(()=>{ updateAdminUI(false, isOwner, false, null); });
 }
 
 function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
@@ -2072,9 +2087,9 @@ function renderViewerProfile(){
   const el = document.getElementById('viewerProfile');
   if(!el||!currentUser) return;
   const uid = currentUser.uid;
+  // Try from C.usuarios first, then read from DB
   const u = C.usuarios[uid]||{};
-  // Check pending solicitud
-  const myReq = Object.entries(C.solicitudes||{}).find(([,s])=>s.uid===uid&&s.status==='pending');
+  const myReq      = Object.entries(C.solicitudes||{}).find(([,s])=>s.uid===uid&&s.status==='pending');
   const acceptedReq = Object.entries(C.solicitudes||{}).find(([,s])=>s.uid===uid&&s.status==='accepted');
   el.innerHTML = `
     <div style="text-align:center;padding:20px 0 10px">
@@ -2144,12 +2159,8 @@ function launchApp(){
   if(vpName) vpName.textContent = TORNEO_NAMES[currentTorneo]||'';
   // Show viewer profile overlay for viewer-role users
   if(currentUser && !isAdmin && !isCaptain){
-    const uid = currentUser.uid;
-    const u = C.usuarios[uid]||{};
-    if((u.role||'viewer')==='viewer'){
-      const vp = document.getElementById('viewerProfileOverlay');
-      if(vp){ vp.style.display='flex'; renderViewerProfile(); }
-    }
+    const vp = document.getElementById('viewerProfileOverlay');
+    if(vp){ vp.style.display='flex'; renderViewerProfile(); }
   }
 }
 
@@ -2275,7 +2286,14 @@ function loginEmail(){
   });
 }
 function showLErr(m){const e=document.getElementById('lmerr');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}
-function signOut(){ auth.signOut(); }
+function signOut(){
+  auth.signOut().then(()=>{
+    // Reset state
+    isAdmin = false; isCaptain = false; captainEquipoKey = null;
+    const vp = document.getElementById('viewerProfileOverlay');
+    if(vp) vp.style.display = 'none';
+  }).catch(()=>{});
+}
 
 // ══════════════════════════════════════
 //  NAVIGATION
@@ -5459,15 +5477,24 @@ function deleteFinalissima(){
 function irALogin(){
   document.getElementById('formRegSuccess').style.display='none';
   document.getElementById('formReg').style.display='none';
-  document.getElementById('formLogin').style.display='block';
+  document.getElementById('formLogin').style.display='';
   document.getElementById('tabLogin').className='reg-tab active';
   document.getElementById('tabReg').className='reg-tab';
+  document.getElementById('lmerr').textContent='';
+  // Pre-fill email if they just registered
+  const lastEmail = document.getElementById('r_email')?.value;
+  if(lastEmail){
+    const loginEmail = document.getElementById('l_email');
+    if(loginEmail) loginEmail.value = lastEmail;
+  }
 }
 
 function switchAuthTab(tab){
   const isLogin = tab === 'login';
-  document.getElementById('formLogin').style.display = isLogin ? '' : 'none';
-  document.getElementById('formReg').style.display   = isLogin ? 'none' : '';
+  document.getElementById('formLogin').style.display    = isLogin ? '' : 'none';
+  document.getElementById('formReg').style.display      = isLogin ? 'none' : '';
+  const frs = document.getElementById('formRegSuccess');
+  if(frs) frs.style.display = 'none';
   document.getElementById('tabLogin').classList.toggle('active', isLogin);
   document.getElementById('tabReg').classList.toggle('active', !isLogin);
   document.getElementById('lmerr').textContent = '';
@@ -5482,43 +5509,66 @@ function registrarUsuario(){
   const pass   = document.getElementById('r_pass').value;
   const pass2  = document.getElementById('r_pass2').value;
   const err    = document.getElementById('lmerr');
-  if(!nombre){ err.textContent='Ingresa tu nombre'; return; }
-  if(!email)  { err.textContent='Ingresa tu correo'; return; }
+  err.textContent = '';
+
+  if(!nombre){ err.textContent='Ingresa tu nombre completo'; return; }
+  if(!email)  { err.textContent='Ingresa tu correo electrónico'; return; }
   if(pass.length < 6){ err.textContent='La contraseña debe tener al menos 6 caracteres'; return; }
   if(pass !== pass2){ err.textContent='Las contraseñas no coinciden'; return; }
-  err.textContent = '';
+
   const btn = document.getElementById('btnRegistrar');
-  if(btn){ btn.textContent='Creando cuenta...'; btn.disabled=true; }
+  const setLoading = (on) => {
+    if(btn){ btn.textContent = on ? 'Creando cuenta...' : 'Crear cuenta'; btn.disabled = on; }
+  };
+  setLoading(true);
+
+  // Flag so onAuthChange doesn't interfere
+  window._skipAuthWrite = true;
+
+  let createdUid = null;
+
   auth.createUserWithEmailAndPassword(email, pass)
-    .then(cred=>{
-      const uid = cred.user.uid;
-      // Write profile to DB
-      return db.ref('usuarios/'+uid).set({
-        email, nombre, role:'viewer', creadoAt:Date.now(), uid
-      }).then(()=>{
-        // Sign out immediately after registration
-        return auth.signOut();
+    .then(cred => {
+      createdUid = cred.user.uid;
+      // Write profile to DB right away while still authenticated
+      return db.ref('usuarios/' + createdUid).set({
+        email, nombre,
+        role: 'viewer',
+        creadoAt: Date.now(),
+        uid: createdUid
       });
     })
-    .then(()=>{
+    .then(() => {
+      // Profile saved — now sign out
+      return auth.signOut();
+    })
+    .then(() => {
+      setLoading(false);
+      window._skipAuthWrite = false;
+      // Clear form
+      ['r_nombre','r_email','r_pass','r_pass2'].forEach(id => {
+        const el = document.getElementById(id); if(el) el.value = '';
+      });
       // Show success screen
-      ['r_nombre','r_email','r_pass','r_pass2'].forEach(id=>{
-        const el=document.getElementById(id); if(el) el.value='';
-      });
-      if(btn){ btn.textContent='Crear cuenta'; btn.disabled=false; }
-      // Switch to success view
-      document.getElementById('formReg').style.display='none';
-      document.getElementById('formRegSuccess').style.display='block';
+      document.getElementById('formReg').style.display = 'none';
+      document.getElementById('formRegSuccess').style.display = 'block';
     })
-    .catch(e=>{
-      if(btn){ btn.textContent='Crear cuenta'; btn.disabled=false; }
+    .catch(e => {
+      setLoading(false);
+      window._skipAuthWrite = false;
+      // If profile write failed but user was created, still sign out
+      if(createdUid) auth.signOut().catch(()=>{});
       const msgs = {
-        'auth/email-already-in-use':'Ese correo ya está registrado',
-        'auth/invalid-email':'Correo inválido',
-        'auth/weak-password':'Contraseña muy débil',
-        'auth/operation-not-allowed':'Registro por email no habilitado en Firebase'
+        'auth/email-already-in-use' : '⚠️ Ese correo ya está registrado — intenta iniciar sesión',
+        'auth/invalid-email'        : 'Correo electrónico inválido',
+        'auth/weak-password'        : 'Contraseña muy débil (mínimo 6 caracteres)',
+        'auth/operation-not-allowed': 'El registro está deshabilitado — contacta al admin',
+        'auth/network-request-failed': 'Sin conexión a internet — verifica tu red',
+        'PERMISSION_DENIED'         : 'Sin permisos en la base de datos — contacta al admin'
       };
-      err.textContent = msgs[e.code] || e.message;
+      err.textContent = msgs[e.code] || ('Error: ' + (e.message || e.code || 'desconocido'));
+      // Log for debugging
+      console.error('Registration error:', e.code, e.message);
     });
 }
 
