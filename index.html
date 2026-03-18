@@ -634,13 +634,6 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
       <button class="btn btn-g btn-full" onclick="irALogin()">→ Iniciar Sesión</button>
     </div>
 
-    <!-- HIDDEN CLOSE TAG for formReg div -->
-    <div style="display:none">
-      <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:8px;font-weight:600;line-height:1.4">
-        Tu cuenta quedará en revisión.<br>El administrador te dará acceso.
-      </div>
-    </div>
-
     <div class="lm-err" id="lmerr"></div>
     <button class="btn btn-out btn-full" style="margin-top:8px" onclick="closeLoginModal()">Cancelar</button>
   </div>
@@ -4206,7 +4199,7 @@ function renderResumen(){
     <div class="insight-box"><div class="insight-title">🏆 Recomendación del Período</div><div class="insight-text">${topProds.length>0?'Producto estrella: "'+topProds[0][0]+'" — $'+topProds[0][1].total+' en ventas. Siempre con stock. ':''} ${ticketPromedio>0&&ticketPromedio<30?'Sube el ticket con combos de $40-50. ':''} ${parts.length>0&&ingPorPartido<500?'Cobra arbitraje a ambos equipos en cada partido. ':''} ${margenNeto>0&&margenNeto<30?'Foco en margen: reduce gastos variables o sube tarifas de inscripción.':''}</div></div>
   `;
   // Render income chart
-  renderIncomeChart(tv, totalArb, totalGastosTrab, totalInscPagado, periodLabel);uded inside fn
+  renderIncomeChart(tv, totalArb, totalGastosTrab, totalInscPagado, periodLabel);
   renderResDeudas();
   const ri=document.getElementById('resInsc');
   if(ri) ri.innerHTML=`
@@ -5834,13 +5827,6 @@ function generarPDFTabla(data, tipo){
 // ══════════════════════════════════════════════
 //  GESTIÓN DE CATEGORÍAS
 // ══════════════════════════════════════════════
-function openGestionCats(){
-  const label = document.getElementById('gcTorneoLabel');
-  if(label) label.textContent = TORNEO_NAMES[currentTorneo]||currentTorneo;
-  renderGcList();
-  openModal('modalGestionCats');
-}
-
 function renderGcList(){
   const el = document.getElementById('gcList');
   if(!el) return;
