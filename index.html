@@ -634,7 +634,7 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
       <button class="btn btn-g btn-full" onclick="irALogin()">→ Iniciar Sesión</button>
     </div>
 
-    <div class="lm-err" id="lmerr"></div>
+    <div class="lm-err" id="lmerr" style="display:none"></div>
     <button class="btn btn-out btn-full" style="margin-top:8px" onclick="closeLoginModal()">Cancelar</button>
   </div>
 </div>
@@ -5504,72 +5504,75 @@ function switchAuthTab(tab){
 //  REGISTRO DE USUARIO
 // ══════════════════════════════════════════════
 function registrarUsuario(){
-  const nombre = document.getElementById('r_nombre').value.trim();
-  const email  = document.getElementById('r_email').value.trim();
-  const pass   = document.getElementById('r_pass').value;
-  const pass2  = document.getElementById('r_pass2').value;
-  const err    = document.getElementById('lmerr');
-  err.textContent = '';
+  try {
+    const nombre = (document.getElementById('r_nombre').value||'').trim();
+    const email  = (document.getElementById('r_email').value||'').trim();
+    const pass   = document.getElementById('r_pass').value||'';
+    const pass2  = document.getElementById('r_pass2').value||'';
 
-  if(!nombre){ err.textContent='Ingresa tu nombre completo'; return; }
-  if(!email)  { err.textContent='Ingresa tu correo electrónico'; return; }
-  if(pass.length < 6){ err.textContent='La contraseña debe tener al menos 6 caracteres'; return; }
-  if(pass !== pass2){ err.textContent='Las contraseñas no coinciden'; return; }
+    // Show error using toast (always visible) + inline div
+    const showErr = (msg) => {
+      showToast(msg, 'tr');
+      const errEl = document.getElementById('lmerr');
+      if(errEl){ errEl.textContent = msg; errEl.style.display = 'block'; }
+    };
 
-  const btn = document.getElementById('btnRegistrar');
-  const setLoading = (on) => {
-    if(btn){ btn.textContent = on ? 'Creando cuenta...' : 'Crear cuenta'; btn.disabled = on; }
-  };
-  setLoading(true);
+    if(!nombre){ showErr('Ingresa tu nombre completo'); return; }
+    if(!email)  { showErr('Ingresa tu correo electrónico'); return; }
+    if(pass.length < 6){ showErr('Contraseña debe tener mínimo 6 caracteres'); return; }
+    if(pass !== pass2){ showErr('Las contraseñas no coinciden'); return; }
 
-  // Flag so onAuthChange doesn't interfere
-  window._skipAuthWrite = true;
+    if(!auth){ showErr('Firebase no está listo — recarga la página'); return; }
+    if(!db)  { showErr('Base de datos no disponible — recarga la página'); return; }
 
-  let createdUid = null;
+    const btn = document.getElementById('btnRegistrar');
+    if(btn){ btn.textContent='Creando cuenta...'; btn.disabled=true; }
+    window._skipAuthWrite = true;
+    let createdUid = null;
 
-  auth.createUserWithEmailAndPassword(email, pass)
-    .then(cred => {
-      createdUid = cred.user.uid;
-      // Write profile to DB right away while still authenticated
-      return db.ref('usuarios/' + createdUid).set({
-        email, nombre,
-        role: 'viewer',
-        creadoAt: Date.now(),
-        uid: createdUid
+    auth.createUserWithEmailAndPassword(email, pass)
+      .then(cred => {
+        createdUid = cred.user.uid;
+        return db.ref('usuarios/'+createdUid).set({
+          email, nombre, role:'viewer', creadoAt:Date.now(), uid:createdUid
+        });
+      })
+      .then(() => auth.signOut())
+      .then(() => {
+        if(btn){ btn.textContent='Crear cuenta'; btn.disabled=false; }
+        window._skipAuthWrite = false;
+        ['r_nombre','r_email','r_pass','r_pass2'].forEach(id=>{
+          const el=document.getElementById(id); if(el) el.value='';
+        });
+        const errEl = document.getElementById('lmerr');
+        if(errEl){ errEl.textContent=''; errEl.style.display='none'; }
+        document.getElementById('formReg').style.display='none';
+        document.getElementById('formRegSuccess').style.display='block';
+        showToast('¡Cuenta creada exitosamente!','tg');
+      })
+      .catch(e => {
+        if(btn){ btn.textContent='Crear cuenta'; btn.disabled=false; }
+        window._skipAuthWrite = false;
+        if(createdUid) auth.signOut().catch(()=>{});
+        const msgs = {
+          'auth/email-already-in-use':'Ese correo ya está registrado',
+          'auth/invalid-email':'Correo electrónico inválido',
+          'auth/weak-password':'Contraseña muy débil (mínimo 6 caracteres)',
+          'auth/operation-not-allowed':'Registro deshabilitado — actívalo en Firebase Console → Authentication',
+          'auth/network-request-failed':'Sin conexión — verifica tu internet',
+          'PERMISSION_DENIED':'Sin permisos en Firebase — revisa las reglas de la base de datos'
+        };
+        const msg = msgs[e.code] || ('Error ('+e.code+'): '+e.message);
+        showErr(msg);
+        console.error('REG ERROR:', e.code, e.message, e);
       });
-    })
-    .then(() => {
-      // Profile saved — now sign out
-      return auth.signOut();
-    })
-    .then(() => {
-      setLoading(false);
-      window._skipAuthWrite = false;
-      // Clear form
-      ['r_nombre','r_email','r_pass','r_pass2'].forEach(id => {
-        const el = document.getElementById(id); if(el) el.value = '';
-      });
-      // Show success screen
-      document.getElementById('formReg').style.display = 'none';
-      document.getElementById('formRegSuccess').style.display = 'block';
-    })
-    .catch(e => {
-      setLoading(false);
-      window._skipAuthWrite = false;
-      // If profile write failed but user was created, still sign out
-      if(createdUid) auth.signOut().catch(()=>{});
-      const msgs = {
-        'auth/email-already-in-use' : '⚠️ Ese correo ya está registrado — intenta iniciar sesión',
-        'auth/invalid-email'        : 'Correo electrónico inválido',
-        'auth/weak-password'        : 'Contraseña muy débil (mínimo 6 caracteres)',
-        'auth/operation-not-allowed': 'El registro está deshabilitado — contacta al admin',
-        'auth/network-request-failed': 'Sin conexión a internet — verifica tu red',
-        'PERMISSION_DENIED'         : 'Sin permisos en la base de datos — contacta al admin'
-      };
-      err.textContent = msgs[e.code] || ('Error: ' + (e.message || e.code || 'desconocido'));
-      // Log for debugging
-      console.error('Registration error:', e.code, e.message);
-    });
+  } catch(syncErr) {
+    console.error('SYNC ERROR in registrarUsuario:', syncErr);
+    showToast('Error inesperado: '+syncErr.message, 'tr');
+    const btn = document.getElementById('btnRegistrar');
+    if(btn){ btn.textContent='Crear cuenta'; btn.disabled=false; }
+    window._skipAuthWrite = false;
+  }
 }
 
 // ══════════════════════════════════════════════
