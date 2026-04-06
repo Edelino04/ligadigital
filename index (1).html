@@ -1894,7 +1894,7 @@ const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:
 let catOrderKeys = ['liga_alta','liga_media','liga_baja_a','liga_baja_b'];
 const CANCHAS = ['Villa Universidad','Isla Músala'];
 const LOS_ALAMITOS_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-e7edec0a-f7b1-42af-a61c-01c4b9225762.png';
-const SPLASH_BIG_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-2da53f1b-d2b2-493e-a99c-18bdd8b5bd33.png';
+const SPLASH_BIG_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-af80c8bd-97cd-42d4-a7f0-e039cbadc79c.png';
 TORNEO_NAMES.villa = 'TORNEO LOS ALAMITOS';
 delete TORNEO_NAMES.musala;
 TORNEO_LOGOS.villa = LOS_ALAMITOS_LOGO;
@@ -1904,6 +1904,8 @@ CAT_NAMES.liga_media = 'CATEGORÍA 38+';
 delete CAT_NAMES.liga_baja_a;
 delete CAT_NAMES.liga_baja_b;
 catOrderKeys = ['liga_alta','liga_media'];
+const splashMainLogoOnLoad = document.querySelector('#splash > div img');
+if(splashMainLogoOnLoad) splashMainLogoOnLoad.src = SPLASH_BIG_LOGO;
 
 // ══════════════════════════════════════
 //  MODAL & TOAST (defined early so boot can use them)
