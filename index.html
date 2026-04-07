@@ -17,8 +17,8 @@
 body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 /* ═══ SPLASH ═══ */
-#splash{position:fixed;inset:0;z-index:3000;background:linear-gradient(180deg,#f8fbff 0%,#eef4ff 50%,#e8f7ee 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px;overflow:hidden;}
-#splash::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,58,138,.06) 0%,transparent 70%);pointer-events:none;}
+#splash{position:fixed;inset:0;z-index:3000;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px;overflow:hidden;}
+#splash::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,58,138,.04) 0%,transparent 70%);pointer-events:none;}
 
 #splash.hidden{display:none;}
 .sp-logo-wrap{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
@@ -32,7 +32,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .sp-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#4d7ef5,transparent);margin:0 auto 28px;}
 .sp-label{font-size:10px;font-weight:800;letter-spacing:3px;color:rgba(26,58,138,0.4);text-transform:uppercase;text-align:center;margin-bottom:14px;}
 .sp-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px;}
-.sp-opt{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12);border-radius:16px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .25s;position:relative;overflow:hidden;}
+.sp-opt{background:#f7faff;border:1.5px solid rgba(26,58,138,.16);border-radius:16px;padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all .25s;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(26,58,138,.08);}
 .sp-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(77,126,245,.08),transparent);opacity:0;transition:opacity .25s;}
 .sp-opt:hover{border-color:rgba(77,126,245,.6);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
 .sp-opt:hover::before{opacity:1;}
@@ -40,12 +40,12 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .sp-opt-icon{font-size:32px;flex-shrink:0;}
 .sp-opt-info{flex:1;}
 .sp-opt-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:#1a3a8a;line-height:1;}
-.sp-opt-sub{font-size:10px;color:rgba(255,255,255,.45);font-weight:600;margin-top:3px;}
+.sp-opt-sub{font-size:10px;color:rgba(26,58,138,.55);font-weight:700;margin-top:3px;}
 .sp-opt-arrow{font-size:18px;color:rgba(77,126,245,.6);flex-shrink:0;transition:transform .2s;}
 .sp-opt:hover .sp-opt-arrow{transform:translateX(4px);}
 .sp-admin-link{margin-top:20px;font-size:11px;color:rgba(26,58,138,.5);cursor:pointer;font-weight:600;letter-spacing:1px;display:flex;align-items:center;gap:5px;transition:color .2s;}
-.sp-admin-link:hover{color:rgba(255,255,255,.6);}
-.sp-footer{position:absolute;bottom:16px;font-size:10px;color:rgba(255,255,255,.2);font-weight:500;letter-spacing:1px;}
+.sp-admin-link:hover{color:rgba(26,58,138,.75);}
+.sp-footer{position:absolute;bottom:16px;font-size:10px;color:rgba(26,58,138,.35);font-weight:500;letter-spacing:1px;}
 
 /* ═══ LOGIN MODAL ═══ */
 #loginModal{display:none;position:fixed;inset:0;background:radial-gradient(circle at 15% 10%,rgba(77,126,245,.22),rgba(0,0,0,.82) 45%,rgba(0,0,0,.9));z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
@@ -59,11 +59,11 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .lm-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:6px;padding:9px;font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none;font-weight:600;}
 
 /* ═══ LOADING ═══ */
-#loadingScreen{display:none;position:fixed;inset:0;background:linear-gradient(150deg,#0f2b5f 0%,#1a4aa0 45%,#2ea83c 120%);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#loadingScreen{display:none;position:fixed;inset:0;background:#ffffff;z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
 #loadingScreen.show{display:flex;}
 .ld-ball{font-size:48px;animation:bounce .8s ease-in-out infinite alternate;}
-.ld-txt{font-size:13px;letter-spacing:4px;color:rgba(255,255,255,.95);text-transform:uppercase;font-weight:800;text-shadow:0 6px 20px rgba(0,0,0,.35);}
-.ld-sub{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.8);font-weight:600;text-transform:uppercase;}
+.ld-txt{font-size:13px;letter-spacing:4px;color:#12316f;text-transform:uppercase;font-weight:800;}
+.ld-sub{font-size:10px;letter-spacing:2px;color:#2f4f7f;font-weight:600;text-transform:uppercase;}
 
 /* ═══ HEADER ═══ */
 .header{position:sticky;top:0;z-index:100;background:var(--hdr);box-shadow:0 2px 20px rgba(26,58,138,.1);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(77,126,245,.18);box-shadow:0 4px 20px rgba(0,0,0,.25);}
@@ -5926,7 +5926,8 @@ function generarPDFTabla(data, tipo){
   const torneo = TORNEO_NAMES[currentTorneo] || currentTorneo;
   const cat = (CAT_NAMES[currentCat] || currentCat).toUpperCase();
   const fecha = new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
-  const organizador = 'Jesus "Navo" · 📱 667 452 5663';
+  const organizadorNombre = 'Jesus "Navo"';
+  const organizadorTel = '667 452 5663';
   const torneoLogo = TORNEO_LOGOS[currentTorneo] || '';
   const empresaLogo = CD_LOGO_SHIELD;
 
@@ -5998,26 +5999,31 @@ function generarPDFTabla(data, tipo){
     .header{background:linear-gradient(135deg,#0a1e3d,#1a3a8a,#1c7a1f);padding:28px 24px 20px;text-align:center;position:relative;}
     .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#22c55e,#fbbf24,#22c55e);}
     .header-logos{display:flex;justify-content:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
-    .header-badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:10px;}
     .header-torneo{font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,.3);}
     .header-cat{font-size:13px;font-weight:700;color:#fbbf24;letter-spacing:3px;margin-bottom:6px;}
     .header-fecha{font-size:11px;color:rgba(255,255,255,.55);font-weight:600;}
+    .header-org{margin-top:8px;display:flex;flex-direction:column;gap:3px;align-items:center;}
+    .header-org-line{font-size:11px;color:rgba(255,255,255,.92);font-weight:700;letter-spacing:.4px;}
     table{width:100%;border-collapse:collapse;}
     tr:nth-child(even):not(:first-child){background:#f8fafc;}
     tr{border-bottom:1px solid #e2e8f0;}
     .footer{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;border-top:2px solid #e2e8f0;}
     .footer-brand{font-size:11px;font-weight:800;color:#1a3a8a;letter-spacing:1px;}
-    .footer-org{font-size:10px;color:#64748b;font-weight:600;}
+    .footer-org{font-size:10px;color:#64748b;font-weight:600;line-height:1.4;}
     .watermark{font-size:9px;color:#cbd5e1;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+    @media (max-width:640px){.header{padding:22px 16px 16px}.header-torneo{font-size:18px}.header-cat{font-size:11px;letter-spacing:2px}}
     @media print{body{padding:0;}@page{margin:10mm;}}
   </style>
   </head><body>
   <div class="page">
     <div class="header">
       <div class="header-logos">${empresaLogoHtml}${torneoLogoHtml}</div>
-      <div class="header-badge">⚽ CanchaDigital.mx</div>
       <div class="header-torneo">${torneo}</div>
       <div class="header-cat">${cat}</div>
+      <div class="header-org">
+        <div class="header-org-line">👤 ${organizadorNombre}</div>
+        <div class="header-org-line">📱 ${organizadorTel}</div>
+      </div>
       <div class="header-fecha">📅 ${fecha}</div>
     </div>
     <div style="padding:0">
@@ -6029,9 +6035,9 @@ function generarPDFTabla(data, tipo){
     <div class="footer">
       <div>
         <div class="footer-brand">⚽ ${torneo}</div>
-        <div class="footer-org">${organizador}</div>
+        <div class="footer-org">👤 ${organizadorNombre}<br/>📱 ${organizadorTel}</div>
       </div>
-      <div class="watermark">canchadigital.mx</div>
+      <div class="watermark"></div>
     </div>
   </div>
   <div style="text-align:center;margin-top:16px">
