@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>LigaDigital</title>
+<title>CanchaDigital</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -17,8 +17,8 @@
 body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
 
 /* ═══ SPLASH ═══ */
-#splash{position:fixed;inset:0;z-index:3000;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px;overflow:hidden;}
-#splash::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,58,138,.05) 0%,transparent 70%);pointer-events:none;}
+#splash{position:fixed;inset:0;z-index:3000;background:linear-gradient(180deg,#f8fbff 0%,#eef4ff 50%,#e8f7ee 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 22px;overflow:hidden;}
+#splash::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,58,138,.06) 0%,transparent 70%);pointer-events:none;}
 
 #splash.hidden{display:none;}
 .sp-logo-wrap{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
@@ -26,9 +26,9 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 @keyframes pulse-logo{0%,100%{box-shadow:0 8px 32px rgba(77,126,245,.35)}50%{box-shadow:0 8px 48px rgba(77,126,245,.6)}}
 .sp-ball{font-size:56px;margin-bottom:0;animation:bounce .9s ease-in-out infinite alternate;}
 @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-14px)}}
-.sp-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:6px;color:#1a3a8a;text-align:center;line-height:1;margin-bottom:4px;}
-.sp-title span{color:#4d7ef5;text-shadow:0 0 20px rgba(77,126,245,.5);}
-.sp-sub{font-size:10px;font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.45);text-transform:uppercase;text-align:center;margin-bottom:32px;}
+.sp-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:6px;color:#12316f;text-align:center;line-height:1;margin-bottom:4px;}
+.sp-title span{color:#2ea83c;text-shadow:0 0 14px rgba(46,168,60,.25);}
+.sp-sub{font-size:10px;font-weight:700;letter-spacing:4px;color:rgba(26,58,138,.55);text-transform:uppercase;text-align:center;margin-bottom:32px;}
 .sp-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#4d7ef5,transparent);margin:0 auto 28px;}
 .sp-label{font-size:10px;font-weight:800;letter-spacing:3px;color:rgba(26,58,138,0.4);text-transform:uppercase;text-align:center;margin-bottom:14px;}
 .sp-opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px;}
@@ -48,20 +48,22 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .sp-footer{position:absolute;bottom:16px;font-size:10px;color:rgba(255,255,255,.2);font-weight:500;letter-spacing:1px;}
 
 /* ═══ LOGIN MODAL ═══ */
-#loginModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;align-items:center;justify-content:center;padding:20px;}
+#loginModal{display:none;position:fixed;inset:0;background:radial-gradient(circle at 15% 10%,rgba(77,126,245,.22),rgba(0,0,0,.82) 45%,rgba(0,0,0,.9));z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
 #loginModal.show{display:flex;}
-.lm-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:18px;padding:24px 20px;width:100%;max-width:340px;}
+.lm-box{background:linear-gradient(180deg,var(--bg2),var(--card));border:1.5px solid var(--border);border-radius:18px;padding:24px 20px;width:100%;max-width:340px;box-shadow:0 16px 42px rgba(0,0,0,.35),0 0 0 1px rgba(77,126,245,.12) inset;}
 .lm-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--acc);margin-bottom:16px;text-align:center;}
 .lfi{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;margin-bottom:10px;}
-.lfi:focus{outline:none;border-color:var(--acc);}
-.g-btn{width:100%;background:#fff;color:#1a1a1a;border:none;border-radius:8px;padding:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;}
+.lfi:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(77,126,245,.2);}
+.g-btn{width:100%;background:#fff;color:#1a1a1a;border:none;border-radius:10px;padding:11px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;transition:transform .15s,box-shadow .2s;}
+.g-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.18);}
 .lm-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:6px;padding:9px;font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none;font-weight:600;}
 
 /* ═══ LOADING ═══ */
-#loadingScreen{display:none;position:fixed;inset:0;background:var(--acc);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#loadingScreen{display:none;position:fixed;inset:0;background:linear-gradient(150deg,#0f2b5f 0%,#1a4aa0 45%,#2ea83c 120%);z-index:4000;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
 #loadingScreen.show{display:flex;}
 .ld-ball{font-size:48px;animation:bounce .8s ease-in-out infinite alternate;}
-.ld-txt{font-size:11px;letter-spacing:4px;color:rgba(255,255,255,.8);text-transform:uppercase;font-weight:700;}
+.ld-txt{font-size:13px;letter-spacing:4px;color:rgba(255,255,255,.95);text-transform:uppercase;font-weight:800;text-shadow:0 6px 20px rgba(0,0,0,.35);}
+.ld-sub{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.8);font-weight:600;text-transform:uppercase;}
 
 /* ═══ HEADER ═══ */
 .header{position:sticky;top:0;z-index:100;background:var(--hdr);box-shadow:0 2px 20px rgba(26,58,138,.1);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(77,126,245,.18);box-shadow:0 4px 20px rgba(0,0,0,.25);}
@@ -78,8 +80,12 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .live-badge{background:rgba(220,38,38,.12);color:#dc2626;border:1px solid rgba(220,38,38,.35);font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 7px;border-radius:4px;display:flex;align-items:center;gap:3px;}
 .ldot{width:5px;height:5px;border-radius:50%;background:#dc2626;animation:pdot 1.5s infinite;}
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:.4}}
-.ico-btn{background:var(--ico-bg);border:1px solid var(--ico-border);border-radius:18px;padding:5px 9px;cursor:pointer;font-size:13px;color:var(--ico-color);transition:all .2s;font-weight:700;letter-spacing:.3px;}
+.ico-btn{background:var(--ico-bg);border:1px solid var(--ico-border);border-radius:18px;padding:5px 9px;cursor:pointer;font-size:13px;color:var(--ico-color);transition:all .2s;font-weight:700;letter-spacing:.3px;box-shadow:0 4px 12px rgba(0,0,0,.12);}
 .ico-btn:hover{background:var(--ico-bg-h);border-color:var(--ico-border-h);color:var(--ico-color-h);}
+.user-chip{display:none;align-items:center;gap:6px;background:linear-gradient(135deg,var(--acc3),rgba(77,126,245,.08));border:1px solid var(--border);border-radius:999px;padding:3px 9px;max-width:160px;}
+.user-chip.show{display:inline-flex;}
+.user-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18);}
+.user-name{font-size:10px;font-weight:800;letter-spacing:.4px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:112px;}
 
 /* ═══ CATEGORY TABS ═══ */
 .cat-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 2px;background:var(--bg2);border-bottom:1px solid var(--border);}
@@ -95,6 +101,9 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .nav-tab.active{color:var(--acc);border-bottom-color:var(--acc);font-weight:900;}
 .admin-only{display:none;}
 .admin-only.show{display:flex;}
+.nav-tab.admin-only{background:linear-gradient(180deg,rgba(77,126,245,.08),rgba(77,126,245,.03));border-top:1px solid rgba(77,126,245,.2);}
+.nav-tab.admin-only.active{background:linear-gradient(180deg,rgba(77,126,245,.2),rgba(77,126,245,.08));}
+.page#page-tienda,.page#page-inscripciones,.page#page-arbitros,.page#page-calendario,.page#page-resumen{background:linear-gradient(180deg,rgba(77,126,245,.04),transparent 22%);border:1px solid var(--border);border-radius:14px;margin-top:10px;}
 
 /* ═══ PAGES ═══ */
 .page{display:none;padding:14px 13px 100px;max-width:900px;margin:0 auto;}
@@ -554,7 +563,8 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 <!-- ═══ LOADING ═══ -->
 <div id="loadingScreen" class="show">
   <div class="ld-ball">⚽</div>
-  <div class="ld-txt" id="ldTxt">LigaDigital</div>
+  <div class="ld-txt" id="ldTxt">CanchaDigital</div>
+  <div class="ld-sub">Panel profesional de torneos</div>
 </div>
 
 <!-- ═══ SPLASH ═══ -->
@@ -668,6 +678,7 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
       <span id="adminBadge" style="display:none;background:var(--acc);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:4px;">ADMIN</span>
       <button id="loginBtn" class="ico-btn" onclick="openLoginModal()" title="Admin">🔐</button>
       <button id="usersBtn" class="ico-btn owner-only" onclick="openModal('modalUsuarios');renderUsuariosPanel()" style="display:none" title="Gestión usuarios">👥</button>
+      <span id="userChip" class="user-chip"><span class="user-dot"></span><span id="userChipName" class="user-name">Conectado</span></span>
       <button id="logoutBtn" class="ico-btn" style="display:none" onclick="signOut()">🚪</button>
       <div class="live-badge"><div class="ldot"></div>En Vivo</div>
     </div>
@@ -1876,6 +1887,8 @@ const FB_CFG = {
 //  STATE
 // ══════════════════════════════════════
 let db = null, auth = null, currentUser = null, isAdmin = false;
+const LS_LAST_PAGE = 'ld_last_page';
+const ADMIN_ONLY_PAGES = new Set(['tienda','inscripciones','arbitros','calendario','resumen']);
 let currentTorneo = 'villa';
 let currentCat = 'liga_alta';
 let activePartidoKey = null;
@@ -1979,6 +1992,7 @@ const DEFAULT_PRODUCTS = [
     if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
     db = firebase.database();
     auth = firebase.auth();
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
     auth.onAuthStateChanged(onAuthChange);
   } catch(e) {
     console.error(e);
@@ -2046,10 +2060,19 @@ function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
   const loginBtn   = document.getElementById('loginBtn');
   const logoutBtn  = document.getElementById('logoutBtn');
   const usersBtn   = document.getElementById('usersBtn');
+  const userChip   = document.getElementById('userChip');
+  const userChipName = document.getElementById('userChipName');
   if(adminBadge) adminBadge.style.display = canAct?'block':'none';
   if(loginBtn)   loginBtn.style.display   = canAct?'none':'block';
-  if(logoutBtn)  logoutBtn.style.display  = canAct?'block':'none';
+  if(logoutBtn)  logoutBtn.style.display  = currentUser ? 'block' : 'none';
   if(usersBtn)   usersBtn.style.display   = ownerFlag?'':'none';
+  if(userChip){
+    userChip.classList.toggle('show', !!currentUser);
+    if(userChipName){
+      const label = (currentUser?.displayName || currentUser?.email || 'Conectado').split('@')[0];
+      userChipName.textContent = label.slice(0,16);
+    }
+  }
   // Captain badge
   let capBadgeEl = document.getElementById('captainBadge');
   if(!capBadgeEl && captainFlag && !adminFlag){
@@ -2241,6 +2264,18 @@ function launchApp(){
   const vpName = document.getElementById('vpTorneoName');
   if(vpLogo) vpLogo.src = TORNEO_LOGOS[currentTorneo]||'';
   if(vpName) vpName.textContent = TORNEO_NAMES[currentTorneo]||'';
+  const preferredPage = localStorage.getItem(LS_LAST_PAGE);
+  if(preferredPage && preferredPage !== 'tabla' && canAccessPage(preferredPage)){
+    const pageEl = document.getElementById('page-'+preferredPage);
+    if(pageEl){
+      const navBtn = Array.from(document.querySelectorAll('.nav-tab')).find(
+        b => b.getAttribute('onclick')===`showPage('${preferredPage}',this)`
+      );
+      showPage(preferredPage, navBtn || null);
+    }
+  } else if(preferredPage && !canAccessPage(preferredPage)) {
+    localStorage.setItem(LS_LAST_PAGE, 'tabla');
+  }
   // Show viewer profile overlay for viewer-role users
   if(currentUser && !isAdmin && !isCaptain){
     const vp = document.getElementById('viewerProfileOverlay');
@@ -2365,7 +2400,12 @@ function resetProductos(){
 // ══════════════════════════════════════
 //  AUTH
 // ══════════════════════════════════════
-function openLoginModal(){ document.getElementById('loginModal').style.display='flex'; }
+function openLoginModal(){
+  document.getElementById('loginModal').style.display='flex';
+  const lastEmail = localStorage.getItem('ld_last_email') || '';
+  const emailEl = document.getElementById('l_email');
+  if(emailEl && !emailEl.value) emailEl.value = lastEmail;
+}
 function closeLoginModal(){ document.getElementById('loginModal').style.display='none'; }
 function loginGoogle(){
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(()=>closeLoginModal()).catch(e=>showLErr(e.message));
@@ -2373,25 +2413,41 @@ function loginGoogle(){
 function loginEmail(){
   const e=document.getElementById('l_email').value.trim(), p=document.getElementById('l_pass').value;
   if(!e||!p){showLErr('Ingresa correo y contraseña');return;}
-  auth.signInWithEmailAndPassword(e,p).then(()=>closeLoginModal()).catch(err=>{
+  auth.signInWithEmailAndPassword(e,p).then(()=>{
+    localStorage.setItem('ld_last_email', e);
+    closeLoginModal();
+  }).catch(err=>{
     const m={'auth/wrong-password':'Contraseña incorrecta','auth/user-not-found':'Usuario no encontrado'};
     showLErr(m[err.code]||err.message);
   });
 }
 function showLErr(m){const e=document.getElementById('lmerr');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}
 function signOut(){
+  if(!auth) return;
   auth.signOut().then(()=>{
-    // Reset state
     isAdmin = false; isCaptain = false; captainEquipoKey = null;
     const vp = document.getElementById('viewerProfileOverlay');
     if(vp) vp.style.display = 'none';
-  }).catch(()=>{});
+    const chip = document.getElementById('userChip');
+    if(chip) chip.classList.remove('show');
+    showToast('Sesion cerrada','ta');
+  }).catch(()=>showToast('No se pudo cerrar sesion','tr'));
+}
+
+function canAccessPage(page){
+  if(!ADMIN_ONLY_PAGES.has(page)) return true;
+  return !!isAdmin;
 }
 
 // ══════════════════════════════════════
 //  NAVIGATION
 // ══════════════════════════════════════
 function showPage(p, btn){
+  if(!canAccessPage(p)){
+    showToast('No tienes permiso para esta seccion','tr');
+    p = 'tabla';
+    btn = document.querySelector('.nav-tab');
+  }
   if(p==='tienda' && !tiendaEnabled){
     showToast('La sección TIENDA está deshabilitada','ta');
     return;
@@ -2401,6 +2457,7 @@ function showPage(p, btn){
   const pageEl=document.getElementById('page-'+p);
   if(pageEl) pageEl.classList.add('active');
   if(btn) btn.classList.add('active');
+  localStorage.setItem(LS_LAST_PAGE, p);
   if(p==='tienda'){ renderTienda(); renderGastosTienda(); renderTurnoUI(); }
   if(p==='inscripciones') renderInscripciones();
   if(p==='arbitros'){ renderArbitros(); renderTrabajadores(); }
