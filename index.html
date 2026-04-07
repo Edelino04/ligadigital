@@ -1905,8 +1905,9 @@ const CD_LOGO = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST
 const CAT_NAMES = { liga_alta:'Liga Alta', liga_media:'Liga Media', liga_baja_a:'Liga Baja A', liga_baja_b:'Liga Baja B' };
 let catOrderKeys = ['liga_alta','liga_media','liga_baja_a','liga_baja_b'];
 const CANCHAS = ['Villa Universidad','Isla Músala'];
-const LOS_ALAMITOS_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-93d2b04e-29fa-4280-9ead-8a8dfedfea6f.png';
-const SPLASH_BIG_LOGO = 'file:///C:/Users/1175126364/.cursor/projects/c-Users-1175126364-OneDrive-Desktop-Torneo-Los-Alamitos/assets/c__Users_1175126364_AppData_Roaming_Cursor_User_workspaceStorage_1b482de4df89c7ba38c99ae1fe501a65_images_image-bf375905-7a56-4436-b71c-f65ba993a4ad.png';
+const CD_LOGO_SHIELD = '/CanchaDigital/img/logo-cancha-shield.png';
+const SPLASH_BIG_LOGO = '/CanchaDigital/img/logo-cancha-splash.png';
+const LOS_ALAMITOS_LOGO = '/CanchaDigital/img/logo-alamitos.png';
 TORNEO_NAMES.villa = 'TORNEO LOS ALAMITOS';
 delete TORNEO_NAMES.musala;
 TORNEO_LOGOS.villa = LOS_ALAMITOS_LOGO;
@@ -1919,7 +1920,7 @@ catOrderKeys = ['liga_alta','liga_media'];
 const splashMainLogoOnLoad = document.querySelector('#splash > div img');
 if(splashMainLogoOnLoad) splashMainLogoOnLoad.src = SPLASH_BIG_LOGO;
 const hdrBrandLogoOnLoad = document.querySelector('.hdr-shield img');
-if(hdrBrandLogoOnLoad) hdrBrandLogoOnLoad.src = SPLASH_BIG_LOGO;
+if(hdrBrandLogoOnLoad) hdrBrandLogoOnLoad.src = CD_LOGO_SHIELD;
 const splashTorneoCardsOnLoad = document.querySelectorAll('#splash [onclick^="selectTorneo"]');
 splashTorneoCardsOnLoad.forEach((card, idx)=>{
   if(idx===0){
@@ -5927,6 +5928,7 @@ function generarPDFTabla(data, tipo){
   const fecha = new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
   const organizador = 'Jesus "Navo" · 📱 667 452 5663';
   const torneoLogo = TORNEO_LOGOS[currentTorneo] || '';
+  const empresaLogo = CD_LOGO_SHIELD;
 
   let rowsHtml = '';
   if(tipo === 'tabla'){
@@ -5985,7 +5987,8 @@ function generarPDFTabla(data, tipo){
       </tr>`;
 
   const titulo = tipo==='tabla'?'TABLA DE POSICIONES':'MÁXIMOS GOLEADORES';
-  const logoHtml = torneoLogo?`<img src="${torneoLogo}" style="height:60px;object-fit:contain;border-radius:8px;margin-bottom:8px" onerror="this.style.display='none'"/>`:'';
+  const empresaLogoHtml = empresaLogo?`<img src="${empresaLogo}" style="height:58px;max-width:120px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.1);padding:6px;border:1px solid rgba(255,255,255,.22)" onerror="this.style.display='none'"/>`:'';
+  const torneoLogoHtml = torneoLogo?`<img src="${torneoLogo}" style="height:58px;max-width:120px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.1);padding:6px;border:1px solid rgba(255,255,255,.22)" onerror="this.style.display='none'"/>`:'';
 
   const pdfHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/>
   <style>
@@ -5993,7 +5996,8 @@ function generarPDFTabla(data, tipo){
     body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fb;padding:20px;}
     .page{background:#fff;max-width:700px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.12);}
     .header{background:linear-gradient(135deg,#0a1e3d,#1a3a8a,#1c7a1f);padding:28px 24px 20px;text-align:center;position:relative;}
-    .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#fbbf24,#f59e0b,#fbbf24);}
+    .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#22c55e,#fbbf24,#22c55e);}
+    .header-logos{display:flex;justify-content:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
     .header-badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.7);text-transform:uppercase;margin-bottom:10px;}
     .header-torneo{font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,.3);}
     .header-cat{font-size:13px;font-weight:700;color:#fbbf24;letter-spacing:3px;margin-bottom:6px;}
@@ -6010,7 +6014,7 @@ function generarPDFTabla(data, tipo){
   </head><body>
   <div class="page">
     <div class="header">
-      ${logoHtml}
+      <div class="header-logos">${empresaLogoHtml}${torneoLogoHtml}</div>
       <div class="header-badge">⚽ CanchaDigital.mx</div>
       <div class="header-torneo">${torneo}</div>
       <div class="header-cat">${cat}</div>
