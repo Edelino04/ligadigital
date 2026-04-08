@@ -276,7 +276,11 @@ textarea.fi{resize:vertical;min-height:60px;}
 .finalissima-chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);font-size:10px;font-weight:800;color:rgba(255,255,255,.85);}
 .finalissima-chip strong{color:#fff;}
 .finalissima-public-wrap{margin:8px 0 6px;}
-.finalissima-public-card{background:linear-gradient(180deg,#ffffff,#fbfbfc);border:2px solid #0f172a;border-radius:32px;padding:14px 16px 12px;box-shadow:0 14px 30px rgba(15,23,42,.08);}
+.finalissima-public-card{background:
+  radial-gradient(circle at top right,rgba(37,84,212,.08),transparent 28%),
+  radial-gradient(circle at bottom left,rgba(249,115,22,.06),transparent 24%),
+  linear-gradient(180deg,#ffffff 0%,#f8fbff 62%,#ffffff 100%);
+border:2px solid #0f172a;border-radius:32px;padding:14px 16px 12px;box-shadow:0 14px 30px rgba(15,23,42,.08);}
 .finalissima-public-top{display:flex;justify-content:center;align-items:flex-start;}
 .finalissima-public-copy{text-align:center;}
 .finalissima-public-kicker{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#111827;}
@@ -3139,72 +3143,33 @@ function renderTabla(){
     const l1=t1.logo?`<img src="${t1.logo}" alt="${escapeHtml(t1.nombre)}"/>`:`<div class="finalissima-logo">⚽</div>`;
     const l2=t2.logo?`<img src="${t2.logo}" alt="${escapeHtml(t2.nombre)}"/>`:`<div class="finalissima-logo">⚽</div>`;
     if(finalissimaSection) finalissimaSection.style.display = '';
-    if(!isAdmin){
-      fbBanner.innerHTML=`
-        <div class="finalissima-public-wrap">
-          <div class="finalissima-public-card">
-            <div class="finalissima-public-top">
-              <div class="finalissima-public-copy">
-                <div class="finalissima-public-kicker">Partido a campeón de copa</div>
-                <div class="finalissima-public-title">FINALISSIMA</div>
-              </div>
-            </div>
-            <div class="finalissima-public-duel">
-              <div class="finalissima-public-side">
-                ${l1}
-                <div class="finalissima-public-name">${escapeHtml(t1.nombre)}</div>
-                <div class="finalissima-public-rank">1er lugar</div>
-              </div>
-              <div class="finalissima-public-vs">
-                <strong>VS</strong>
-                <span>Al finalizar el torneo</span>
-              </div>
-              <div class="finalissima-public-side">
-                ${l2}
-                <div class="finalissima-public-name">${escapeHtml(t2.nombre)}</div>
-                <div class="finalissima-public-rank">2do lugar</div>
-              </div>
+    fbBanner.innerHTML=`
+      <div class="finalissima-public-wrap">
+        <div class="finalissima-public-card">
+          <div class="finalissima-public-top">
+            <div class="finalissima-public-copy">
+              <div class="finalissima-public-kicker">Partido a campeón de copa</div>
+              <div class="finalissima-public-title">FINALISSIMA</div>
             </div>
           </div>
-        </div>`;
-    }else{
-      const ptsDiff = (t1.pts||0) - (t2.pts||0);
-      const dgT1 = (t1.gf||0) - (t1.gc||0);
-      const dgT2 = (t2.gf||0) - (t2.gc||0);
-      fbBanner.innerHTML=`
-        <div class="finalissima-shell">
-          <div class="finalissima-topline">
-            <div class="finalissima-kicker">${escapeHtml(categoryLine)}</div>
-            <div class="finalissima-contact">${escapeHtml(organizerLine)}</div>
-          </div>
-          <div class="finalissima-title">${escapeHtml(t1.nombre)} VS ${escapeHtml(t2.nombre)}</div>
-          <div class="finalissima-sub">Duelo premium entre el campeón de liga momentáneo y su perseguidor directo rumbo a la Finalissima.</div>
-          <div class="finalissima-duel">
-            <div class="finalissima-side champion">
+          <div class="finalissima-public-duel">
+            <div class="finalissima-public-side">
               ${l1}
-              <div class="finalissima-rank">1er lugar</div>
-              <div class="finalissima-name">${escapeHtml(t1.nombre)}</div>
-              <div class="finalissima-note">Campeón de liga momentáneo</div>
+              <div class="finalissima-public-name">${escapeHtml(t1.nombre)}</div>
+              <div class="finalissima-public-rank">1er lugar</div>
             </div>
-            <div class="finalissima-xwrap">
-              <div class="finalissima-x">VS</div>
-              <div class="finalissima-xmeta">${ptsDiff>0?`${ptsDiff} pts de ventaja`:'Pelea cerrada'}</div>
+            <div class="finalissima-public-vs">
+              <strong>VS</strong>
+              <span>Al finalizar el torneo</span>
             </div>
-            <div class="finalissima-side contender">
+            <div class="finalissima-public-side">
               ${l2}
-              <div class="finalissima-rank">2do lugar</div>
-              <div class="finalissima-name">${escapeHtml(t2.nombre)}</div>
-              <div class="finalissima-note">Retador directo a la Finalissima</div>
+              <div class="finalissima-public-name">${escapeHtml(t2.nombre)}</div>
+              <div class="finalissima-public-rank">2do lugar</div>
             </div>
           </div>
-          <div class="finalissima-chiprow">
-            <span class="finalissima-chip"><strong>${t1.pts||0}</strong> pts líder</span>
-            <span class="finalissima-chip"><strong>${dgT1>=0?'+':''}${dgT1}</strong> DG líder</span>
-            <span class="finalissima-chip"><strong>${t2.pts||0}</strong> pts perseguidor</span>
-            <span class="finalissima-chip"><strong>${dgT2>=0?'+':''}${dgT2}</strong> DG perseguidor</span>
-          </div>
-        </div>`;
-    }
+        </div>
+      </div>`;
   } else if(fbBanner) {
     fbBanner.innerHTML='';
     if(finalissimaSection) finalissimaSection.style.display = 'none';
@@ -5815,8 +5780,6 @@ function getStatsSharePayload(tipo, dataOverride=null){
     const totalGoles = partidos.reduce((sum,p)=>sum+(p.gL||0)+(p.gV||0),0);
     const top = data[0];
     const segundo = data[1] || null;
-    const topDiff = ((top.gf||0) - (top.gc||0));
-    const secondDiff = segundo ? ((segundo.gf||0) - (segundo.gc||0)) : 0;
     const rows = data.slice(0,10).map((t,i)=>{
       const pos = i + 1;
       const dg = (t.gf||0) - (t.gc||0);
@@ -5837,19 +5800,6 @@ function getStatsSharePayload(tipo, dataOverride=null){
       </div>`;
     }).join('');
     const bodyHtml = `
-      <div class="share-finalissima">
-        <div class="share-finalissima-head">
-          <div class="share-finalissima-copy">
-            <div class="share-finalissima-title">FINALISSIMA</div>
-            <div class="share-finalissima-subline">Al finalizar el torneo</div>
-            <div class="share-finalissima-sub">${escapeHtml(top.nombre)} VS ${escapeHtml(segundo?.nombre || 'Por definirse')}</div>
-          </div>
-          <div class="share-finalissima-contact">${escapeHtml(organizerLine)}</div>
-        </div>
-        ${buildShareTeamVisual(top,1,`${top.pts||0} pts · ${topDiff>=0?'+':''}${topDiff} DG`)}
-        <div class="share-finalissima-vs">VS<small>${escapeHtml(categoria)}</small></div>
-        ${buildShareTeamVisual(segundo,2,segundo ? `${segundo.pts||0} pts · ${secondDiff>=0?'+':''}${secondDiff} DG` : 'Por definirse')}
-      </div>
       <div class="share-board">
         <div class="share-board-head" style="grid-template-columns:72px minmax(0,1.8fr) 72px 72px 72px 72px 88px 92px;">
           <div>#</div><div>Equipo</div><div>PJ</div><div>G</div><div>E</div><div>P</div><div>DG</div><div>Pts</div>
@@ -5867,8 +5817,8 @@ function getStatsSharePayload(tipo, dataOverride=null){
       `${ORGANIZER_NAME} · ${ORGANIZER_PHONE}`,
       `Tabla general actualizada al ${fecha}.`,
       `1. ${top.nombre} - ${top.pts||0} pts`,
-      segundo ? `2. ${segundo.nombre} - ${segundo.pts||0} pts | Finalissima` : '',
-      `#TorneoLosAlamitos #Finalissima #TablaGeneral`
+      segundo ? `2. ${segundo.nombre} - ${segundo.pts||0} pts` : '',
+      `#TorneoLosAlamitos #TablaGeneral`
     ].filter(Boolean).join('\n');
     return {
       kind:'tabla',
