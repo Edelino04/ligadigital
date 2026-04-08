@@ -121,7 +121,30 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
   .live-badge,.user-chip{display:none !important;}
   .cat-tabs,.nav-tabs{padding:10px 2px 8px;gap:8px;}
   .cat-tab,.nav-tab{padding:10px 14px;font-size:10px;letter-spacing:.35px;line-height:1.2;box-shadow:0 6px 14px rgba(37,84,212,.05);}
-  .tabla{min-width:760px;}
+  .tabla-wrap{overflow-x:visible;}
+  .tabla{min-width:0;width:100%;table-layout:fixed;font-size:8.5px;}
+  .tabla thead th{padding:10px 2px;font-size:7px;letter-spacing:.4px;}
+  .tabla thead th:nth-child(1),.tabla tbody td:nth-child(1){width:8%;}
+  .tabla thead th:nth-child(2),.tabla tbody td:nth-child(2){width:32%;}
+  .tabla thead th:nth-child(3),.tabla tbody td:nth-child(3),
+  .tabla thead th:nth-child(4),.tabla tbody td:nth-child(4),
+  .tabla thead th:nth-child(5),.tabla tbody td:nth-child(5),
+  .tabla thead th:nth-child(6),.tabla tbody td:nth-child(6),
+  .tabla thead th:nth-child(7),.tabla tbody td:nth-child(7),
+  .tabla thead th:nth-child(8),.tabla tbody td:nth-child(8),
+  .tabla thead th:nth-child(9),.tabla tbody td:nth-child(9){width:7%;}
+  .tabla thead th:nth-child(10),.tabla tbody td:nth-child(10){width:8%;}
+  .tabla thead th:nth-child(11),.tabla tbody td:nth-child(11){width:10%;}
+  .tabla tbody td{padding:12px 2px;font-size:8.5px;}
+  .tabla thead th.tal,.tabla tbody td.tal{padding-left:6px;}
+  .tc{gap:6px;align-items:flex-start;}
+  .tc-logo,.tc-ph{width:20px;height:20px;border-radius:7px;flex-shrink:0;font-size:10px;}
+  .tc-name{font-size:9px;white-space:normal;line-height:1.12;}
+  .tc-tag{display:none;}
+  .pos-num{font-size:11px;}
+  .pts-c{font-size:18px;}
+  .fp{gap:1px;flex-wrap:wrap;}
+  .fp-w,.fp-d,.fp-l{width:10px;height:10px;font-size:0;}
   .finalissima-shell{padding:16px 14px;}
   .finalissima-title{font-size:28px;letter-spacing:2px;}
   .finalissima-duel{gap:10px;}
@@ -642,9 +665,9 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 .share-brand img{width:56px;height:56px;object-fit:contain;border-radius:16px;background:#fff;padding:7px;border:1px solid #d6dfeb;box-shadow:0 6px 14px rgba(15,23,42,.06);}
 .share-brand-copy{display:flex;flex-direction:column;gap:4px;}
 .share-kicker{font-size:11px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;color:#2563eb;}
-.share-title{font-family:'Bebas Neue',sans-serif;font-size:54px;letter-spacing:2px;line-height:.94;color:#0f172a;}
-.share-sub{font-size:14px;font-weight:700;color:#475569;line-height:1.45;max-width:690px;}
-.share-date-pill{padding:10px 16px;border-radius:999px;background:#fff;border:1px solid #d6dfeb;font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#1e3a8a;box-shadow:0 6px 14px rgba(15,23,42,.05);}
+.share-title{font-family:'Bebas Neue',sans-serif;font-size:70px;letter-spacing:2px;line-height:.88;color:#0f172a;}
+.share-sub{font-size:14px;font-weight:800;color:#334155;line-height:1.45;max-width:720px;}
+.share-date-pill{padding:12px 18px;border-radius:999px;background:#fff;border:1px solid #dfe7f1;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1e3a8a;box-shadow:0 8px 18px rgba(15,23,42,.05);}
 .share-highlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;position:relative;z-index:1;}
 .share-highlight-grid.table-mode{grid-template-columns:1fr;}
 .share-highlight{background:#fff;border:1px solid #dbe4ee;border-radius:24px;padding:18px 18px 17px;box-shadow:0 10px 24px rgba(15,23,42,.06);}
@@ -653,27 +676,29 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 .share-highlight-label{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-bottom:8px;}
 .share-highlight-team{font-family:'Bebas Neue',sans-serif;font-size:35px;letter-spacing:1.3px;line-height:.96;margin-bottom:8px;color:#0f172a;}
 .share-highlight-meta{display:flex;gap:8px;flex-wrap:wrap;}
-.share-finalissima{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;background:linear-gradient(135deg,#f8fbff,#eef5ff 48%,#fff7ed);border:1px solid #dbe4ee;border-radius:28px;padding:22px 24px;margin-bottom:20px;box-shadow:0 10px 24px rgba(15,23,42,.06);position:relative;z-index:1;}
-.share-finalissima::before{content:'';position:absolute;left:20px;right:20px;top:0;height:5px;border-radius:999px;background:linear-gradient(90deg,#ca8a04,#f97316,#1d4ed8);}
+.share-finalissima{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;background:linear-gradient(180deg,#f9fbff,#f2f6fb 50%,#fff9f3);border:1px solid #e3ebf4;border-radius:30px;padding:24px 24px 26px;margin-bottom:20px;box-shadow:0 12px 28px rgba(15,23,42,.05);position:relative;z-index:1;}
+.share-finalissima::before{content:'';position:absolute;left:22px;right:22px;top:0;height:5px;border-radius:999px;background:linear-gradient(90deg,#d3a327,#f97316,#2563eb);}
 .share-finalissima-head{grid-column:1/-1;padding-top:6px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
 .share-finalissima-copy{flex:1;min-width:0;}
 .share-finalissima-contact{font-size:11px;font-weight:800;line-height:1.5;color:#334155;text-align:right;}
 .share-finalissima-kicker{font-size:11px;font-weight:900;letter-spacing:2.3px;text-transform:uppercase;color:#1d4ed8;}
+.share-finalissima-title{font-family:'Bebas Neue',sans-serif;font-size:88px;line-height:.86;letter-spacing:1.5px;color:#f59e0b;}
+.share-finalissima-subline{font-size:18px;font-weight:700;color:#0f172a;line-height:1.25;margin-top:4px;}
 .share-finalissima-sub{font-size:13px;font-weight:700;color:#475569;line-height:1.5;margin-top:6px;}
-.share-finalissima-side{background:#fff;border:1px solid #dbe4ee;border-radius:24px;padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:228px;text-align:center;box-shadow:0 8px 18px rgba(15,23,42,.04);}
+.share-finalissima-side{background:#fff;border:1px solid #dbe4ee;border-radius:24px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:244px;text-align:center;box-shadow:0 8px 18px rgba(15,23,42,.04);}
 .share-finalissima-side.top{background:linear-gradient(180deg,#fff8e6,#ffffff 62%);border-color:#f5d487;}
 .share-finalissima-side.second{background:linear-gradient(180deg,#eff6ff,#ffffff 62%);border-color:#93c5fd;}
 .share-finalissima-logo,.share-finalissima-side img{width:76px;height:76px;border-radius:20px;object-fit:cover;background:#fff;border:1px solid #dbe4ee;box-shadow:0 10px 18px rgba(15,23,42,.08);}
 .share-finalissima-logo{display:flex;align-items:center;justify-content:center;font-size:34px;color:#0f172a;}
 .share-finalissima-rank{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-top:14px;}
-.share-finalissima-team{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;line-height:.96;color:#0f172a;margin-top:8px;}
+.share-finalissima-team{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:1px;line-height:.92;color:#0f172a;margin-top:8px;}
 .share-finalissima-note{font-size:12px;font-weight:700;color:#475569;line-height:1.45;margin-top:8px;}
-.share-finalissima-vs{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:82px;letter-spacing:2px;line-height:1;color:#0f172a;text-align:center;}
+.share-finalissima-vs{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-family:'Bebas Neue',sans-serif;font-size:88px;letter-spacing:2px;line-height:1;color:#0f172a;text-align:center;}
 .share-finalissima-vs small{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#64748b;}
 .share-mini-chip{padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid #dbe4ee;font-size:10px;font-weight:800;letter-spacing:.5px;color:#334155;}
-.share-board{background:#fff;border:1px solid #dbe4ee;border-radius:26px;overflow:hidden;position:relative;z-index:1;box-shadow:0 10px 24px rgba(15,23,42,.06);}
-.share-board-head,.share-board-row{display:grid;gap:10px;align-items:center;padding:14px 18px;}
-.share-board-head{background:linear-gradient(180deg,#eff5fb,#f9fbfe);font-size:11px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:#64748b;}
+.share-board{background:#fff;border:1px solid #dbe4ee;border-radius:30px;overflow:hidden;position:relative;z-index:1;box-shadow:0 10px 24px rgba(15,23,42,.06);}
+.share-board-head,.share-board-row{display:grid;gap:10px;align-items:center;padding:16px 18px;}
+.share-board-head{background:linear-gradient(180deg,#f3f7fc,#fbfdff);font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#64748b;}
 .share-board-row{border-top:1px solid #edf2f7;font-size:14px;font-weight:700;color:#0f172a;}
 .share-board-row.top1{background:#fff8e8;}
 .share-board-row.top2{background:#fff4ec;}
@@ -3176,6 +3201,14 @@ function renderPorteros(){
   }
   el.innerHTML=top.map((g,i)=>{
     const pos=i+1, cls=pos===1?'p1':pos===2?'p2':pos===3?'p3':'pr';
+    if(!isAdmin){
+      return `<div class="gol-row keeper-row">
+        <div class="gol-pos ${cls}">${pos}</div>
+        <div class="gol-info">
+          <div class="gol-player">${escapeHtml(g.portero)}</div>
+        </div>
+      </div>`;
+    }
     return `<div class="gol-row keeper-row">
       <div class="gol-pos ${cls}">${pos}</div>
       <div class="gol-info">
@@ -5209,7 +5242,7 @@ function buildShareListRows(items){
       <div class="share-post-item-num">${i+1}</div>
       <div class="share-post-item-copy">
         <div class="share-post-item-title">${escapeHtml(item.title || '')}</div>
-        <div class="share-post-item-desc">${escapeHtml(item.desc || '')}</div>
+        ${(item.desc || '').trim() ? `<div class="share-post-item-desc">${escapeHtml(item.desc || '')}</div>` : ''}
       </div>
     </div>
   `).join('');
@@ -5611,7 +5644,7 @@ function buildShareTeamVisual(team, pos, note){
   const logo = team?.logo
     ? `<img src="${team.logo}" alt="${escapeHtml(team?.nombre || 'Equipo')}"/>`
     : `<div class="share-finalissima-logo">⚽</div>`;
-  const rankLabel = pos===1 ? 'Campeón momentáneo' : '2do lugar';
+  const rankLabel = pos===1 ? 'Campeón de liga' : '2do lugar de liga';
   return `<div class="share-finalissima-side ${pos===1?'top':'second'}">
     ${logo}
     <div class="share-finalissima-rank">${rankLabel}</div>
@@ -5635,6 +5668,8 @@ function getStatsSharePayload(tipo, dataOverride=null){
     const totalGoles = partidos.reduce((sum,p)=>sum+(p.gL||0)+(p.gV||0),0);
     const top = data[0];
     const segundo = data[1] || null;
+    const topDiff = ((top.gf||0) - (top.gc||0));
+    const secondDiff = segundo ? ((segundo.gf||0) - (segundo.gc||0)) : 0;
     const rows = data.slice(0,10).map((t,i)=>{
       const pos = i + 1;
       const dg = (t.gf||0) - (t.gc||0);
@@ -5642,8 +5677,8 @@ function getStatsSharePayload(tipo, dataOverride=null){
       const logo = t.logo
         ? `<img src="${t.logo}" alt="${escapeHtml(t.nombre)}"/>`
         : `<div style="width:34px;height:34px;border-radius:10px;background:#f8fafc;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:18px;color:#0f172a">⚽</div>`;
-      const teamSub = pos===1 ? 'Campeón de liga momentáneo' : pos===2 ? 'Retador directo a la Finalissima' : 'Tabla general';
-      return `<div class="share-board-row ${rowCls}" style="grid-template-columns:72px minmax(0,1.7fr) 72px 72px 72px 72px 88px 92px;">
+      const teamSub = pos===1 ? 'Campeón de liga momentáneo' : pos===2 ? 'Zona Finalissima' : 'Tabla general';
+      return `<div class="share-board-row ${rowCls}" style="grid-template-columns:72px minmax(0,1.8fr) 72px 72px 72px 72px 88px 92px;">
         <div class="share-pos">${pos}</div>
         <div class="share-team-wrap">${logo}<div><div class="share-team-name">${escapeHtml(t.nombre)}</div><div class="share-team-sub">${teamSub}</div></div></div>
         <div>${t.pj||0}</div>
@@ -5655,31 +5690,21 @@ function getStatsSharePayload(tipo, dataOverride=null){
       </div>`;
     }).join('');
     const bodyHtml = `
-      <div class="share-highlight-grid table-mode">
-        <div class="share-highlight top">
-          <div class="share-highlight-label">1er Lugar · Campeón de liga momentáneo</div>
-          <div class="share-highlight-team">${escapeHtml(top.nombre)}</div>
-          <div class="share-highlight-meta">
-            <span class="share-mini-chip">${top.pts||0} pts</span>
-            <span class="share-mini-chip">${top.g||0} ganados</span>
-            <span class="share-mini-chip">${(top.gf||0)-(top.gc||0)>=0?'+':''}${(top.gf||0)-(top.gc||0)} DG</span>
-          </div>
-        </div>
-      </div>
       <div class="share-finalissima">
         <div class="share-finalissima-head">
           <div class="share-finalissima-copy">
-            <div class="share-finalissima-kicker">Finalissima</div>
+            <div class="share-finalissima-title">FINALISSIMA</div>
+            <div class="share-finalissima-subline">Al finalizar el torneo</div>
             <div class="share-finalissima-sub">${escapeHtml(top.nombre)} VS ${escapeHtml(segundo?.nombre || 'Por definirse')}</div>
           </div>
           <div class="share-finalissima-contact">${escapeHtml(organizerLine)}</div>
         </div>
-        ${buildShareTeamVisual(top,1,'Llega como campeón de liga momentáneo')}
+        ${buildShareTeamVisual(top,1,`${top.pts||0} pts · ${topDiff>=0?'+':''}${topDiff} DG`)}
         <div class="share-finalissima-vs">VS<small>${escapeHtml(categoria)}</small></div>
-        ${buildShareTeamVisual(segundo,2,'Buscará quedarse con la Finalissima')}
+        ${buildShareTeamVisual(segundo,2,segundo ? `${segundo.pts||0} pts · ${secondDiff>=0?'+':''}${secondDiff} DG` : 'Por definirse')}
       </div>
       <div class="share-board">
-        <div class="share-board-head" style="grid-template-columns:72px minmax(0,1.7fr) 72px 72px 72px 72px 88px 92px;">
+        <div class="share-board-head" style="grid-template-columns:72px minmax(0,1.8fr) 72px 72px 72px 72px 88px 92px;">
           <div>#</div><div>Equipo</div><div>PJ</div><div>G</div><div>E</div><div>P</div><div>DG</div><div>Pts</div>
         </div>
         ${rows}
@@ -5762,26 +5787,27 @@ function getStatsSharePayload(tipo, dataOverride=null){
     const data = Array.isArray(dataOverride) && dataOverride.length ? dataOverride : getTopGoalkeepersData(10);
     if(!data.length) return null;
     const lider = data[0];
+    const viewerMode = !isAdmin;
     const bodyHtml = `
       <div class="share-post-hero">
         <h2>TOP 10<br/>PORTEROS</h2>
-        <p>Ranking basado en porterías imbatidas y menor promedio de goles recibidos por partido.</p>
+        <p>${viewerMode?'Listado oficial de porteros registrados en la categoría.':'Ranking basado en porterías imbatidas y menor promedio de goles recibidos por partido.'}</p>
       </div>
-      <div class="share-stat-grid">
+      ${viewerMode?'':`<div class="share-stat-grid">
         <div class="share-stat-box"><div class="share-stat-val">${lider.porteriasImbatidas}</div><div class="share-stat-lbl">PI del líder</div></div>
         <div class="share-stat-box"><div class="share-stat-val">${lider.promedioGC.toFixed(2)}</div><div class="share-stat-lbl">GC/PJ líder</div></div>
         <div class="share-stat-box"><div class="share-stat-val">${data.length}</div><div class="share-stat-lbl">Porteros rankeados</div></div>
-      </div>
+      </div>`}
       <div class="share-post-list">${buildShareListRows(data.map(g=>({
-        title: `${g.portero} · ${g.porteriasImbatidas} PI`,
-        desc: `${g.equipo} · ${g.promedioGC.toFixed(2)} GC/PJ · ${g.golesRecibidos} GC`
+        title: viewerMode ? `${g.portero}` : `${g.portero} · ${g.porteriasImbatidas} PI`,
+        desc: viewerMode ? '' : `${g.equipo} · ${g.promedioGC.toFixed(2)} GC/PJ · ${g.golesRecibidos} GC`
       })))}</div>
     `;
     const caption = [
       `${torneo} | ${categoria}`,
       `${ORGANIZER_NAME} · ${ORGANIZER_PHONE}`,
-      `Top 10 de mejores porteros al ${fecha}:`,
-      ...data.map((g,i)=>`${i+1}. ${g.portero} (${g.equipo}) - ${g.porteriasImbatidas} PI | ${g.promedioGC.toFixed(2)} GC/PJ`),
+      viewerMode ? `Porteros registrados al ${fecha}:` : `Top 10 de mejores porteros al ${fecha}:`,
+      ...data.map((g,i)=>viewerMode ? `${i+1}. ${g.portero}` : `${i+1}. ${g.portero} (${g.equipo}) - ${g.porteriasImbatidas} PI | ${g.promedioGC.toFixed(2)} GC/PJ`),
       `#TorneoLosAlamitos #Top10Porteros #Finalissima`
     ].join('\n');
     return {
