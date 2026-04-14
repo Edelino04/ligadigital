@@ -825,6 +825,55 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
 .cup-admin-note{margin-top:12px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px 16px;}
 .cup-admin-note strong{color:var(--acc2);}
 
+
+/* ═══ BRACKET REDISEÑADO ═══ */
+.bracket-wrap{position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(160deg,#0b1728 0%,#0f2040 55%,#132d5e 100%);border:1px solid rgba(77,126,245,.22);box-shadow:0 24px 48px rgba(10,20,50,.35);padding:20px 16px 22px;}
+.bracket-wrap::before{content:'';position:absolute;top:0;left:18px;right:18px;height:3px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:999px;}
+.bracket-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.bracket-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff;line-height:1;}
+.bracket-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.bracket-chip{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);font-size:9px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.75);}
+.bracket-chip.gold{background:rgba(202,138,4,.18);border-color:rgba(202,138,4,.4);color:#fde68a;}
+.bracket-scroll{overflow-x:auto;padding-bottom:6px;}
+.bracket-scroll::-webkit-scrollbar{height:5px;}
+.bracket-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px;}
+.bracket-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:12px;min-width:max-content;align-items:start;}
+.bracket-round{display:flex;flex-direction:column;gap:10px;min-width:0;}
+.bracket-round-hdr{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);text-align:center;margin-bottom:2px;}
+.bracket-round-name{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.9);}
+.bracket-round-sub{font-size:9px;color:rgba(255,255,255,.4);font-weight:600;margin-top:2px;}
+.bracket-match{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;transition:border-color .2s;}
+.bracket-match:hover{border-color:rgba(77,126,245,.5);}
+.bracket-slot{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative;}
+.bracket-slot + .bracket-slot{border-top:1px solid rgba(255,255,255,.07);}
+.bracket-slot.is-bye{opacity:.45;}
+.bracket-slot.is-tbd{opacity:.5;}
+.bracket-seed{width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:rgba(255,255,255,.8);flex-shrink:0;}
+.bracket-seed.seed-1{background:rgba(202,138,4,.25);border-color:rgba(202,138,4,.5);color:#fde68a;}
+.bracket-logo{width:28px;height:28px;border-radius:9px;object-fit:cover;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);flex-shrink:0;}
+.bracket-logo-ph{width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.bracket-team-info{flex:1;min-width:0;}
+.bracket-team-name{font-size:11px;font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bracket-team-sub{font-size:9px;color:rgba(255,255,255,.45);font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* Sub info solo admin */
+.bracket-team-sub.admin-detail{display:none;}
+.bracket-admin .bracket-team-sub.admin-detail{display:block;}
+/* note solo admin */
+.bracket-match-note{padding:6px 10px 8px;font-size:9px;color:rgba(255,255,255,.38);font-weight:700;border-top:1px solid rgba(255,255,255,.06);display:none;}
+.bracket-admin .bracket-match-note{display:block;}
+/* admin detail chips */
+.bracket-admin-chips{display:none;padding:6px 10px 8px;gap:5px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);}
+.bracket-admin .bracket-admin-chips{display:flex;}
+.bracket-chip-sm{padding:2px 7px;border-radius:999px;background:rgba(77,126,245,.15);border:1px solid rgba(77,126,245,.28);font-size:8px;font-weight:800;color:rgba(255,255,255,.75);letter-spacing:.5px;}
+.bracket-vs-bar{display:flex;align-items:center;justify-content:center;padding:3px 0;background:rgba(255,255,255,.03);}
+.bracket-vs-text{font-family:'Bebas Neue',sans-serif;font-size:11px;color:rgba(255,255,255,.25);letter-spacing:2px;}
+@media(max-width:640px){
+  .bracket-board{grid-auto-columns:minmax(150px,1fr);gap:9px;}
+  .bracket-wrap{padding:14px 12px 16px;border-radius:20px;}
+  .bracket-title{font-size:22px;}
+  .bracket-slot{padding:8px 9px;gap:7px;}
+  .bracket-team-name{font-size:10px;}
+}
 /* MERCADOTECNIA */
 .marketing-hero{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px;background:
   radial-gradient(circle at top right,rgba(14,165,233,.18),transparent 36%),
@@ -3581,10 +3630,11 @@ function getNextPowerOfTwo(num){
 }
 
 function generateCupSeedOrder(size){
-  let order = [1,2];
-  while(order.length < size){
-    const sum = (order.length * 2) + 1;
-    order = order.flatMap(seed => [seed, sum - seed]);
+  // Parea: 1 vs último, 2 vs penúltimo, etc. — cruce directo por posición en tabla
+  const order = [];
+  for(let i = 1; i <= size/2; i++){
+    order.push(i);        // seed top
+    order.push(size+1-i); // seed bottom (espejo)
   }
   return order;
 }
@@ -3679,44 +3729,55 @@ function buildCupProjectionData(dataOverride=null){
   };
 }
 
-function renderCupSlot(slot){
+function renderBracketSlot(slot, adminMode=false){
   const logo = slot.team?.logo
-    ? `<img class="cup-team-logo" src="${slot.team.logo}" alt="${escapeHtml(slot.displayName)}"/>`
-    : `<div class="cup-team-logo placeholder">${slot.isBye?'BYE':'⚽'}</div>`;
-  const slotClasses = [
-    'cup-team-slot',
-    slot.isBye ? 'is-bye' : '',
-    slot.isPlaceholder ? 'is-placeholder' : ''
-  ].filter(Boolean).join(' ');
-  return `<div class="${slotClasses}">
-    <div class="cup-team-seed">${slot.seed ? `#${slot.seed}` : '→'}</div>
+    ? `<img class="bracket-logo" src="${escapeHtml(slot.team.logo)}" alt="${escapeHtml(slot.displayName)}"/>`
+    : `<div class="bracket-logo-ph">${slot.isBye?'🔵':'⚽'}</div>`;
+  const seedClass = slot.seed===1 ? 'bracket-seed seed-1' : 'bracket-seed';
+  const slotClass = `bracket-slot${slot.isBye?' is-bye':''}${slot.isPlaceholder?' is-tbd':''}`;
+  const seedLabel = slot.seed ? `#${slot.seed}` : '?';
+  const adminSub = adminMode && slot.team
+    ? `<div class="bracket-team-sub admin-detail">${slot.team.pts||0}pts · ${slot.team.g||0}G ${slot.team.e||0}E ${slot.team.pe||0}P</div>`
+    : '';
+  return `<div class="${slotClass}">
+    <div class="${seedClass}">${seedLabel}</div>
     ${logo}
-    <div class="cup-team-copy">
-      <div class="cup-team-name">${escapeHtml(slot.displayName || 'Por definirse')}</div>
-      <div class="cup-team-sub">${escapeHtml(slot.subtitle || '')}</div>
+    <div class="bracket-team-info">
+      <div class="bracket-team-name">${escapeHtml(slot.displayName || 'Por definirse')}</div>
+      ${adminSub}
     </div>
   </div>`;
 }
 
 function buildCupBracketHtml(cupData, opts={}){
   if(!cupData?.rounds?.length) return '';
+  const adminMode = !!opts.adminMode;
   const shareMode = !!opts.shareMode;
-  const boardClass = `cup-board${shareMode ? ' cup-board-share' : ''}`;
-  return `<div class="${boardClass}" style="${shareMode ? `--cup-rounds:${cupData.rounds.length};` : ''}">
-    ${cupData.rounds.map((round,index)=>`
-      <div class="cup-round">
-        <div class="cup-round-title">${escapeHtml(round.name)}<span class="cup-round-sub">${round.matches.length} llave${round.matches.length===1?'':'s'}</span></div>
-        ${round.matches.map((match,matchIndex)=>`
-          <div class="cup-match">
-            ${renderCupSlot(match.slotA)}
-            ${renderCupSlot(match.slotB)}
-            <div class="cup-match-note">${escapeHtml(match.note || `Llave ${matchIndex+1} de ${round.name}.`)}</div>
-          </div>
-        `).join('')}
-      </div>
-    `).join('')}
+  const wrapClass = `bracket-board${shareMode?' bracket-board-share':''}`;
+  return `<div class="${wrapClass}" style="${shareMode?`--cup-rounds:${cupData.rounds.length};`:''}">
+    ${cupData.rounds.map((round)=>{
+      return `<div class="bracket-round">
+        <div class="bracket-round-hdr">
+          <div class="bracket-round-name">${escapeHtml(round.name)}</div>
+          <div class="bracket-round-sub">${round.matches.length} llave${round.matches.length===1?'':'s'}</div>
+        </div>
+        ${round.matches.map((match,mi)=>{
+          const adminChips = adminMode && match.note ? `<div class="bracket-admin-chips"><span class="bracket-chip-sm">Llave ${mi+1}</span>${match.winner?`<span class="bracket-chip-sm">✅ Bye confirmado</span>`:''}</div>` : '';
+          const note = adminMode ? `<div class="bracket-match-note">${escapeHtml(match.note||'')}</div>` : '';
+          return `<div class="cup-match bracket-match">
+            ${renderBracketSlot(match.slotA, adminMode)}
+            <div class="bracket-vs-bar"><span class="bracket-vs-text">VS</span></div>
+            ${renderBracketSlot(match.slotB, adminMode)}
+            ${note}${adminChips}
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('')}
   </div>`;
 }
+
+/* legacy alias */
+function renderCupSlot(slot){ return renderBracketSlot(slot, false); }
 
 function renderTabla(){
   const body=document.getElementById('tablaBody'); if(!body)return;
@@ -3821,24 +3882,26 @@ function renderTabla(){
   const fbBanner=document.getElementById('finalissimaBanner');
   const finalissimaSection=document.getElementById('finalissimaSection');
   if(fbBanner && cupData){
-    const leader = cupData.leader?.nombre || 'Líder';
     if(finalissimaSection) finalissimaSection.style.display = '';
+    const adminCls = isAdmin ? ' bracket-admin' : '';
+    const adminChipsHtml = isAdmin ? `
+      <div class="bracket-chips">
+        <span class="bracket-chip gold">${escapeHtml(cupData.leader?.nombre||'—')} #1</span>
+        <span class="bracket-chip">${cupData.qualifiedTeams} equipos</span>
+        <span class="bracket-chip">${escapeHtml(cupData.stageLabel)}</span>
+        ${cupData.hasByes?'<span class="bracket-chip">BYE activos</span>':''}
+      </div>` : `
+      <div class="bracket-chips">
+        <span class="bracket-chip">${cupData.qualifiedTeams} equipos</span>
+        <span class="bracket-chip">${escapeHtml(cupData.stageLabel)}</span>
+      </div>`;
     fbBanner.innerHTML=`
-      <div class="cup-preview">
-        <div class="cup-preview-head">
-          <div class="cup-preview-copy">
-            <div class="cup-preview-kicker">Copa automática según la tabla</div>
-            <div class="cup-preview-title">CUADRO DE COPA</div>
-            <div class="cup-preview-sub">La copa se arma sola con la clasificación actual. Si hoy se cerrara la liga, así se vería el camino al campeón en ${escapeHtml(CAT_NAMES[currentCat] || currentCat || 'la categoría')}.</div>
-          </div>
-          <div class="cup-preview-summary">
-            <div class="cup-summary-chip"><strong>${cupData.qualifiedTeams}</strong> equipos</div>
-            <div class="cup-summary-chip"><strong>${escapeHtml(cupData.stageLabel)}</strong></div>
-            <div class="cup-summary-chip"><strong>${escapeHtml(leader)}</strong> seed 1</div>
-            ${cupData.hasByes ? '<div class="cup-summary-chip"><strong>BYE</strong> cruces libres</div>' : ''}
-          </div>
+      <div class="bracket-wrap${adminCls}">
+        <div class="bracket-header">
+          <div class="bracket-title">🏆 CUADRO DE COPA</div>
+          ${adminChipsHtml}
         </div>
-        <div class="cup-board-scroll">${buildCupBracketHtml(cupData)}</div>
+        <div class="bracket-scroll">${buildCupBracketHtml(cupData,{adminMode:isAdmin})}</div>
       </div>`;
   } else if(fbBanner) {
     fbBanner.innerHTML='';
@@ -6070,7 +6133,89 @@ function compartirTabla(){
 function compartirCopa(){
   const cupData=buildCupProjectionData();
   if(!cupData){showToast('Aún no hay equipos suficientes para armar la copa','ta');return;}
-  openStatsShare('copa');
+  // Intentar captura directa del bracket si html2canvas disponible
+  const bracketEl = document.querySelector('.bracket-wrap');
+  if(bracketEl && typeof html2canvas !== 'undefined'){
+    showToast('Generando imagen...','tg');
+    const cat = CAT_NAMES[currentCat]||currentCat||'';
+    const torneo = TORNEO_NAMES[currentTorneo]||'Torneo';
+    // Construir panel de captura con fondo
+    const captureDiv = document.createElement('div');
+    captureDiv.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:800px;padding:0;background:#0b1728;border-radius:0;font-family:Montserrat,sans-serif;';
+    captureDiv.innerHTML = `
+      <div style="padding:28px 28px 8px;background:linear-gradient(160deg,#0b1728,#0f2040 55%,#132d5e);">
+        <div style="height:3px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:999px;margin-bottom:18px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:'Bebas Neue',cursive;font-size:30px;letter-spacing:3px;color:#fff;">🏆 CUADRO DE COPA</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;text-align:right;">${escapeHtml(torneo)}<br>${escapeHtml(cat)}</div>
+        </div>
+        ${bracketEl.querySelector('.bracket-scroll')?.innerHTML||''}
+        <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:1px;">Proyección según tabla actual</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;">${new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}</div>
+        </div>
+        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);margin-top:12px;"></div>
+      </div>`;
+    document.body.appendChild(captureDiv);
+    html2canvas(captureDiv,{
+      scale:2,
+      backgroundColor:'#0b1728',
+      useCORS:true,
+      logging:false
+    }).then(canvas=>{
+      document.body.removeChild(captureDiv);
+      canvas.toBlob(blob=>{
+        if(!blob){ openStatsShare('copa'); return; }
+        const url = URL.createObjectURL(blob);
+        // Intentar Web Share API (móvil)
+        if(navigator.share && navigator.canShare && navigator.canShare({files:[new File([blob],'copa.png',{type:'image/png'})]})){
+          navigator.share({
+            title:`Cuadro de Copa · ${cat}`,
+            text:`${torneo} | ${cat}
+#TorneoLosAlamitos`,
+            files:[new File([blob],'copa.png',{type:'image/png'})]
+          }).then(()=>URL.revokeObjectURL(url))
+          .catch(()=>{
+            // fallback: descarga
+            const a=document.createElement('a');
+            a.href=url;a.download=`cuadro_copa_${cat.toLowerCase().replace(/\s+/g,'_')}.png`;
+            a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+          });
+        } else {
+          // Desktop: abrir modal con imagen + descarga
+          abrirCompartirImagenCopa(url, canvas, cat, torneo, cupData);
+        }
+      },'image/png');
+    }).catch(()=>{
+      if(captureDiv.parentNode) document.body.removeChild(captureDiv);
+      openStatsShare('copa');
+    });
+  } else {
+    openStatsShare('copa');
+  }
+}
+
+function abrirCompartirImagenCopa(blobUrl, canvas, cat, torneo, cupData){
+  // Reusar modal de compartir si existe, o crear uno simple
+  const existing = document.getElementById('modalCompartirCopa');
+  if(existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'modalCompartirCopa';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px);';
+  modal.innerHTML = `
+    <div style="background:var(--bg2,#fff);border:1px solid var(--border,#ddd);border-radius:20px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--acc,#2554d4);">📤 Compartir Copa</div>
+        <button onclick="document.getElementById('modalCompartirCopa').remove()" style="background:none;border:1px solid var(--border,#ddd);border-radius:8px;padding:4px 9px;cursor:pointer;font-size:16px;color:var(--text,#000);">✕</button>
+      </div>
+      <img src="${blobUrl}" style="width:100%;border-radius:14px;margin-bottom:14px;border:1px solid var(--border,#ddd);" />
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button onclick="(()=>{const a=document.createElement('a');a.href='${blobUrl}';a.download='cuadro_copa.png';a.click();})()" style="background:var(--acc,#2554d4);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;cursor:pointer;">⬇️ DESCARGAR IMAGEN</button>
+        <button onclick="navigator.clipboard.writeText('${escapeHtml(torneo)} | ${escapeHtml(cat)}\nCuadro de copa — proyectado al ${new Date().toLocaleDateString('es-MX')}.\n#TorneoLosAlamitos #CopaDelTorneo').then(()=>showToast('Texto copiado','tg'))" style="background:transparent;color:var(--acc,#2554d4);border:1.5px solid var(--border,#ddd);border-radius:10px;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;cursor:pointer;">📋 COPIAR TEXTO</button>
+      </div>
+    </div>`;
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  document.body.appendChild(modal);
 }
 
 function compartirFinalissima(){
