@@ -121,9 +121,30 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
   .live-badge,.user-chip{display:none !important;}
   .cat-tabs,.nav-tabs{padding:10px 2px 8px;gap:8px;}
   .cat-tab,.nav-tab{padding:10px 14px;font-size:10px;letter-spacing:.35px;line-height:1.2;box-shadow:0 6px 14px rgba(37,84,212,.05);}
-  .tabla-wrap{border-radius:18px;}
-  .tabla{display:none;}
-  .tm-list{display:flex;}
+  .tabla-wrap{overflow-x:visible;}
+  .tabla{min-width:0;width:100%;table-layout:fixed;font-size:9.5px;}
+  .tabla thead th{padding:10px 2px;font-size:7.8px;letter-spacing:.45px;}
+  .tabla thead th:nth-child(1),.tabla tbody td:nth-child(1){width:8%;}
+  .tabla thead th:nth-child(2),.tabla tbody td:nth-child(2){width:32%;}
+  .tabla thead th:nth-child(3),.tabla tbody td:nth-child(3),
+  .tabla thead th:nth-child(4),.tabla tbody td:nth-child(4),
+  .tabla thead th:nth-child(5),.tabla tbody td:nth-child(5),
+  .tabla thead th:nth-child(6),.tabla tbody td:nth-child(6),
+  .tabla thead th:nth-child(7),.tabla tbody td:nth-child(7),
+  .tabla thead th:nth-child(8),.tabla tbody td:nth-child(8),
+  .tabla thead th:nth-child(9),.tabla tbody td:nth-child(9){width:7%;}
+  .tabla thead th:nth-child(10),.tabla tbody td:nth-child(10){width:8%;}
+  .tabla thead th:nth-child(11),.tabla tbody td:nth-child(11){width:10%;}
+  .tabla tbody td{padding:12px 2px;font-size:9.5px;}
+  .tabla thead th.tal,.tabla tbody td.tal{padding-left:6px;}
+  .tc{gap:6px;align-items:flex-start;}
+  .tc-logo,.tc-ph{width:20px;height:20px;border-radius:7px;flex-shrink:0;font-size:10px;}
+  .tc-name{font-size:10.5px;white-space:normal;line-height:1.12;}
+  .tc-tag{display:none;}
+  .pos-num{font-size:12px;}
+  .pts-c{font-size:20px;}
+  .fp{gap:1px;flex-wrap:wrap;}
+  .fp-w,.fp-d,.fp-l{width:10px;height:10px;font-size:0;}
   .finalissima-shell{padding:16px 14px;}
   .finalissima-title{font-size:28px;letter-spacing:2px;}
   .finalissima-duel{gap:10px;}
@@ -148,9 +169,6 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
   .cup-preview-summary{justify-content:flex-start;}
   .cup-board{grid-auto-columns:minmax(190px,1fr);}
   .page{padding:12px 10px 92px;}
-  /* Reglamento móvil */
-  #page-reglamento .card{padding:14px;}
-  #page-reglamento .sh{margin-top:10px;}
 }
 
 /* ═══ PAGES ═══ */
@@ -224,35 +242,18 @@ textarea.fi{resize:vertical;min-height:60px;}
 .tc-logo{width:30px;height:30px;object-fit:cover;border-radius:10px;}
 .tc-ph{width:30px;height:30px;background:var(--card2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;}
 .tc-copy{min-width:0;display:flex;flex-direction:column;gap:3px;}
-.tc-name{font-size:13px;font-weight:900;line-height:1.15;white-space:normal;overflow:hidden;text-overflow:ellipsis;color:#0f172a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word;}
-.tc-tag{display:inline-flex;align-items:center;width:max-content;max-width:100%;padding:4px 10px;border-radius:999px;font-size:8px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;line-height:1.15;box-shadow:0 6px 14px rgba(15,23,42,.06);}
+.tc-name{font-size:15px;font-weight:900;line-height:1.15;white-space:normal;overflow:hidden;text-overflow:ellipsis;color:#0f172a;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word;}
+.tc-tag{display:none;align-items:center;width:max-content;max-width:100%;padding:4px 10px;border-radius:999px;font-size:8px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;line-height:1.15;box-shadow:0 6px 14px rgba(15,23,42,.06);}
 .tc-tag.champ{background:rgba(202,138,4,.14);color:#8a5a00;border:1px solid rgba(202,138,4,.35);}
 .tc-tag.finalissima{background:rgba(249,115,22,.12);color:#c2410c;border:1px solid rgba(249,115,22,.28);}
-.pts-c{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--acc);text-shadow:none;letter-spacing:1px;}
+.pts-c{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--acc);text-shadow:none;letter-spacing:1px;line-height:1;text-align:center;}
+.tabla tbody td.pts-c{padding-left:0;padding-right:0;vertical-align:middle;}
 .dp{color:var(--acc);font-weight:700}.dn{color:var(--red);font-weight:700}.dz{color:var(--muted)}
 .fp{display:flex;gap:2px;justify-content:center;}
 .fp-w{width:15px;height:15px;border-radius:50%;background:#16a34a;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
 .fp-d{width:15px;height:15px;border-radius:50%;background:#64748b;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
 .fp-l{width:15px;height:15px;border-radius:50%;background:#dc2626;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff;}
 .tabla-empty{text-align:center;padding:28px;color:var(--muted);font-size:12px;font-weight:600;}
-
-/* ═══ TABLA MÓVIL — CARDS ═══ */
-.tm-list{display:flex;flex-direction:column;gap:0;}
-.tm-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid rgba(208,218,238,.6);background:rgba(255,255,255,.96);transition:background .15s;border-left:3px solid transparent;}
-.tm-row:last-child{border-bottom:none;}
-.tm-row.tm-leader{background:linear-gradient(90deg,rgba(245,158,11,.16),rgba(255,252,235,.97) 40%,rgba(255,255,255,.97));border-left:3px solid #ca8a04;}
-.tm-pos{width:22px;text-align:center;flex-shrink:0;}
-.tm-pos-num{font-family:"Montserrat",sans-serif;font-size:13px;font-weight:900;color:var(--muted);}
-.tm-pos-num.gold{color:#ca8a04;}
-.tm-logo{width:36px;height:36px;object-fit:cover;border-radius:10px;flex-shrink:0;}
-.tm-ph{width:36px;height:36px;background:var(--card2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.tm-info{flex:1;min-width:0;}
-.tm-name{font-size:12px;font-weight:900;color:#0f172a;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tm-sub{font-size:10px;color:var(--muted);font-weight:600;margin-top:3px;display:flex;gap:8px;}
-.tm-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font-size:8px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;background:rgba(202,138,4,.14);color:#8a5a00;border:1px solid rgba(202,138,4,.3);}
-.tm-pts{text-align:right;flex-shrink:0;min-width:44px;}
-.tm-pts-num{font-family:"Bebas Neue",sans-serif;font-size:28px;line-height:1;color:var(--acc);}
-.tm-pts-lbl{font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;}
 
 /* FINALISSIMA BANNER */
 .finalissima-banner{position:relative;overflow:hidden;margin:14px 0 12px;padding:1px;border-radius:24px;background:linear-gradient(135deg,#c68a12,#f59e0b,#1d4ed8);box-shadow:0 18px 34px rgba(29,78,216,.12);}
@@ -760,6 +761,25 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
 .share-post-item-copy{flex:1;}
 .share-post-item-title{font-size:17px;font-weight:900;margin-bottom:5px;color:#0f172a;}
 .share-post-item-desc{font-size:13px;color:#475569;line-height:1.55;font-weight:600;}
+.share-scorers-list{display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;}
+.share-scorer-row{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px;padding:18px 20px 18px 24px;border-radius:26px;background:linear-gradient(135deg,#ffffff,#f7fbff);border:1px solid #dbe4ee;box-shadow:0 10px 22px rgba(15,23,42,.05);overflow:hidden;}
+.share-scorer-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(180deg,#1d4ed8,#60a5fa);}
+.share-scorer-row.top1{background:linear-gradient(135deg,#fff9e9,#ffffff 62%,#f7fbff);}
+.share-scorer-row.top2{background:linear-gradient(135deg,#f8fbff,#ffffff 62%,#fff7ed);}
+.share-scorer-row.top3{background:linear-gradient(135deg,#fffdf7,#ffffff 62%,#f8fbff);}
+.share-scorer-row.top1::before{background:linear-gradient(180deg,#ca8a04,#facc15);}
+.share-scorer-row.top2::before{background:linear-gradient(180deg,#1d4ed8,#38bdf8);}
+.share-scorer-row.top3::before{background:linear-gradient(180deg,#ea580c,#fb923c);}
+.share-scorer-rank{width:60px;height:60px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;color:#1d4ed8;background:linear-gradient(180deg,#eff6ff,#ffffff);border:1px solid #bfdbfe;box-shadow:inset 0 1px 0 rgba(255,255,255,.9);}
+.share-scorer-row.top1 .share-scorer-rank{color:#8a5a00;background:linear-gradient(180deg,#fff4bf,#ffffff);border-color:#f5d487;}
+.share-scorer-row.top2 .share-scorer-rank{color:#1d4ed8;}
+.share-scorer-row.top3 .share-scorer-rank{color:#c2410c;background:linear-gradient(180deg,#ffedd5,#ffffff);border-color:#fdba74;}
+.share-scorer-copy{min-width:0;}
+.share-scorer-name{font-size:26px;font-weight:900;line-height:1.08;color:#0f172a;word-break:break-word;}
+.share-scorer-team{font-size:14px;font-weight:700;line-height:1.45;color:#475569;margin-top:6px;word-break:break-word;}
+.share-scorer-goals{min-width:118px;padding:12px 16px;border-radius:22px;background:linear-gradient(180deg,#eef4ff,#ffffff);border:1px solid #d7e4f6;text-align:center;box-shadow:0 8px 18px rgba(37,84,212,.08);}
+.share-scorer-goals strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:.9;color:#1d4ed8;}
+.share-scorer-goals span{display:block;font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-top:5px;}
 .share-hashtags{font-size:13px;line-height:1.7;color:#1d4ed8;font-weight:800;}
 .share-finalissima-only{background:
   radial-gradient(circle at top right,rgba(37,84,212,.08),transparent 30%),
@@ -787,9 +807,9 @@ border:1px solid #dde6ef;border-radius:34px;padding:22px 28px 26px;box-shadow:0 
 .share-finalissima-only-vs span{font-size:15px;font-weight:700;color:#334155;margin-top:4px;}
 
 .cup-preview{position:relative;overflow:hidden;border-radius:30px;padding:22px;background:
-  radial-gradient(circle at top right,rgba(37,84,212,.12),transparent 34%),
-  radial-gradient(circle at bottom left,rgba(46,168,60,.1),transparent 26%),
-  linear-gradient(180deg,#ffffff 0%,#f7fbff 58%,#ffffff 100%);
+  radial-gradient(circle at top right,rgba(37,84,212,.08),transparent 34%),
+  radial-gradient(circle at bottom left,rgba(147,197,253,.16),transparent 28%),
+  linear-gradient(180deg,#ffffff 0%,#f9fbff 58%,#f3f8ff 100%);
 border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
 .cup-preview::before{content:'';position:absolute;left:20px;right:20px;top:0;height:4px;border-radius:999px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);}
 .cup-preview-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;position:relative;z-index:1;}
@@ -806,8 +826,8 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
 .cup-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:14px;min-width:max-content;align-items:start;}
 .cup-board.cup-board-share{grid-auto-flow:unset;grid-template-columns:repeat(var(--cup-rounds,3),minmax(0,1fr));grid-auto-columns:initial;min-width:0;}
 .cup-round{display:flex;flex-direction:column;gap:12px;min-width:0;}
-.cup-round-title{padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#0f172a,#1d4ed8);color:#fff;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;text-align:center;box-shadow:0 10px 20px rgba(29,78,216,.18);}
-.cup-round-sub{font-size:10px;font-weight:700;color:#cbd5e1;margin-top:4px;display:block;letter-spacing:.4px;}
+.cup-round-title{padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#f8fbff,#e9f1ff);color:#1a3a8a;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;text-align:center;box-shadow:0 10px 20px rgba(29,78,216,.08);border:1px solid #d7e4f6;}
+.cup-round-sub{font-size:10px;font-weight:700;color:#64748b;margin-top:4px;display:block;letter-spacing:.4px;}
 .cup-match{background:#fff;border:1px solid #dbe4ee;border-radius:22px;padding:14px 12px;box-shadow:0 8px 18px rgba(15,23,42,.04);}
 .cup-match-note{margin-top:10px;padding-top:10px;border-top:1px solid #e6edf6;font-size:10px;font-weight:700;color:#64748b;line-height:1.45;}
 .cup-team-slot{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:10px;padding:10px 8px;border-radius:16px;background:linear-gradient(180deg,#ffffff,#f8fbff);}
@@ -825,55 +845,6 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
 .cup-admin-note{margin-top:12px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px 16px;}
 .cup-admin-note strong{color:var(--acc2);}
 
-
-/* ═══ BRACKET REDISEÑADO ═══ */
-.bracket-wrap{position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(160deg,#0b1728 0%,#0f2040 55%,#132d5e 100%);border:1px solid rgba(77,126,245,.22);box-shadow:0 24px 48px rgba(10,20,50,.35);padding:20px 16px 22px;}
-.bracket-wrap::before{content:'';position:absolute;top:0;left:18px;right:18px;height:3px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:999px;}
-.bracket-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.bracket-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff;line-height:1;}
-.bracket-chips{display:flex;gap:6px;flex-wrap:wrap;}
-.bracket-chip{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);font-size:9px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.75);}
-.bracket-chip.gold{background:rgba(202,138,4,.18);border-color:rgba(202,138,4,.4);color:#fde68a;}
-.bracket-scroll{overflow-x:auto;padding-bottom:6px;}
-.bracket-scroll::-webkit-scrollbar{height:5px;}
-.bracket-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px;}
-.bracket-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:12px;min-width:max-content;align-items:start;}
-.bracket-round{display:flex;flex-direction:column;gap:10px;min-width:0;}
-.bracket-round-hdr{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);text-align:center;margin-bottom:2px;}
-.bracket-round-name{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.9);}
-.bracket-round-sub{font-size:9px;color:rgba(255,255,255,.4);font-weight:600;margin-top:2px;}
-.bracket-match{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;transition:border-color .2s;}
-.bracket-match:hover{border-color:rgba(77,126,245,.5);}
-.bracket-slot{display:flex;align-items:center;gap:8px;padding:9px 10px;position:relative;}
-.bracket-slot + .bracket-slot{border-top:1px solid rgba(255,255,255,.07);}
-.bracket-slot.is-bye{opacity:.45;}
-.bracket-slot.is-tbd{opacity:.5;}
-.bracket-seed{width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:rgba(255,255,255,.8);flex-shrink:0;}
-.bracket-seed.seed-1{background:rgba(202,138,4,.25);border-color:rgba(202,138,4,.5);color:#fde68a;}
-.bracket-logo{width:28px;height:28px;border-radius:9px;object-fit:cover;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);flex-shrink:0;}
-.bracket-logo-ph{width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.bracket-team-info{flex:1;min-width:0;}
-.bracket-team-name{font-size:11px;font-weight:800;color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bracket-team-sub{font-size:9px;color:rgba(255,255,255,.45);font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-/* Sub info solo admin */
-.bracket-team-sub.admin-detail{display:none;}
-.bracket-admin .bracket-team-sub.admin-detail{display:block;}
-/* note solo admin */
-.bracket-match-note{padding:6px 10px 8px;font-size:9px;color:rgba(255,255,255,.38);font-weight:700;border-top:1px solid rgba(255,255,255,.06);display:none;}
-.bracket-admin .bracket-match-note{display:block;}
-/* admin detail chips */
-.bracket-admin-chips{display:none;padding:6px 10px 8px;gap:5px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06);}
-.bracket-admin .bracket-admin-chips{display:flex;}
-.bracket-chip-sm{padding:2px 7px;border-radius:999px;background:rgba(77,126,245,.15);border:1px solid rgba(77,126,245,.28);font-size:8px;font-weight:800;color:rgba(255,255,255,.75);letter-spacing:.5px;}
-.bracket-vs-bar{display:flex;align-items:center;justify-content:center;padding:3px 0;background:rgba(255,255,255,.03);}
-.bracket-vs-text{font-family:'Bebas Neue',sans-serif;font-size:11px;color:rgba(255,255,255,.25);letter-spacing:2px;}
-@media(max-width:640px){
-  .bracket-board{grid-auto-columns:minmax(150px,1fr);gap:9px;}
-  .bracket-wrap{padding:14px 12px 16px;border-radius:20px;}
-  .bracket-title{font-size:22px;}
-  .bracket-slot{padding:8px 9px;gap:7px;}
-  .bracket-team-name{font-size:10px;}
-}
 /* MERCADOTECNIA */
 .marketing-hero{position:relative;overflow:hidden;border-radius:22px;padding:22px 20px;background:
   radial-gradient(circle at top right,rgba(14,165,233,.18),transparent 36%),
@@ -1061,7 +1032,6 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
 <button class="nav-tab" onclick="showPage('partidos',this)">⚽ Últimos Partidos</button>
 <button class="nav-tab" onclick="showPage('equipos',this)">🏆 Equipos</button>
 <button class="nav-tab" onclick="showPage('historial',this)">🏅 Historial</button>
-<button class="nav-tab" onclick="showPage('reglamento',this)">📋 Reglamento</button>
 <button class="nav-tab admin-only" id="navTienda" onclick="showPage('tienda',this)">🛒 Tienda</button>
 <button class="nav-tab admin-only" id="navInsc" onclick="showPage('inscripciones',this)">💰 Inscripciones</button>
 <button class="nav-tab admin-only" id="navArb" onclick="showPage('arbitros',this)">👥 Capital Humano</button>
@@ -1112,8 +1082,6 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
       </tr></thead>
       <tbody id="tablaBody"><tr><td colspan="11" class="tabla-empty">Sin partidos terminados</td></tr></tbody>
     </table>
-    <!-- Vista móvil tipo tarjetas -->
-    <div class="tm-list" id="tablaBodyMobile" style="display:none"></div>
   </div>
   <!-- COPA SECTION -->
   <div id="finalissimaSection" style="display:none">
@@ -1182,250 +1150,6 @@ border:1px solid #dbe4ee;box-shadow:0 14px 30px rgba(15,23,42,.06);}
   <div id="historialList"><div class="empty"><span class="empty-icon">🏆</span>Sin temporadas guardadas aún</div></div>
 </div>
 
-
-<!-- ═══════ REGLAMENTO Y PREMIOS ═══════ -->
-<div class="page" id="page-reglamento">
-
-  <!-- Hero banner -->
-  <div style="position:relative;overflow:hidden;border-radius:24px;padding:24px 20px 22px;margin-bottom:16px;background:linear-gradient(135deg,#0f172a 0%,#1a3a8a 55%,#2554d4 100%);box-shadow:0 16px 36px rgba(26,58,138,.28);">
-    <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#ca8a04,#2ea83c,#4d7ef5);border-radius:24px 24px 0 0;"></div>
-    <div style="position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(77,126,245,.22),transparent 55%);pointer-events:none;"></div>
-    <div style="font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(253,224,71,.9);margin-bottom:6px;position:relative;z-index:1;">⚽ Torneo Los Alamitos · Fútbol 7</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;color:#fff;line-height:.95;position:relative;z-index:1;">Reglamento<br>& Premios</div>
-    <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.65);margin-top:8px;line-height:1.55;position:relative;z-index:1;">Unidad Deportiva Los Alamitos · Cancha de Pasto Natural</div>
-  </div>
-
-  <!-- FORMATO DE COMPETENCIA -->
-  <div class="sh"><div class="st">🏟️ Formato de Competencia</div><div class="sl"></div></div>
-
-  <div class="card" style="margin-bottom:10px;padding:16px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-      <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#1a3a8a,#2554d4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🏆</div>
-      <div>
-        <div style="font-size:13px;font-weight:900;color:var(--text);">A) Fase de Liga</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">10 Jornadas · Todos contra todos</div>
-      </div>
-    </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Se disputarán <strong>10 jornadas</strong> de todos contra todos. El equipo que finalice en primer lugar al término de todas las jornadas quedará <strong>Campeón de Liga</strong>.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-      <div style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:12px 10px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#16a34a;line-height:1;">3</div>
-        <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#16a34a;margin-top:2px;">Victoria</div>
-      </div>
-      <div style="background:rgba(100,116,139,.08);border:1px solid rgba(100,116,139,.25);border-radius:12px;padding:12px 10px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#64748b;line-height:1;">1</div>
-        <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#64748b;margin-top:2px;">Empate</div>
-      </div>
-      <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);border-radius:12px;padding:12px 10px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#dc2626;line-height:1;">0</div>
-        <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#dc2626;margin-top:2px;">Derrota</div>
-      </div>
-    </div>
-    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.6;">
-      <strong style="color:var(--acc)">Desempate:</strong> En caso de igualdad en puntos, se aplicará en orden: diferencia de goles y mayor número de goles anotados.
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;padding:16px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-      <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#ca8a04,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🥊</div>
-      <div>
-        <div style="font-size:13px;font-weight:900;color:var(--text);">B) Fase Copa (Liguilla)</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">Eliminación directa</div>
-      </div>
-    </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Al término de la Fase de Liga, todos los equipos clasificados participarán en eliminación directa conforme a su posición en la tabla:</p>
-    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.1),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.2);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">1° vs último</span>
-        <div style="flex:1;height:1px;background:rgba(202,138,4,.2);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Primer lugar vs último</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">2° vs penúlt.</span>
-        <div style="flex:1;height:1px;background:var(--border);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Y así sucesivamente…</span>
-      </div>
-    </div>
-    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.6;">
-      <strong style="color:var(--acc)">Penales:</strong> En caso de empate al término del tiempo reglamentario, el ganador se definirá mediante tanda de penales.
-    </div>
-  </div>
-
-  <!-- PARTIDOS -->
-  <div class="sh" style="margin-top:6px;"><div class="st">⚽ Reglamento de Partidos</div><div class="sl"></div></div>
-
-  <div class="card" style="margin-bottom:10px;padding:16px;display:flex;flex-direction:column;gap:11px;">
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">⏱️</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Duración del partido</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Dos tiempos de <strong>20 minutos</strong> cada uno.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🕐</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Tolerancia y default</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Tolerancia máxima de <strong>15 minutos</strong>. Si el equipo no se presenta, perderá por default con marcador oficial de <strong>3-0</strong>. Dos defaults = expulsión sin reembolso.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">⚽</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Balón</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Cada equipo debe llevar balón en condiciones adecuadas. De no presentarlo al inicio del segundo tiempo, se pitará un <strong>penal en contra</strong>.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">👕</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Uniformes — OBLIGATORIO</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Medias largas y <strong>taque-tenis obligatorios</strong>. Todos los jugadores deben portar playeras del mismo color. En caso de colisión de colores, el equipo <strong>visitante</strong> realiza el cambio.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🔄</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Cambios</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Los equipos podrán realizar <strong>cambios ilimitados</strong> durante el partido.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🚫</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Conducta</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Cualquier jugador que incurra en actos de <strong>violencia o participe en una pelea</strong> será expulsado definitivamente del torneo.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">🦺</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Arbitraje</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">El costo de arbitraje es de <strong>$250 por partido</strong>, pagadero al término del encuentro en efectivo.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EQUIPOS -->
-  <div class="sh" style="margin-top:6px;"><div class="st">🏆 Equipos y Jugadores</div><div class="sl"></div></div>
-
-  <div class="card" style="margin-bottom:10px;padding:16px;display:flex;flex-direction:column;gap:11px;">
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">👥</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Jugadores en cancha</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;"><strong>7 jugadores</strong> por equipo en el terreno de juego. No hay límite máximo de jugadores registrados por plantel.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">📋</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Altas de jugadores</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Se permitirán altas de jugadores hasta la <strong>jornada 5</strong>.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--border);">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">⚠️</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Jugador en dos equipos</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Ningún jugador podrá participar en más de un equipo. El incumplimiento conlleva la <strong>pérdida del partido</strong> para el equipo infractor.</div>
-      </div>
-    </div>
-    <div style="display:flex;align-items:flex-start;gap:12px;">
-      <span style="font-size:20px;flex-shrink:0;margin-top:1px;">📢</span>
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--text);margin-bottom:3px;">Protestas</div>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Se aceptarán protestas. De comprobarse alineación indebida, el equipo donde jugó el protestado <strong>perderá el partido</strong> correspondiente.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- INSCRIPCIÓN -->
-  <div class="sh" style="margin-top:6px;"><div class="st">💰 Inscripción y Pagos</div><div class="sl"></div></div>
-
-  <div class="card" style="margin-bottom:10px;padding:16px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
-      <div>
-        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Costo total por equipo</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--acc);line-height:1;">$2,000</div>
-      </div>
-      <div style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:12px 16px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#16a34a;line-height:1;">$500</div>
-        <div style="font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#16a34a;margin-top:2px;">Pago inicial</div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(22,163,74,.05);border:1px solid rgba(22,163,74,.2);border-radius:10px;padding:11px 12px;">
-        <span style="font-size:16px;flex-shrink:0;">✅</span>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">Para confirmar participación se requiere un pago mínimo inicial de <strong>$500</strong>.</div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:11px 12px;">
-        <span style="font-size:16px;flex-shrink:0;">📅</span>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">El monto restante deberá liquidarse antes de la <strong>jornada 6</strong>.</div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.18);border-radius:10px;padding:11px 12px;">
-        <span style="font-size:16px;flex-shrink:0;">🚫</span>
-        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.55;">El equipo que no liquide en el plazo será dado de baja <strong>sin derecho a reembolso</strong>.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PREMIACIÓN -->
-  <div class="sh" style="margin-top:6px;"><div class="st">🏅 Premiación</div><div class="sl"></div></div>
-
-  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px;">
-    <!-- Campeón de Liga -->
-    <div style="position:relative;overflow:hidden;border-radius:18px;padding:16px;background:linear-gradient(135deg,rgba(202,138,4,.15),rgba(245,158,11,.08) 60%,rgba(255,255,255,0));border:1.5px solid rgba(202,138,4,.4);box-shadow:0 8px 22px rgba(202,138,4,.12);">
-      <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:52px;opacity:.12;pointer-events:none;">🏆</div>
-      <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#ca8a04;margin-bottom:4px;">1er lugar</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#92400e;margin-bottom:8px;line-height:1;">Campeón de Liga</div>
-      <div style="display:flex;flex-direction:column;gap:5px;">
-        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(202,138,4,.12);border:1px solid rgba(202,138,4,.28);border-radius:999px;padding:5px 12px;width:fit-content;">
-          <span style="font-size:14px;">🏆</span><span style="font-size:11px;font-weight:800;color:#92400e;">Trofeo</span>
-        </div>
-        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(202,138,4,.12);border:1px solid rgba(202,138,4,.28);border-radius:999px;padding:5px 12px;width:fit-content;">
-          <span style="font-size:14px;">🥩</span><span style="font-size:11px;font-weight:800;color:#92400e;">5 kg de carne asada</span>
-        </div>
-      </div>
-    </div>
-    <!-- Campeón de Copa -->
-    <div style="position:relative;overflow:hidden;border-radius:18px;padding:16px;background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(255,255,255,0));border:1.5px solid rgba(249,115,22,.35);box-shadow:0 8px 22px rgba(249,115,22,.1);">
-      <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:52px;opacity:.12;pointer-events:none;">🥊</div>
-      <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#ea580c;margin-bottom:4px;">Copa</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#c2410c;margin-bottom:8px;line-height:1;">Campeón de Copa</div>
-      <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.28);border-radius:999px;padding:5px 12px;width:fit-content;">
-        <span style="font-size:14px;">🏆</span><span style="font-size:11px;font-weight:800;color:#c2410c;">Trofeo</span>
-      </div>
-    </div>
-    <!-- Reconocimientos individuales -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="border-radius:18px;padding:14px;background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(255,255,255,0));border:1.5px solid rgba(37,99,235,.25);text-align:center;">
-        <div style="font-size:28px;margin-bottom:6px;">🥅</div>
-        <div style="font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1d4ed8;margin-bottom:4px;">Máx. Goleador</div>
-        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.22);border-radius:999px;padding:4px 10px;">
-          <span style="font-size:12px;">🏆</span><span style="font-size:10px;font-weight:800;color:#1d4ed8;">Trofeo</span>
-        </div>
-      </div>
-      <div style="border-radius:18px;padding:14px;background:linear-gradient(135deg,rgba(13,148,136,.1),rgba(255,255,255,0));border:1.5px solid rgba(13,148,136,.25);text-align:center;">
-        <div style="font-size:28px;margin-bottom:6px;">🧤</div>
-        <div style="font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#0d9488;margin-bottom:4px;">Mejor Portero</div>
-        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(13,148,136,.1);border:1px solid rgba(13,148,136,.22);border-radius:999px;padding:4px 10px;">
-          <span style="font-size:12px;">🏆</span><span style="font-size:10px;font-weight:800;color:#0d9488;">Trofeo</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RESPONSABILIDAD -->
-  <div class="sh" style="margin-top:6px;"><div class="st">⚠️ Responsabilidad</div><div class="sl"></div></div>
-  <div style="background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.28);border-radius:16px;padding:16px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
-    <span style="font-size:22px;flex-shrink:0;margin-top:1px;">⚠️</span>
-    <p style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.65;">Todos los participantes juegan <strong>bajo su propio riesgo</strong>, deslindando a la organización de cualquier responsabilidad por lesiones o accidentes ocurridos durante el torneo.</p>
-  </div>
-
-</div>
-<!-- FIN REGLAMENTO -->
 <!-- ═══════ TIENDA ═══════ -->
 <div class="page" id="page-tienda">
 
@@ -2622,22 +2346,6 @@ const FB_CFG = {
 let db = null, auth = null, currentUser = null, isAdmin = false;
 const LS_LAST_PAGE = 'ld_last_page';
 const ADMIN_ONLY_PAGES = new Set(['tienda','inscripciones','arbitros','calendario','resumen','mercadotecnia']);
-
-// Resize handler for mobile tabla
-(function(){
-  let resizeTimer;
-  window.addEventListener('resize', function(){
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function(){
-      const mobEl = document.getElementById('tablaBodyMobile');
-      const tableEl = document.querySelector('#tablaBody')?.closest('table');
-      if(!mobEl || !tableEl) return;
-      const isMobile = window.innerWidth <= 640;
-      mobEl.style.display = isMobile && mobEl.children.length > 0 ? 'flex' : 'none';
-      tableEl.style.display = isMobile ? 'none' : '';
-    }, 150);
-  });
-})();
 let currentTorneo = 'villa';
 let currentCat = 'liga_alta';
 let activePartidoKey = null;
@@ -3237,7 +2945,6 @@ function showPage(p, btn){
   if(p==='calendario') initCalendario();
   if(p==='historial') renderHistorial();
   if(p==='mercadotecnia') renderMercadotecnia();
-  // reglamento no necesita render
 }
 
 function selectCat(cat, btn){
@@ -3630,11 +3337,10 @@ function getNextPowerOfTwo(num){
 }
 
 function generateCupSeedOrder(size){
-  // Parea: 1 vs último, 2 vs penúltimo, etc. — cruce directo por posición en tabla
-  const order = [];
-  for(let i = 1; i <= size/2; i++){
-    order.push(i);        // seed top
-    order.push(size+1-i); // seed bottom (espejo)
+  let order = [1,2];
+  while(order.length < size){
+    const sum = (order.length * 2) + 1;
+    order = order.flatMap(seed => [seed, sum - seed]);
   }
   return order;
 }
@@ -3729,55 +3435,44 @@ function buildCupProjectionData(dataOverride=null){
   };
 }
 
-function renderBracketSlot(slot, adminMode=false){
+function renderCupSlot(slot){
   const logo = slot.team?.logo
-    ? `<img class="bracket-logo" src="${escapeHtml(slot.team.logo)}" alt="${escapeHtml(slot.displayName)}"/>`
-    : `<div class="bracket-logo-ph">${slot.isBye?'🔵':'⚽'}</div>`;
-  const seedClass = slot.seed===1 ? 'bracket-seed seed-1' : 'bracket-seed';
-  const slotClass = `bracket-slot${slot.isBye?' is-bye':''}${slot.isPlaceholder?' is-tbd':''}`;
-  const seedLabel = slot.seed ? `#${slot.seed}` : '?';
-  const adminSub = adminMode && slot.team
-    ? `<div class="bracket-team-sub admin-detail">${slot.team.pts||0}pts · ${slot.team.g||0}G ${slot.team.e||0}E ${slot.team.pe||0}P</div>`
-    : '';
-  return `<div class="${slotClass}">
-    <div class="${seedClass}">${seedLabel}</div>
+    ? `<img class="cup-team-logo" src="${slot.team.logo}" alt="${escapeHtml(slot.displayName)}"/>`
+    : `<div class="cup-team-logo placeholder">${slot.isBye?'BYE':'⚽'}</div>`;
+  const slotClasses = [
+    'cup-team-slot',
+    slot.isBye ? 'is-bye' : '',
+    slot.isPlaceholder ? 'is-placeholder' : ''
+  ].filter(Boolean).join(' ');
+  return `<div class="${slotClasses}">
+    <div class="cup-team-seed">${slot.seed ? `#${slot.seed}` : '→'}</div>
     ${logo}
-    <div class="bracket-team-info">
-      <div class="bracket-team-name">${escapeHtml(slot.displayName || 'Por definirse')}</div>
-      ${adminSub}
+    <div class="cup-team-copy">
+      <div class="cup-team-name">${escapeHtml(slot.displayName || 'Por definirse')}</div>
+      <div class="cup-team-sub">${escapeHtml(slot.subtitle || '')}</div>
     </div>
   </div>`;
 }
 
 function buildCupBracketHtml(cupData, opts={}){
   if(!cupData?.rounds?.length) return '';
-  const adminMode = !!opts.adminMode;
   const shareMode = !!opts.shareMode;
-  const wrapClass = `bracket-board${shareMode?' bracket-board-share':''}`;
-  return `<div class="${wrapClass}" style="${shareMode?`--cup-rounds:${cupData.rounds.length};`:''}">
-    ${cupData.rounds.map((round)=>{
-      return `<div class="bracket-round">
-        <div class="bracket-round-hdr">
-          <div class="bracket-round-name">${escapeHtml(round.name)}</div>
-          <div class="bracket-round-sub">${round.matches.length} llave${round.matches.length===1?'':'s'}</div>
-        </div>
-        ${round.matches.map((match,mi)=>{
-          const adminChips = adminMode && match.note ? `<div class="bracket-admin-chips"><span class="bracket-chip-sm">Llave ${mi+1}</span>${match.winner?`<span class="bracket-chip-sm">✅ Bye confirmado</span>`:''}</div>` : '';
-          const note = adminMode ? `<div class="bracket-match-note">${escapeHtml(match.note||'')}</div>` : '';
-          return `<div class="cup-match bracket-match">
-            ${renderBracketSlot(match.slotA, adminMode)}
-            <div class="bracket-vs-bar"><span class="bracket-vs-text">VS</span></div>
-            ${renderBracketSlot(match.slotB, adminMode)}
-            ${note}${adminChips}
-          </div>`;
-        }).join('')}
-      </div>`;
-    }).join('')}
+  const boardClass = `cup-board${shareMode ? ' cup-board-share' : ''}`;
+  return `<div class="${boardClass}" style="${shareMode ? `--cup-rounds:${cupData.rounds.length};` : ''}">
+    ${cupData.rounds.map((round,index)=>`
+      <div class="cup-round">
+        <div class="cup-round-title">${escapeHtml(round.name)}<span class="cup-round-sub">${round.matches.length} llave${round.matches.length===1?'':'s'}</span></div>
+        ${round.matches.map((match,matchIndex)=>`
+          <div class="cup-match">
+            ${renderCupSlot(match.slotA)}
+            ${renderCupSlot(match.slotB)}
+            <div class="cup-match-note">${escapeHtml(match.note || `Llave ${matchIndex+1} de ${round.name}.`)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
   </div>`;
 }
-
-/* legacy alias */
-function renderCupSlot(slot){ return renderBracketSlot(slot, false); }
 
 function renderTabla(){
   const body=document.getElementById('tablaBody'); if(!body)return;
@@ -3882,26 +3577,24 @@ function renderTabla(){
   const fbBanner=document.getElementById('finalissimaBanner');
   const finalissimaSection=document.getElementById('finalissimaSection');
   if(fbBanner && cupData){
+    const leader = cupData.leader?.nombre || 'Líder';
     if(finalissimaSection) finalissimaSection.style.display = '';
-    const adminCls = isAdmin ? ' bracket-admin' : '';
-    const adminChipsHtml = isAdmin ? `
-      <div class="bracket-chips">
-        <span class="bracket-chip gold">${escapeHtml(cupData.leader?.nombre||'—')} #1</span>
-        <span class="bracket-chip">${cupData.qualifiedTeams} equipos</span>
-        <span class="bracket-chip">${escapeHtml(cupData.stageLabel)}</span>
-        ${cupData.hasByes?'<span class="bracket-chip">BYE activos</span>':''}
-      </div>` : `
-      <div class="bracket-chips">
-        <span class="bracket-chip">${cupData.qualifiedTeams} equipos</span>
-        <span class="bracket-chip">${escapeHtml(cupData.stageLabel)}</span>
-      </div>`;
     fbBanner.innerHTML=`
-      <div class="bracket-wrap${adminCls}">
-        <div class="bracket-header">
-          <div class="bracket-title">🏆 CUADRO DE COPA</div>
-          ${adminChipsHtml}
+      <div class="cup-preview">
+        <div class="cup-preview-head">
+          <div class="cup-preview-copy">
+            <div class="cup-preview-kicker">Copa automática según la tabla</div>
+            <div class="cup-preview-title">CUADRO DE COPA</div>
+            <div class="cup-preview-sub">La copa se arma sola con la clasificación actual. Si hoy se cerrara la liga, así se vería el camino al campeón en ${escapeHtml(CAT_NAMES[currentCat] || currentCat || 'la categoría')}.</div>
+          </div>
+          <div class="cup-preview-summary">
+            <div class="cup-summary-chip"><strong>${cupData.qualifiedTeams}</strong> equipos</div>
+            <div class="cup-summary-chip"><strong>${escapeHtml(cupData.stageLabel)}</strong></div>
+            <div class="cup-summary-chip"><strong>${escapeHtml(leader)}</strong> seed 1</div>
+            ${cupData.hasByes ? '<div class="cup-summary-chip"><strong>BYE</strong> cruces libres</div>' : ''}
+          </div>
         </div>
-        <div class="bracket-scroll">${buildCupBracketHtml(cupData,{adminMode:isAdmin})}</div>
+        <div class="cup-board-scroll">${buildCupBracketHtml(cupData)}</div>
       </div>`;
   } else if(fbBanner) {
     fbBanner.innerHTML='';
@@ -3911,12 +3604,10 @@ function renderTabla(){
 
   if(!data.length){
     body.innerHTML='<tr><td colspan="11" class="tabla-empty">Sin partidos terminados en esta categoría</td></tr>';
-    const mobElEmpty = document.getElementById('tablaBodyMobile');
-    if(mobElEmpty){ mobElEmpty.style.display='none'; body.closest('table').style.display=''; }
     return;
   }
 
-  const rows = data.map((t,i)=>{
+  body.innerHTML=data.map((t,i)=>{
     const pos=i+1;
     const cls=pos===1?'p1':'pr';
     const dg=(t.gf||0)-(t.gc||0);
@@ -3924,11 +3615,7 @@ function renderTabla(){
     const fLbl={'W':'G','D':'E','L':'P'};
     const forma=(t.forma||[]).slice(-5).map(f=>`<div class="fp-${f.toLowerCase()}" title="${f==='W'?'Ganado':f==='L'?'Perdido':'Empate'}">${fLbl[f]||f}</div>`).join('');
     const logo=t.logo?`<img class="tc-logo" src="${t.logo}" alt="${escapeHtml(t.nombre)}"/>`:`<div class="tc-ph">⚽</div>`;
-    const logoMob=t.logo?`<img class="tm-logo" src="${t.logo}" alt="${escapeHtml(t.nombre)}"/>`:`<div class="tm-ph">⚽</div>`;
-    return {t, pos, cls, dg, dgCls, forma, logo, logoMob};
-  });
-
-  body.innerHTML=rows.map(({t,pos,cls,dg,dgCls,forma,logo})=>`<tr class="${pos===1?'pos-zone-champ':''}">
+    return `<tr class="${pos===1?'pos-zone-champ':''}">
       <td><span class="pos-num ${cls}">${pos}</span></td>
       <td class="tal"><div class="tc">${logo}<div class="tc-copy"><span class="tc-name">${escapeHtml(t.nombre)}</span>${pos===1?'<span class="tc-tag champ">Líder</span>':''}</div></div></td>
       <td>${t.pj||0}</td><td>${t.g||0}</td><td>${t.e||0}</td><td>${t.pe||0}</td>
@@ -3936,38 +3623,8 @@ function renderTabla(){
       <td class="${dgCls}">${dg>0?'+':''}${dg}</td>
       <td class="pts-c">${t.pts||0}</td>
       <td><div class="fp">${forma}</div></td>
-    </tr>`).join('');
-
-  // Vista móvil en tarjetas
-  const mobEl = document.getElementById('tablaBodyMobile');
-  if(mobEl){
-    const isMobile = window.innerWidth <= 640;
-    mobEl.style.display = isMobile ? 'flex' : 'none';
-    body.closest('table').style.display = isMobile ? 'none' : '';
-    mobEl.innerHTML = rows.map(({t,pos,logoMob})=>{
-      const isLeader = pos===1;
-      const dg2=(t.gf||0)-(t.gc||0);
-      return `<div class="tm-row${isLeader?' tm-leader':''}">
-        <div class="tm-pos"><span class="tm-pos-num${isLeader?' gold':''}">${isLeader?'🥇':pos}</span></div>
-        ${logoMob}
-        <div class="tm-info">
-          <div class="tm-name">${escapeHtml(t.nombre)}</div>
-          <div class="tm-sub">
-            <span>PJ <strong style="color:var(--text)">${t.pj||0}</strong></span>
-            <span>G <strong style="color:#16a34a">${t.g||0}</strong></span>
-            <span>E <strong style="color:#64748b">${t.e||0}</strong></span>
-            <span>P <strong style="color:#dc2626">${t.pe||0}</strong></span>
-            <span>DG <strong style="color:${dg2>0?'var(--acc)':dg2<0?'var(--red)':'var(--muted)'}">${dg2>0?'+':''}${dg2}</strong></span>
-            ${isLeader?'<span class="tm-badge">⭐ Líder</span>':''}
-          </div>
-        </div>
-        <div class="tm-pts">
-          <div class="tm-pts-num">${t.pts||0}</div>
-          <div class="tm-pts-lbl">pts</div>
-        </div>
-      </div>`;
-    }).join('');
-  }
+    </tr>`;
+  }).join('');
   renderGoleadores();
 }
 
@@ -6133,89 +5790,7 @@ function compartirTabla(){
 function compartirCopa(){
   const cupData=buildCupProjectionData();
   if(!cupData){showToast('Aún no hay equipos suficientes para armar la copa','ta');return;}
-  // Intentar captura directa del bracket si html2canvas disponible
-  const bracketEl = document.querySelector('.bracket-wrap');
-  if(bracketEl && typeof html2canvas !== 'undefined'){
-    showToast('Generando imagen...','tg');
-    const cat = CAT_NAMES[currentCat]||currentCat||'';
-    const torneo = TORNEO_NAMES[currentTorneo]||'Torneo';
-    // Construir panel de captura con fondo
-    const captureDiv = document.createElement('div');
-    captureDiv.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:800px;padding:0;background:#0b1728;border-radius:0;font-family:Montserrat,sans-serif;';
-    captureDiv.innerHTML = `
-      <div style="padding:28px 28px 8px;background:linear-gradient(160deg,#0b1728,#0f2040 55%,#132d5e);">
-        <div style="height:3px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:999px;margin-bottom:18px;"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div style="font-family:'Bebas Neue',cursive;font-size:30px;letter-spacing:3px;color:#fff;">🏆 CUADRO DE COPA</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;text-align:right;">${escapeHtml(torneo)}<br>${escapeHtml(cat)}</div>
-        </div>
-        ${bracketEl.querySelector('.bracket-scroll')?.innerHTML||''}
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:1px;">Proyección según tabla actual</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;">${new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}</div>
-        </div>
-        <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);margin-top:12px;"></div>
-      </div>`;
-    document.body.appendChild(captureDiv);
-    html2canvas(captureDiv,{
-      scale:2,
-      backgroundColor:'#0b1728',
-      useCORS:true,
-      logging:false
-    }).then(canvas=>{
-      document.body.removeChild(captureDiv);
-      canvas.toBlob(blob=>{
-        if(!blob){ openStatsShare('copa'); return; }
-        const url = URL.createObjectURL(blob);
-        // Intentar Web Share API (móvil)
-        if(navigator.share && navigator.canShare && navigator.canShare({files:[new File([blob],'copa.png',{type:'image/png'})]})){
-          navigator.share({
-            title:`Cuadro de Copa · ${cat}`,
-            text:`${torneo} | ${cat}
-#TorneoLosAlamitos`,
-            files:[new File([blob],'copa.png',{type:'image/png'})]
-          }).then(()=>URL.revokeObjectURL(url))
-          .catch(()=>{
-            // fallback: descarga
-            const a=document.createElement('a');
-            a.href=url;a.download=`cuadro_copa_${cat.toLowerCase().replace(/\s+/g,'_')}.png`;
-            a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
-          });
-        } else {
-          // Desktop: abrir modal con imagen + descarga
-          abrirCompartirImagenCopa(url, canvas, cat, torneo, cupData);
-        }
-      },'image/png');
-    }).catch(()=>{
-      if(captureDiv.parentNode) document.body.removeChild(captureDiv);
-      openStatsShare('copa');
-    });
-  } else {
-    openStatsShare('copa');
-  }
-}
-
-function abrirCompartirImagenCopa(blobUrl, canvas, cat, torneo, cupData){
-  // Reusar modal de compartir si existe, o crear uno simple
-  const existing = document.getElementById('modalCompartirCopa');
-  if(existing) existing.remove();
-  const modal = document.createElement('div');
-  modal.id = 'modalCompartirCopa';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px);';
-  modal.innerHTML = `
-    <div style="background:var(--bg2,#fff);border:1px solid var(--border,#ddd);border-radius:20px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--acc,#2554d4);">📤 Compartir Copa</div>
-        <button onclick="document.getElementById('modalCompartirCopa').remove()" style="background:none;border:1px solid var(--border,#ddd);border-radius:8px;padding:4px 9px;cursor:pointer;font-size:16px;color:var(--text,#000);">✕</button>
-      </div>
-      <img src="${blobUrl}" style="width:100%;border-radius:14px;margin-bottom:14px;border:1px solid var(--border,#ddd);" />
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <button onclick="(()=>{const a=document.createElement('a');a.href='${blobUrl}';a.download='cuadro_copa.png';a.click();})()" style="background:var(--acc,#2554d4);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;cursor:pointer;">⬇️ DESCARGAR IMAGEN</button>
-        <button onclick="navigator.clipboard.writeText('${escapeHtml(torneo)} | ${escapeHtml(cat)}\nCuadro de copa — proyectado al ${new Date().toLocaleDateString('es-MX')}.\n#TorneoLosAlamitos #CopaDelTorneo').then(()=>showToast('Texto copiado','tg'))" style="background:transparent;color:var(--acc,#2554d4);border:1.5px solid var(--border,#ddd);border-radius:10px;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;cursor:pointer;">📋 COPIAR TEXTO</button>
-      </div>
-    </div>`;
-  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
-  document.body.appendChild(modal);
+  openStatsShare('copa');
 }
 
 function compartirFinalissima(){
@@ -9905,6 +9480,108 @@ function rechazarSolicitud(solId){
   db.ref('solicitudes/'+solId+'/status').set('rejected')
     .then(()=>showToast('Solicitud rechazada','ta'))
     .catch(e=>showToast('Error: '+e.message,'tr'));
+}
+
+function buildSpecialScorersSharePayload(dataOverride=null){
+  const torneo = TORNEO_NAMES[currentTorneo] || 'TORNEO LOS ALAMITOS';
+  const categoria = getShareCategoryLabel();
+  const fecha = fmtDate(todayISO());
+  const data = Array.isArray(dataOverride) && dataOverride.length ? dataOverride : getTopScorersData(10);
+  if(!data.length) return null;
+  const bodyHtml = `
+    <div class="share-scorers-list">${data.map((g,i)=>{
+      const pos = i + 1;
+      const rowCls = pos===1 ? 'top1' : pos===2 ? 'top2' : pos===3 ? 'top3' : '';
+      return `<div class="share-scorer-row ${rowCls}">
+        <div class="share-scorer-rank">${pos}</div>
+        <div class="share-scorer-copy">
+          <div class="share-scorer-name">${escapeHtml(g.jugador)}</div>
+          <div class="share-scorer-team">${escapeHtml(g.equipo || 'Sin equipo')}</div>
+        </div>
+        <div class="share-scorer-goals">
+          <strong>${g.goles}</strong>
+          <span>gol${g.goles===1?'':'es'}</span>
+        </div>
+      </div>`;
+    }).join('')}</div>
+  `;
+  const caption = [
+    `${torneo} | ${categoria}`,
+    `${ORGANIZER_NAME} - ${ORGANIZER_PHONE}`,
+    `Top 10 de goleadores al ${fecha}:`,
+    ...data.map((g,i)=>`${i+1}. ${g.jugador} (${g.equipo}) - ${g.goles}`),
+    `#TorneoLosAlamitos #Top10Goleadores #Futbol`
+  ].join('\n');
+  return {
+    kind:'goleadores',
+    title:'Top 10 Goleadores',
+    caption,
+    filename:`goleadores_${slugifyBasic(categoria)}_${todayISO()}`,
+    html: buildVisualShareCard({
+      kicker: torneo,
+      title: 'TOP 10 GOLEADORES',
+      subtitle: `${categoria} - Ranking oficial de artilleros`,
+      dateLabel: `Actualizado - ${fecha}`,
+      bodyHtml,
+      footerNote: 'Ranking oficial listo para compartir con un formato más limpio y visual.',
+      footerTag: 'Los Alamitos'
+    })
+  };
+}
+
+function getStatsSharePayload(tipo, dataOverride=null){
+  if(tipo === 'goleadores'){
+    return buildSpecialScorersSharePayload(dataOverride);
+  }
+  if(tipo === 'copa'){
+    const torneo = TORNEO_NAMES[currentTorneo] || 'TORNEO LOS ALAMITOS';
+    const categoria = getShareCategoryLabel();
+    const fecha = fmtDate(todayISO());
+    const organizerLine = `${ORGANIZER_NAME} - ${ORGANIZER_PHONE}`;
+    const cup = dataOverride?.rounds ? dataOverride : buildCupProjectionData(Array.isArray(dataOverride) ? dataOverride : null);
+    if(!cup) return null;
+    const firstRound = cup.rounds[0];
+    const bodyHtml = `
+      <div class="share-post-hero">
+        <h2>CUADRO<br/>DE COPA</h2>
+        <p>${escapeHtml(categoria)} - Asi se veria hoy el camino al campeon segun la tabla actual.</p>
+      </div>
+      <div class="share-stat-grid">
+        <div class="share-stat-box"><div class="share-stat-val">${cup.qualifiedTeams}</div><div class="share-stat-lbl">Equipos</div></div>
+        <div class="share-stat-box"><div class="share-stat-val">${cup.rounds[0]?.matches?.length || 0}</div><div class="share-stat-lbl">${escapeHtml(cup.stageLabel)}</div></div>
+        <div class="share-stat-box"><div class="share-stat-val">${cup.leader?.seed || 1}</div><div class="share-stat-lbl">${escapeHtml(cup.leader?.nombre || 'Seed 1')}</div></div>
+      </div>
+      <div class="cup-board-scroll" style="margin-top:0">${buildCupBracketHtml(cup,{ shareMode:true })}</div>
+    `;
+    const firstRoundLines = firstRound.matches.map((match, index)=>{
+      const left = match.slotA.team ? `${match.slotA.seed}. ${match.slotA.team.nombre}` : 'BYE';
+      const right = match.slotB.team ? `${match.slotB.seed}. ${match.slotB.team.nombre}` : 'BYE';
+      return `${index+1}. ${left} vs ${right}`;
+    });
+    return {
+      kind:'copa',
+      title:'Cuadro de Copa',
+      caption:[
+        `${torneo} | ${categoria}`,
+        `${ORGANIZER_NAME} - ${ORGANIZER_PHONE}`,
+        `Cuadro de copa proyectado al ${fecha}.`,
+        `Ronda inicial: ${cup.stageLabel}.`,
+        ...firstRoundLines,
+        `#TorneoLosAlamitos #CopaDelTorneo #CaminoAlTitulo`
+      ].join('\n'),
+      filename:`copa_${slugifyBasic(categoria)}_${todayISO()}`,
+      html: buildVisualShareCard({
+        kicker: torneo,
+        title: 'CUADRO DE COPA',
+        subtitle: `${categoria} - ${organizerLine}`,
+        dateLabel: `Actualizado - ${fecha}`,
+        bodyHtml,
+        footerNote: 'Visual oficial del camino al titulo listo para compartir.',
+        footerTag: 'Los Alamitos'
+      })
+    };
+  }
+  return getStatsSharePayloadBase(tipo, dataOverride);
 }
 
 </script>
