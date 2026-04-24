@@ -705,6 +705,7 @@ input:checked+.toggle-slider:before{transform:translateX(18px);}
   radial-gradient(ellipse 70% 40% at 80% 5%,rgba(37,84,212,.07),transparent),
   radial-gradient(ellipse 50% 35% at 10% 90%,rgba(46,168,60,.06),transparent),
   linear-gradient(180deg,#ffffff 0%,#f8fbff 40%,#f3f7fc 100%);border:1.5px solid #dbe4ee;box-shadow:0 24px 54px rgba(15,23,42,.14);}
+.share-card.share-card-wide{width:1440px;padding:52px 60px 48px;}
 .share-card::before{content:'';position:absolute;left:0;right:0;top:0;height:10px;background:linear-gradient(90deg,#1a3a8a,#2554d4 35%,#2ea83c 65%,#f59e0b);border-radius:34px 34px 0 0;}
 .share-card::after{content:'';position:absolute;inset:18px;border-radius:22px;border:1px solid rgba(15,23,42,.04);pointer-events:none;}
 .share-orb{position:absolute;border-radius:50%;pointer-events:none;}
@@ -1165,8 +1166,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
   <!-- Category tabs -->
   <div class="cat-tabs" id="catTabsContainer">
     <button class="cat-tab active" onclick="selectCat('liga_alta',this)">CATEGORÍA LIBRE VARONIL</button>
-    <button class="cat-tab" onclick="selectCat('libre_femenil',this)">CATEGORÍA LIBRE FEMENIL</button>
-    <button class="cat-tab" onclick="selectCat('liga_media',this)">CATEGORÍA 38+</button>
+    <button class="cat-tab" onclick="selectCat('libre_femenil',this)">CATEGORÍA LIBRE DOMINICAL</button>
     <button class="cat-tab" id="catTab_baja_a" onclick="selectCat('liga_baja_a',this)" style="display:none">Liga Baja A</button>
     <button class="cat-tab" id="catTab_baja_b" onclick="selectCat('liga_baja_b',this)" style="display:none">Liga Baja B</button>
     <button id="catAddBtn" onclick="openAddCatInline()" style="display:none;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,.5);padding:0 12px;cursor:pointer;font-size:18px;flex-shrink:0;line-height:36px" title="Agregar categoría">＋</button>
@@ -1252,8 +1252,10 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
   <div class="sh" style="margin-top:18px">
     <div class="st">🧤 Mejores Porteros</div>
     <div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 10</span></div>
+    <button id="btnTogglePorterosPublic" class="btn btn-out btn-sm admin-only" onclick="togglePorterosPublic()" title="Mostrar/ocultar al público" style="display:none;">👁️</button>
     <button class="btn btn-out btn-sm" onclick="compartirPorteros()" title="Compartir porteros">📤</button>
   </div>
+  <div id="porterosPublicBanner" style="display:none;background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:700;color:var(--red);margin-bottom:8px;">🔒 Tabla de porteros oculta al público</div>
   <div class="ranking-container keeper-ranking" id="porterosCaptura"><div id="porterosList"><div class="empty"><span class="empty-icon">🧤</span>Asigna un portero a cada equipo para generar el ranking</div></div></div>
 </div>
 
@@ -1720,8 +1722,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
         <div class="ai-param-lbl">📋 Categoría</div>
         <select class="ai-fi" id="gen_cat" onchange="genUpdateEquipos()">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE FEMENIL</option>
-          <option value="liga_media">CATEGORÍA 38+</option>
+          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
       <div class="ai-param-row">
@@ -1996,8 +1997,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="mp_cat" onchange="updateMPEquipos()">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE FEMENIL</option>
-          <option value="liga_media">CATEGORÍA 38+</option>
+          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2229,8 +2229,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="eq_cat">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE FEMENIL</option>
-          <option value="liga_media">CATEGORÍA 38+</option>
+          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2313,8 +2312,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="ie_cat">
           <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option>
-          <option value="libre_femenil">CATEGORÍA LIBRE FEMENIL</option>
-          <option value="liga_media">CATEGORÍA 38+</option>
+          <option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2446,7 +2444,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       </div>
       <div class="fg"><label class="fl">Categoría</label>
         <select class="fi" id="temp_cat">
-          <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option><option value="libre_femenil">CATEGORÍA LIBRE FEMENIL</option><option value="liga_media">CATEGORÍA 38+</option>
+          <option value="liga_alta">CATEGORÍA LIBRE VARONIL</option><option value="libre_femenil">CATEGORÍA LIBRE DOMINICAL</option>
         </select>
       </div>
     </div>
@@ -2793,11 +2791,11 @@ delete TORNEO_NAMES.musala;
 TORNEO_LOGOS.villa = LOS_ALAMITOS_LOGO;
 TORNEO_LOGOS.musala = LOS_ALAMITOS_LOGO;
 CAT_NAMES.liga_alta = 'CATEGORÍA LIBRE VARONIL';
-CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE FEMENIL';
-CAT_NAMES.liga_media = 'CATEGORÍA 38+';
+CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE DOMINICAL';
+// CAT_NAMES.liga_media removed (38+ eliminado)
 delete CAT_NAMES.liga_baja_a;
 delete CAT_NAMES.liga_baja_b;
-catOrderKeys = ['liga_alta','libre_femenil','liga_media'];
+catOrderKeys = ['liga_alta','libre_femenil'];
 const splashMainLogoOnLoad = document.querySelector('#splash > div img');
 if(splashMainLogoOnLoad) splashMainLogoOnLoad.src = SPLASH_BIG_LOGO;
 const hdrBrandLogoOnLoad = document.querySelector('.hdr-shield img');
@@ -2967,6 +2965,8 @@ function updateAdminUI(adminFlag, ownerFlag, captainFlag, capEquipoKey){
   if(capBadgeEl) capBadgeEl.style.display = (captainFlag&&!adminFlag)?'':'none';
   // Admin-only elements
   document.querySelectorAll('.admin-only').forEach(x=>{ adminFlag?x.classList.add('show'):x.classList.remove('show'); });
+  // Update porteros visibility toggle button
+  setTimeout(updatePorterosPublicUI, 0);
   const addPartido = document.getElementById('adminAddPartido');
   const addEquipo  = document.getElementById('adminAddEquipo');
   const aTemp      = document.getElementById('adminAddTemporada');
@@ -3375,9 +3375,11 @@ function selectCat(cat, btn){
   }
   renderTabla();
   renderGoleadores();
+  renderPorteros();
   populatePartidosTeamFilter();
   renderPartidos();
   renderEquiposPage();
+  updatePorterosPublicUI();
   if(isAdmin) scheduleMarketingAutoSync('categoria');
 }
 
@@ -4337,6 +4339,40 @@ function renderGoleadores(){
   renderPorteros();
 }
 
+// ══════════════════════════════════════
+//  PORTEROS VISIBILITY TOGGLE (admin)
+// ══════════════════════════════════════
+function getPorterosPublicKey(){ return 'ld_porteros_public_'+currentTorneo+'_'+currentCat; }
+function isPorterosPublic(){
+  const val = localStorage.getItem(getPorterosPublicKey());
+  return val === null ? true : val === '1'; // default: visible
+}
+function togglePorterosPublic(){
+  if(!isAdmin) return;
+  const nowPublic = !isPorterosPublic();
+  localStorage.setItem(getPorterosPublicKey(), nowPublic ? '1' : '0');
+  updatePorterosPublicUI();
+  renderPorteros();
+  showToast(nowPublic ? '👁️ Porteros visibles al público' : '🔒 Porteros ocultos al público', nowPublic ? 'tg' : 'ta');
+}
+function updatePorterosPublicUI(){
+  const btn = document.getElementById('btnTogglePorterosPublic');
+  const banner = document.getElementById('porterosPublicBanner');
+  const captura = document.getElementById('porterosCaptura');
+  const pub = isPorterosPublic();
+  if(btn){
+    btn.style.display = isAdmin ? '' : 'none';
+    btn.textContent = pub ? '👁️' : '🙈';
+    btn.title = pub ? 'Ocultar al público' : 'Mostrar al público';
+    btn.style.borderColor = pub ? '' : 'var(--red)';
+    btn.style.color = pub ? '' : 'var(--red)';
+  }
+  if(banner) banner.style.display = (!pub && isAdmin) ? '' : 'none';
+  if(captura) captura.style.opacity = (!pub && !isAdmin) ? '0' : '1';
+  if(captura) captura.style.pointerEvents = (!pub && !isAdmin) ? 'none' : '';
+  if(captura) captura.style.display = (!pub && !isAdmin) ? 'none' : '';
+}
+
 function renderPorteros(){
   const el=document.getElementById('porterosList'); if(!el)return;
   const top=getTopGoalkeepersData(10);
@@ -4379,6 +4415,7 @@ function renderPorteros(){
       </div>
     </div>`;
   }).join('');
+  updatePorterosPublicUI();
 }
 
 // ══════════════════════════════════════
@@ -6497,44 +6534,44 @@ function compartirCopa(){
 
     // Construir un panel de captura con fondo blanco, estilo share-card
     const captureDiv = document.createElement('div');
-    captureDiv.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:1080px;font-family:Montserrat,sans-serif;background:#ffffff;border-radius:0;overflow:hidden;';
+    captureDiv.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:1440px;font-family:Montserrat,sans-serif;background:#ffffff;border-radius:0;overflow:hidden;';
 
     // Logos HTML
     const torLogo = document.querySelector('.hdr-torneo-logo img');
     const shieldImg = document.querySelector('.hdr-shield img');
-    const torLogoHtml = torLogo ? `<img src="${torLogo.src}" crossorigin="anonymous" style="width:56px;height:56px;object-fit:contain;border-radius:14px;background:#fff;padding:6px;border:1px solid #d6dfeb;box-shadow:0 4px 12px rgba(15,23,42,.07);" />` : `<div style="width:56px;height:56px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:28px;">🏆</div>`;
-    const shieldHtml = shieldImg ? `<img src="${shieldImg.src}" crossorigin="anonymous" style="width:48px;height:48px;object-fit:contain;border-radius:12px;background:#fff;border:1px solid #d6dfeb;" />` : '';
+    const torLogoHtml = torLogo ? `<img src="${torLogo.src}" crossorigin="anonymous" style="width:72px;height:72px;object-fit:contain;border-radius:18px;background:#fff;padding:8px;border:1px solid #d6dfeb;box-shadow:0 6px 18px rgba(15,23,42,.09);" />` : `<div style="width:72px;height:72px;border-radius:18px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:38px;">🏆</div>`;
+    const shieldHtml = shieldImg ? `<img src="${shieldImg.src}" crossorigin="anonymous" style="width:64px;height:64px;object-fit:contain;border-radius:16px;background:#fff;border:1px solid #d6dfeb;" />` : '';
 
     // Bracket HTML completo
-    const bracketHtml = buildCupBracketHtml(cupData, {adminMode:false});
+    const bracketHtml = buildCupBracketHtml(cupData, {adminMode:false, shareMode:true});
 
     captureDiv.innerHTML = `
-      <div style="background:radial-gradient(circle at top right,rgba(37,84,212,.07),transparent 30%),radial-gradient(circle at bottom left,rgba(46,168,60,.07),transparent 24%),linear-gradient(180deg,#ffffff 0%,#fbfdff 55%,#f5f8fc 100%);min-height:1080px;padding:44px 48px 40px;position:relative;overflow:hidden;">
+      <div style="background:radial-gradient(circle at top right,rgba(37,84,212,.07),transparent 30%),radial-gradient(circle at bottom left,rgba(46,168,60,.07),transparent 24%),linear-gradient(180deg,#ffffff 0%,#fbfdff 55%,#f5f8fc 100%);padding:56px 60px 52px;position:relative;overflow:hidden;">
         <!-- Barra tricolor top -->
-        <div style="position:absolute;top:0;left:0;right:0;height:10px;background:linear-gradient(90deg,#1a3a8a 0%,#2ea83c 50%,#f59e0b 100%);"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:12px;background:linear-gradient(90deg,#1a3a8a 0%,#2ea83c 50%,#f59e0b 100%);"></div>
 
         <!-- Header -->
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px;position:relative;z-index:1;">
-          <div style="display:flex;align-items:center;gap:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-bottom:32px;position:relative;z-index:1;">
+          <div style="display:flex;align-items:center;gap:18px;">
             ${torLogoHtml}
             ${shieldHtml}
             <div>
-              <div style="font-size:11px;font-weight:900;letter-spacing:2.4px;text-transform:uppercase;color:#2563eb;margin-bottom:2px;">${escapeHtml(torneo)}</div>
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:68px;letter-spacing:2px;line-height:.88;color:#0f172a;">CUADRO DE COPA</div>
-              <div style="font-size:14px;font-weight:800;color:#334155;margin-top:5px;">${escapeHtml(cat)} · Top 8 · Eliminación Directa</div>
+              <div style="font-size:13px;font-weight:900;letter-spacing:2.8px;text-transform:uppercase;color:#2563eb;margin-bottom:4px;">${escapeHtml(torneo)}</div>
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:82px;letter-spacing:2px;line-height:.88;color:#0f172a;">CUADRO DE COPA</div>
+              <div style="font-size:18px;font-weight:800;color:#334155;margin-top:8px;">${escapeHtml(cat)} · Top 8 · Eliminación Directa</div>
             </div>
           </div>
-          <div style="padding:12px 18px;border-radius:999px;background:#fff;border:1px solid #dfe7f1;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1e3a8a;box-shadow:0 8px 18px rgba(15,23,42,.05);white-space:nowrap;flex-shrink:0;">Actualizado · ${escapeHtml(fecha)}</div>
+          <div style="padding:14px 22px;border-radius:999px;background:#fff;border:1px solid #dfe7f1;font-size:14px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#1e3a8a;box-shadow:0 8px 18px rgba(15,23,42,.05);white-space:nowrap;flex-shrink:0;margin-top:8px;">Actualizado · ${escapeHtml(fecha)}</div>
         </div>
-        <!-- Bracket -->
-        <div style="position:relative;z-index:1;background:#ffffff;border:1.5px solid #dbe4ee;border-radius:22px;padding:20px;box-shadow:0 10px 28px rgba(15,23,42,.06);overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:22px 22px 0 0;"></div>
-          <div style="margin-top:6px;">${bracketHtml}</div>
+        <!-- Bracket completo -->
+        <div style="position:relative;z-index:1;background:#ffffff;border:2px solid #dbe4ee;border-radius:28px;padding:28px 24px 26px;box-shadow:0 14px 36px rgba(15,23,42,.08);overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#1a3a8a,#2ea83c,#f59e0b);border-radius:28px 28px 0 0;"></div>
+          <div style="margin-top:8px;font-size:120%;">${bracketHtml}</div>
         </div>
         <!-- Footer -->
-        <div style="margin-top:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;position:relative;z-index:1;">
-          <div style="font-size:13px;color:#475569;font-weight:700;line-height:1.5;">Proyección según tabla actual · Cuadro oficial del camino al título listo para compartir.</div>
-          <div style="padding:10px 14px;border-radius:16px;background:#fff;border:1px solid #d6dfeb;font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#1e3a8a;white-space:nowrap;">Los Alamitos</div>
+        <div style="margin-top:28px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;position:relative;z-index:1;">
+          <div style="font-size:15px;color:#475569;font-weight:700;line-height:1.5;">Proyección según tabla actual · Cuadro oficial del camino al título listo para compartir.</div>
+          <div style="padding:12px 18px;border-radius:18px;background:#fff;border:1px solid #d6dfeb;font-size:12px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:#1e3a8a;white-space:nowrap;">Los Alamitos</div>
         </div>
       </div>`;
     document.body.appendChild(captureDiv);
@@ -6633,6 +6670,7 @@ function compartirGoleadores(){
 }
 
 function compartirPorteros(){
+  if(!isPorterosPublic() && !isAdmin){showToast('Esta sección no está disponible','ta');return;}
   if(!getTopGoalkeepersData(10).length){showToast('Sin porteros con estadísticas disponibles','ta');return;}
   openStatsShare('porteros');
 }
@@ -6687,8 +6725,8 @@ function buildShareLogosHtml(){
   return logos.map(src=>`<img src="${src}" alt="Logo torneo"/>`).join('');
 }
 
-function buildVisualShareCard({kicker, title, subtitle, dateLabel, bodyHtml, footerNote, footerTag}){
-  return `<div class="share-card">
+function buildVisualShareCard({kicker, title, subtitle, dateLabel, bodyHtml, footerNote, footerTag, wideCard}){
+  return `<div class="share-card${wideCard?' share-card-wide':''}">
     <!-- Orbs decorativos -->
     <div class="share-orb one"></div>
     <div class="share-orb two"></div>
@@ -7054,73 +7092,29 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
     const cup = dataOverride?.rounds ? dataOverride : buildCupProjectionData(Array.isArray(dataOverride) ? dataOverride : null);
     if(!cup) return null;
     const firstRound = cup.rounds[0];
-    // Construir lista de cruces para compartir
+    // Texto para caption
     const firstRoundLines = firstRound.matches.map((match, index)=>{
       const left = match.slotA.team ? `${match.slotA.seed}. ${match.slotA.team.nombre}` : 'BYE';
       const right = match.slotB.team ? `${match.slotB.seed}. ${match.slotB.team.nombre}` : 'BYE';
       return `${index+1}. ${left} vs ${right}`;
     });
-    // Filas de cruces para la visual
-    const matchRows = firstRound.matches.map((match, index)=>{
-      const teamA = match.slotA.team;
-      const teamB = match.slotB.team;
-      const logoA = teamA?.logo
-        ? `<img src="${teamA.logo}" style="width:36px;height:36px;border-radius:10px;object-fit:cover;background:#fff;border:1px solid #dbe4ee;"/>`
-        : `<div style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:17px;">⚽</div>`;
-      const logoB = teamB?.logo
-        ? `<img src="${teamB.logo}" style="width:36px;height:36px;border-radius:10px;object-fit:cover;background:#fff;border:1px solid #dbe4ee;"/>`
-        : `<div style="width:36px;height:36px;border-radius:10px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:17px;">⚽</div>`;
-      const seedAStyle = match.slotA.seed===1
-        ? "min-width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;"
-        : "min-width:26px;height:26px;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;";
-      const seedBStyle = match.slotB.seed===1
-        ? "min-width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;"
-        : "min-width:26px;height:26px;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;";
-      const isByeA = match.slotA.isBye;
-      const isByeB = match.slotB.isBye;
-      return `<div style="background:#fff;border:1px solid #dbe4ee;border-radius:18px;overflow:hidden;box-shadow:0 6px 14px rgba(15,23,42,.05);">
-        <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;${isByeA?'opacity:.5;background:#fafafa;':''}">
-          <div style="${seedAStyle}">#${match.slotA.seed||'?'}</div>
-          ${logoA}
-          <div style="flex:1;font-size:16px;font-weight:900;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(match.slotA.displayName||'Por definirse')}</div>
-          ${teamA ? `<div style="font-size:12px;font-weight:800;color:#64748b;">${teamA.pts||0}pts</div>` : ''}
-        </div>
-        <div style="text-align:center;padding:3px 0;background:#f8fafc;border-top:1px solid #edf2f7;border-bottom:1px solid #edf2f7;font-family:'Bebas Neue',sans-serif;font-size:12px;color:#94a3b8;letter-spacing:2px;">VS</div>
-        <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;${isByeB?'opacity:.5;background:#fafafa;':''}">
-          <div style="${seedBStyle}">#${match.slotB.seed||'?'}</div>
-          ${logoB}
-          <div style="flex:1;font-size:16px;font-weight:900;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(match.slotB.displayName||'Por definirse')}</div>
-          ${teamB ? `<div style="font-size:12px;font-weight:800;color:#64748b;">${teamB.pts||0}pts</div>` : ''}
-        </div>
-      </div>`;
-    }).join('');
+
+    // ── Bracket completo con estilos inline para imagen exportable ──
+    const bracketFullHtml = buildCupBracketHtml(cup, {adminMode: false});
 
     const bodyHtml = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:6px;position:relative;z-index:1;">
-        <div>
-          <div style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#1a3a8a;margin-bottom:10px;padding-left:4px;">${escapeHtml(cup.stageLabel)} — Cruces</div>
-          <div style="display:flex;flex-direction:column;gap:10px;">${matchRows}</div>
+      <div style="position:relative;z-index:1;margin-top:8px;">
+        <!-- Chips de contexto -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+          <span style="padding:5px 14px;border-radius:999px;background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 4px 10px rgba(202,138,4,.3);">${escapeHtml(cup.leader?.nombre||'—')} #1</span>
+          <span style="padding:5px 14px;border-radius:999px;background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;">${cup.qualifiedTeams} equipos</span>
+          <span style="padding:5px 14px;border-radius:999px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;">${escapeHtml(cup.stageLabel)}</span>
         </div>
-        <div>
-          <div style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#1a3a8a;margin-bottom:10px;padding-left:4px;">Clasificados al Cuadro</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            ${cup.seeds.slice(0,8).map((t,i)=>{
-              const isLeader = i===0;
-              const logoHtml = t.logo
-                ? `<img src="${t.logo}" style="width:34px;height:34px;border-radius:10px;object-fit:cover;background:#fff;border:1px solid #dbe4ee;"/>`
-                : `<div style="width:34px;height:34px;border-radius:10px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:15px;">⚽</div>`;
-              const rowBg = isLeader
-                ? 'background:linear-gradient(90deg,#fff8e6,#ffffff);border-color:#f5d487;'
-                : 'background:#fff;border-color:#dbe4ee;';
-              return `<div style="${rowBg}border:1px solid;border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 10px rgba(15,23,42,.04);">
-                <div style="width:28px;height:28px;border-radius:8px;${isLeader?'background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;':'background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;'}display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;font-weight:900;flex-shrink:0;">${i+1}</div>
-                ${logoHtml}
-                <div style="flex:1;min-width:0;">
-                  <div style="font-size:14px;font-weight:900;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(t.nombre)}</div>
-                  <div style="font-size:11px;font-weight:700;color:#64748b;margin-top:1px;">${t.pts||0} pts · ${t.pj||0} PJ</div>
-                </div>
-              </div>`;
-            }).join('')}
+        <!-- Bracket completo -->
+        <div style="background:#ffffff;border:1.5px solid #dbe4ee;border-radius:22px;overflow:hidden;padding:22px 18px 20px;box-shadow:0 12px 32px rgba(15,23,42,.08);position:relative;">
+          <div style="position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#1a3a8a 0%,#2ea83c 50%,#f59e0b 100%);"></div>
+          <div style="margin-top:4px;overflow-x:auto;">
+            ${bracketFullHtml}
           </div>
         </div>
       </div>
@@ -7141,11 +7135,12 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
       html: buildVisualShareCard({
         kicker: torneo,
         title: 'CUADRO DE COPA',
-        subtitle: `${categoria} · ${organizerLine} · Top 8 equipos`,
+        subtitle: `${categoria} · ${organizerLine} · Top 8 equipos · Bracket completo`,
         dateLabel: `Actualizado · ${fecha}`,
         bodyHtml,
-        footerNote: 'Visual oficial del camino al título — proyección según tabla actual.',
-        footerTag: 'Los Alamitos'
+        footerNote: 'Visual oficial del camino al título — bracket completo según tabla actual.',
+        footerTag: 'Los Alamitos',
+        wideCard: true
       })
     };
   }
@@ -7300,7 +7295,7 @@ function renderVisualShareModal(){
     const wrapEl = document.getElementById('visualShareScaleWrap');
     const root = previewEl?.firstElementChild;
     if(scaleEl && wrapEl && root){
-      const srcW = 1080;
+      const srcW = root.classList.contains('share-card-wide') ? 1440 : 1080;
       const wrapW = wrapEl.clientWidth || wrapEl.offsetWidth || 320;
       const scale = Math.min(1, wrapW / srcW);
       const srcH = root.scrollHeight || root.offsetHeight || 900;
@@ -7663,7 +7658,7 @@ function renderVisualShareModal(){
     const wrapEl = document.getElementById('visualShareScaleWrap');
     const root = previewEl?.firstElementChild;
     if(scaleEl && wrapEl && root){
-      const srcW = 1080;
+      const srcW = root.classList.contains('share-card-wide') ? 1440 : 1080;
       const wrapW = wrapEl.clientWidth || wrapEl.offsetWidth || 320;
       const scale = Math.min(1, wrapW / srcW);
       const srcH = root.scrollHeight || root.offsetHeight || 900;
@@ -10295,9 +10290,9 @@ function rebuildCatTabs(){
 function loadCustomCats(){
   Object.keys(CAT_NAMES).forEach(k=>delete CAT_NAMES[k]);
   CAT_NAMES.liga_alta = 'CATEGORÍA LIBRE VARONIL';
-  CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE FEMENIL';
-  CAT_NAMES.liga_media = 'CATEGORÍA 38+';
-  catOrderKeys = ['liga_alta','libre_femenil','liga_media'];
+  CAT_NAMES.libre_femenil = 'CATEGORÍA LIBRE DOMINICAL';
+  // CAT_NAMES.liga_media removed (38+ eliminado)
+  catOrderKeys = ['liga_alta','libre_femenil'];
 }
 
 function saveCatOrder(){
