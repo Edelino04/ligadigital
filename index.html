@@ -309,6 +309,7 @@ border:1px solid #dbe4ee;border-radius:30px;padding:18px 18px 16px;box-shadow:0 
 .ms-pen{background:rgba(37,99,235,.08);color:var(--blue);border:1px solid rgba(37,99,235,.2);}
 .ms-live{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.25);animation:glow 2s infinite;}
 .ms-done{background:rgba(26,58,138,.08);color:var(--acc);border:1px solid rgba(26,58,138,.2);}
+.ms-default{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.3);font-weight:900;}
 @keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 8px rgba(220,38,38,.15)}}
 .mc-body{padding:12px 14px;}
 .scoreboard{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;}
@@ -984,6 +985,11 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
 .bracket-slot.is-tbd{opacity:.55;background:#f9fafb;}
 .bracket-seed{width:22px;height:22px;border-radius:7px;background:#eff6ff;border:1px solid #bfdbfe;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#1d4ed8;flex-shrink:0;}
 .bracket-seed.seed-1{background:linear-gradient(135deg,#fbbf24,#ca8a04);border-color:#f5d487;color:#fff;}
+.bracket-seed.seed-2{background:linear-gradient(135deg,#e2e8f0,#94a3b8);border-color:#cbd5e1;color:#fff;}
+.cb-seed-silver{background:linear-gradient(135deg,#e2e8f0,#94a3b8)!important;color:#fff!important;border-color:#cbd5e1!important;}
+.cb-direct-slot{background:linear-gradient(90deg,rgba(202,138,4,.07),transparent)!important;border-left:3px solid #ca8a04!important;}
+.cb-direct-badge{font-size:8px;font-weight:900;letter-spacing:1px;text-transform:uppercase;background:rgba(202,138,4,.15);color:#92400e;border:1px solid rgba(202,138,4,.3);border-radius:999px;padding:1px 6px;margin-left:4px;flex-shrink:0;}
+.cb-col-sublabel{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;}
 .bracket-logo{width:26px;height:26px;border-radius:8px;object-fit:cover;background:#f8fafc;border:1px solid #dbe4ee;flex-shrink:0;}
 .bracket-logo-ph{width:26px;height:26px;border-radius:8px;background:#f1f5f9;border:1px solid #dbe4ee;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
 .bracket-team-info{flex:1;min-width:0;}
@@ -1376,33 +1382,120 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#ca8a04,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🥊</div>
       <div>
         <div style="font-size:13px;font-weight:900;color:var(--text);">B) Fase Copa (Liguilla)</div>
-        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">8 Clasificados · Cuartos · Semis · Final</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:1px;">6 Clasificados · Repechaje · Semis · Final</div>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Clasifican los <strong>8 primeros equipos</strong> al término de las 2 vueltas. Formato de eliminación directa en 3 rondas:</p>
+    <p style="font-size:12px;color:var(--text2);font-weight:600;line-height:1.65;margin-bottom:12px;">Clasifican los <strong>6 primeros equipos</strong> al término de las 2 vueltas. El <strong>1° y 2° clasificados pasan directamente a Semifinales</strong>. Los demás disputan un repechaje previo.</p>
+
+    <!-- NOTA DESTACADA: 1° y 2° directo -->
+    <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.12),rgba(255,255,255,0));border:1.5px solid rgba(202,138,4,.4);border-radius:10px;padding:10px 13px;margin-bottom:10px;">
+      <span style="font-size:20px;flex-shrink:0;">🥇</span>
+      <div>
+        <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:#ca8a04;text-transform:uppercase;margin-bottom:2px;">1° y 2° Lugar — Pase Directo</div>
+        <div style="font-size:11px;color:var(--text2);font-weight:600;line-height:1.5;">El primer y segundo lugar de la tabla clasifican directamente a Semifinales, <strong>sin jugar repechaje</strong>. Quedan en brackets separados.</div>
+      </div>
+    </div>
+
     <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
-      <div style="background:linear-gradient(90deg,rgba(202,138,4,.1),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.3);border-radius:10px;padding:9px 12px;">
-        <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:#ca8a04;text-transform:uppercase;margin-bottom:6px;">🏆 Cuartos de Final</div>
-        <div style="display:flex;flex-direction:column;gap:4px;">
-          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">1° vs 8°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
-          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">2° vs 7°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
-          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">3° vs 6°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
-          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">4° vs 5°</span><div style="flex:1;height:1px;background:var(--border);"></div><span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span></div>
+
+      <!-- REPECHAJE -->
+      <div style="background:linear-gradient(90deg,rgba(220,38,38,.08),rgba(255,255,255,0));border:1px solid rgba(220,38,38,.3);border-radius:10px;padding:9px 12px;">
+        <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:#dc2626;text-transform:uppercase;margin-bottom:6px;">🔥 Repechaje (2 Partidos)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <!-- Rep A -->
+          <div style="background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#dc2626;margin-bottom:4px;">Repechaje A → ganador va a SF1</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">4° vs 5°</span>
+              <div style="flex:1;height:1px;background:var(--border);"></div>
+              <span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span>
+            </div>
+          </div>
+          <!-- Rep B -->
+          <div style="background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#dc2626;margin-bottom:4px;">Repechaje B → ganador va a SF2</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">3° vs 6°</span>
+              <div style="flex:1;height:1px;background:var(--border);"></div>
+              <span style="font-size:10px;color:var(--muted);font-weight:600;">Eliminación directa</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
-        <span style="font-size:14px;">⚔️</span>
-        <span style="font-size:11px;font-weight:900;color:var(--acc);white-space:nowrap;">Semifinales</span>
-        <div style="flex:1;height:1px;background:var(--border);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Los 4 ganadores de cuartos</span>
+
+      <!-- SEMIFINALES -->
+      <div style="background:rgba(26,58,138,.04);border:1px solid var(--border);border-radius:10px;padding:9px 12px;">
+        <div style="font-size:10px;font-weight:900;letter-spacing:1px;color:var(--acc);text-transform:uppercase;margin-bottom:6px;">⚔️ Semifinales (2 Partidos)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+              <span style="font-size:10px;font-weight:900;color:#ca8a04;background:rgba(202,138,4,.12);border:1px solid rgba(202,138,4,.3);border-radius:999px;padding:2px 7px;">1°</span>
+              <span style="font-size:10px;font-weight:700;color:var(--muted);">vs</span>
+              <span style="font-size:10px;font-weight:800;color:var(--acc);">Gan. Rep-A</span>
+            </div>
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+            <span style="font-size:9px;color:var(--muted);font-weight:600;white-space:nowrap;">Semifinal 1</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+              <span style="font-size:10px;font-weight:900;color:#94a3b8;background:rgba(148,163,184,.12);border:1px solid rgba(148,163,184,.3);border-radius:999px;padding:2px 7px;">2°</span>
+              <span style="font-size:10px;font-weight:700;color:var(--muted);">vs</span>
+              <span style="font-size:10px;font-weight:800;color:var(--acc);">Gan. Rep-B</span>
+            </div>
+            <div style="flex:1;height:1px;background:var(--border);"></div>
+            <span style="font-size:9px;color:var(--muted);font-weight:600;white-space:nowrap;">Semifinal 2</span>
+          </div>
+        </div>
       </div>
+
+      <!-- FINAL -->
       <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(202,138,4,.08),rgba(255,255,255,0));border:1px solid rgba(202,138,4,.2);border-radius:10px;padding:9px 12px;">
         <span style="font-size:14px;">🏆</span>
         <span style="font-size:11px;font-weight:900;color:#ca8a04;white-space:nowrap;">Gran Final</span>
         <div style="flex:1;height:1px;background:rgba(202,138,4,.2);"></div>
-        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Los 2 ganadores de semis</span>
+        <span style="font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap;">Ganadores de SF1 y SF2</span>
+      </div>
+
+    </div>
+
+    <!-- DIAGRAMA VISUAL DEL BRACKET -->
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 13px;margin-bottom:10px;">
+      <div style="font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">📊 Diagrama del Bracket</div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;font-size:10px;font-weight:700;">
+        <!-- Lado izquierdo -->
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);border-radius:8px;padding:6px 9px;text-align:center;">
+            <div style="font-size:8px;font-weight:900;letter-spacing:1px;color:#dc2626;margin-bottom:2px;">REP. A</div>
+            <div style="color:var(--text2);">4° <span style="color:var(--muted)">vs</span> 5°</div>
+          </div>
+          <div style="display:flex;justify-content:center;"><div style="width:1px;height:10px;background:var(--border2);"></div></div>
+          <div style="background:rgba(26,58,138,.08);border:1px solid rgba(26,58,138,.2);border-radius:8px;padding:6px 9px;text-align:center;">
+            <div style="font-size:8px;font-weight:900;letter-spacing:1px;color:var(--acc);margin-bottom:2px;">SEMI 1</div>
+            <div style="color:var(--text2);"><span style="color:#ca8a04;font-weight:900;">1°</span> <span style="color:var(--muted)">vs</span> Gan.A</div>
+          </div>
+        </div>
+        <!-- Centro -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;">
+          <div style="width:1px;flex:1;background:var(--border2);"></div>
+          <div style="background:linear-gradient(135deg,#ca8a04,#f59e0b);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 4px 10px rgba(202,138,4,.3);">🏆</div>
+          <div style="font-size:8px;font-weight:900;letter-spacing:1px;color:#ca8a04;text-transform:uppercase;white-space:nowrap;">Gran Final</div>
+          <div style="width:1px;flex:1;background:var(--border2);"></div>
+        </div>
+        <!-- Lado derecho -->
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25);border-radius:8px;padding:6px 9px;text-align:center;">
+            <div style="font-size:8px;font-weight:900;letter-spacing:1px;color:#dc2626;margin-bottom:2px;">REP. B</div>
+            <div style="color:var(--text2);">3° <span style="color:var(--muted)">vs</span> 6°</div>
+          </div>
+          <div style="display:flex;justify-content:center;"><div style="width:1px;height:10px;background:var(--border2);"></div></div>
+          <div style="background:rgba(26,58,138,.08);border:1px solid rgba(26,58,138,.2);border-radius:8px;padding:6px 9px;text-align:center;">
+            <div style="font-size:8px;font-weight:900;letter-spacing:1px;color:var(--acc);margin-bottom:2px;">SEMI 2</div>
+            <div style="color:var(--text2);"><span style="color:#94a3b8;font-weight:900;">2°</span> <span style="color:var(--muted)">vs</span> Gan.B</div>
+          </div>
+        </div>
       </div>
     </div>
+
     <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.6;">
       <strong style="color:var(--acc)">Penales:</strong> En caso de empate al término del tiempo reglamentario, el ganador se definirá mediante tanda de penales.
     </div>
@@ -2045,10 +2138,31 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     </div>
     <div class="form-2">
       <div class="fg"><label class="fl">Equipo Local</label>
-        <select class="fi" id="mp_local" onchange="syncPartidoPorteroDefaults(true)"><option value="">Seleccionar...</option></select>
+        <select class="fi" id="mp_local" onchange="syncPartidoPorteroDefaults(true);syncLineupFromTeam('local')"><option value="">Seleccionar...</option></select>
       </div>
       <div class="fg"><label class="fl">Equipo Visitante</label>
-        <select class="fi" id="mp_visita" onchange="syncPartidoPorteroDefaults(true)"><option value="">Seleccionar...</option></select>
+        <select class="fi" id="mp_visita" onchange="syncPartidoPorteroDefaults(true);syncLineupFromTeam('visita')"><option value="">Seleccionar...</option></select>
+      </div>
+    </div>
+    <!-- DEFAULT WIN SECTION -->
+    <div id="mp_default_section" style="background:rgba(220,38,38,.06);border:1.5px solid rgba(220,38,38,.22);border-radius:10px;padding:12px;margin-bottom:4px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--red);text-transform:uppercase">⚠️ Victoria por Default</div>
+          <div style="font-size:10px;color:var(--muted);font-weight:600;margin-top:2px">El equipo que no se presentó pierde 2-0. No se registran goleadores.</div>
+        </div>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer">
+          <input type="checkbox" id="mp_is_default" onchange="toggleDefaultMode()" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer"/>
+          <span style="font-size:11px;font-weight:800;color:var(--red)">Activar</span>
+        </label>
+      </div>
+      <div id="mp_default_options" style="display:none;margin-top:10px">
+        <label class="fl">¿Quién NO se presentó? (pierde 2-0)</label>
+        <select class="fi" id="mp_default_loser" style="border-color:rgba(220,38,38,.4)">
+          <option value="">Seleccionar equipo...</option>
+          <option value="local">Local</option>
+          <option value="visita">Visitante</option>
+        </select>
       </div>
     </div>
     <div class="form-2">
@@ -2059,18 +2173,21 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
       <div class="fg"><label class="fl">Hora término</label><input class="fi" id="mp_hora_fin" type="time"/></div>
       <div class="fg"><label class="fl">Costo arbitraje/eq $</label><input class="fi" id="mp_costo" type="number" value="250" min="0"/></div>
     </div>
+    <div id="mp_marcador_section">
     <div class="divider"></div>
     <div style="font-size:10px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">ALINEACIONES (opcional)</div>
     <div class="form-2">
       <div>
         <label class="fl">Jugadores Local</label>
+        <div id="lineup_local_roster"></div>
         <div id="lineup_local"></div>
-        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('local')">+ Jugador</button>
+        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('local')">+ Jugador manual</button>
       </div>
       <div>
         <label class="fl">Jugadores Visita</label>
+        <div id="lineup_visita_roster"></div>
         <div id="lineup_visita"></div>
-        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('visita')">+ Jugador</button>
+        <button class="btn btn-out btn-sm btn-full" style="margin-top:5px" onclick="addPlayer('visita')">+ Jugador manual</button>
       </div>
     </div>
     <div class="form-2" style="margin-top:10px">
@@ -2090,6 +2207,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
         <option value="terminado">Terminado</option>
       </select>
     </div>
+    </div><!-- end mp_marcador_section -->
     <button class="btn btn-g btn-full" onclick="savePartido()">💾 Guardar Partido</button>
   </div>
 </div>
@@ -3890,31 +4008,82 @@ function createCupSlot(team, seed=null, fallbackLabel='Por definirse', opts={}){
 }
 
 function buildCupProjectionData(dataOverride=null){
-  // FORMATO TORNEO LOS ALAMITOS: TOP 8 clasifican
-  // Cuartos de Final: 1°vs8°, 2°vs7°, 3°vs6°, 4°vs5°
-  // Semifinal: Gan(1v8) vs Gan(4v5), Gan(2v7) vs Gan(3v6)
+  // FORMATO CATEGORÍA LIBRE VARONIL:
+  // TOP 6 clasifican
+  // Ronda de Repechaje:
+  //   Rep-A: 4° vs 5°  → ganador a SF contra 1° (Bracket Izquierdo)
+  //   Rep-B: 3° vs 6°  → ganador a SF contra 2° (Bracket Derecho)
+  // Semifinales:
+  //   SF1 (Izq): 1° vs Gan(Rep-A)
+  //   SF2 (Der): 2° vs Gan(Rep-B)
   // Final: Gan SF1 vs Gan SF2
   const tabla = Array.isArray(dataOverride) && dataOverride.length ? dataOverride.slice() : buildTablaData();
   if(tabla.length < 2) return null;
-  const CUP_QUALIFY = 8;
+  const CUP_QUALIFY = 6;
   const seededTeams = tabla.slice(0, Math.min(tabla.length, CUP_QUALIFY)).map((t,i)=>({...t, seed:i+1}));
   const s = (n) => seededTeams.find(t=>t.seed===n) || null;
-  // Cuartos de Final
-  const q1 = { id:'q1', slotA:createCupSlot(s(1),1,s(1)?s(1).nombre:'1°',{}), slotB:createCupSlot(s(8),8,s(8)?s(8).nombre:'8°',{}), winner:null, winnerLabel:'Ganador CF1', note:`${s(1)?.nombre||'1°'} vs ${s(8)?.nombre||'8°'}` };
-  const q2 = { id:'q2', slotA:createCupSlot(s(2),2,s(2)?s(2).nombre:'2°',{}), slotB:createCupSlot(s(7),7,s(7)?s(7).nombre:'7°',{}), winner:null, winnerLabel:'Ganador CF2', note:`${s(2)?.nombre||'2°'} vs ${s(7)?.nombre||'7°'}` };
-  const q3 = { id:'q3', slotA:createCupSlot(s(3),3,s(3)?s(3).nombre:'3°',{}), slotB:createCupSlot(s(6),6,s(6)?s(6).nombre:'6°',{}), winner:null, winnerLabel:'Ganador CF3', note:`${s(3)?.nombre||'3°'} vs ${s(6)?.nombre||'6°'}` };
-  const q4 = { id:'q4', slotA:createCupSlot(s(4),4,s(4)?s(4).nombre:'4°',{}), slotB:createCupSlot(s(5),5,s(5)?s(5).nombre:'5°',{}), winner:null, winnerLabel:'Ganador CF4', note:`${s(4)?.nombre||'4°'} vs ${s(5)?.nombre||'5°'}` };
-  const r1 = { name:'Cuartos de Final', short:'CF', matches:[q1, q2, q3, q4] };
-  // Semifinales
-  const sf1 = { id:'sf1', slotA:createCupSlot(q1.winner,q1.winner?.seed||null,q1.winnerLabel,{subtitle:q1.winner?`Seed ${q1.winner.seed}`:'Ganador CF1'}), slotB:createCupSlot(q4.winner,q4.winner?.seed||null,q4.winnerLabel,{subtitle:q4.winner?`Seed ${q4.winner.seed}`:'Ganador CF4'}), winner:null, winnerLabel:'Ganador SF1', note:`${q1.winnerLabel} vs ${q4.winnerLabel}` };
-  const sf2 = { id:'sf2', slotA:createCupSlot(q2.winner,q2.winner?.seed||null,q2.winnerLabel,{subtitle:q2.winner?`Seed ${q2.winner.seed}`:'Ganador CF2'}), slotB:createCupSlot(q3.winner,q3.winner?.seed||null,q3.winnerLabel,{subtitle:q3.winner?`Seed ${q3.winner.seed}`:'Ganador CF3'}), winner:null, winnerLabel:'Ganador SF2', note:`${q2.winnerLabel} vs ${q3.winnerLabel}` };
-  const r2 = { name:'Semifinales', short:'SF', matches:[sf1, sf2] };
-  // Final
-  const fin = { id:'final', slotA:createCupSlot(sf1.winner,sf1.winner?.seed||null,sf1.winnerLabel,{subtitle:sf1.winner?`Seed ${sf1.winner.seed}`:'Ganador SF1'}), slotB:createCupSlot(sf2.winner,sf2.winner?.seed||null,sf2.winnerLabel,{subtitle:sf2.winner?`Seed ${sf2.winner.seed}`:'Ganador SF2'}), winner:null, winnerLabel:'Campeón', note:'Gran Final' };
-  const r3 = { name:'Final', short:'F', matches:[fin] };
-  const rounds = [r1, r2, r3];
+
+  // ── REPECHAJE ──
+  const repA = {
+    id:'repA',
+    slotA: createCupSlot(s(4),4,s(4)?s(4).nombre:'4°',{}),
+    slotB: createCupSlot(s(5),5,s(5)?s(5).nombre:'5°',{}),
+    winner: null,
+    winnerLabel: 'Gan. Rep-A',
+    note: `${s(4)?.nombre||'4°'} vs ${s(5)?.nombre||'5°'}`
+  };
+  const repB = {
+    id:'repB',
+    slotA: createCupSlot(s(3),3,s(3)?s(3).nombre:'3°',{}),
+    slotB: createCupSlot(s(6),6,s(6)?s(6).nombre:'6°',{}),
+    winner: null,
+    winnerLabel: 'Gan. Rep-B',
+    note: `${s(3)?.nombre||'3°'} vs ${s(6)?.nombre||'6°'}`
+  };
+  const r0 = { name:'Repechaje', short:'REP', matches:[repA, repB] };
+
+  // ── SEMIFINALES ──
+  // SF1 (bracket izquierdo): 1° (bye directo) vs Ganador Rep-A
+  const sf1 = {
+    id:'sf1',
+    slotA: createCupSlot(s(1),1,s(1)?s(1).nombre:'1°',{subtitle:s(1)?`${s(1).pts||0}pts · Clasificó directo`:'Clasificó directo'}),
+    slotB: createCupSlot(repA.winner,repA.winner?.seed||null,repA.winnerLabel,{subtitle:repA.winner?`Seed ${repA.winner.seed}`:'Ganador Rep-A'}),
+    winner: null,
+    winnerLabel: 'Ganador SF1',
+    note: `${s(1)?.nombre||'1°'} vs ${repA.winnerLabel}`
+  };
+  // SF2 (bracket derecho): 2° (bye directo) vs Ganador Rep-B
+  const sf2 = {
+    id:'sf2',
+    slotA: createCupSlot(s(2),2,s(2)?s(2).nombre:'2°',{subtitle:s(2)?`${s(2).pts||0}pts · Clasificó directo`:'Clasificó directo'}),
+    slotB: createCupSlot(repB.winner,repB.winner?.seed||null,repB.winnerLabel,{subtitle:repB.winner?`Seed ${repB.winner.seed}`:'Ganador Rep-B'}),
+    winner: null,
+    winnerLabel: 'Ganador SF2',
+    note: `${s(2)?.nombre||'2°'} vs ${repB.winnerLabel}`
+  };
+  const r1 = { name:'Semifinales', short:'SF', matches:[sf1, sf2] };
+
+  // ── FINAL ──
+  const fin = {
+    id:'final',
+    slotA: createCupSlot(sf1.winner,sf1.winner?.seed||null,sf1.winnerLabel,{subtitle:sf1.winner?`Seed ${sf1.winner.seed}`:'Ganador SF1'}),
+    slotB: createCupSlot(sf2.winner,sf2.winner?.seed||null,sf2.winnerLabel,{subtitle:sf2.winner?`Seed ${sf2.winner.seed}`:'Ganador SF2'}),
+    winner: null,
+    winnerLabel: 'Campeón',
+    note: 'Gran Final'
+  };
+  const r2 = { name:'Final', short:'F', matches:[fin] };
+
+  const rounds = [r0, r1, r2];
   const eliminated = tabla.slice(CUP_QUALIFY).map((t,i)=>({...t, seed:CUP_QUALIFY+i+1}));
-  return { bracketSize:8, qualifiedTeams:seededTeams.length, hasByes:false, stageLabel:'Cuartos de Final', leader:seededTeams[0]||null, rounds, seeds:seededTeams, eliminated };
+  return {
+    bracketSize: 6,
+    qualifiedTeams: seededTeams.length,
+    hasByes: true, // 1° y 2° tienen bye a semis
+    stageLabel: 'Repechaje',
+    leader: seededTeams[0]||null,
+    rounds, seeds: seededTeams, eliminated
+  };
 }
 
 function renderBracketSlot(slot, adminMode=false){
@@ -3976,31 +4145,43 @@ function buildCupBracketHtml(cupData, opts={}){
 }
 
 function buildCopaBracketVisual(cupData, adminMode=false){
+  // FORMATO CATEGORÍA LIBRE VARONIL
+  // Rondas: [Repechaje, Semifinales, Final]
+  // Bracket Izquierdo: Rep-A (4°vs5°) → SF1 contra 1°
+  // Bracket Derecho:  Rep-B (3°vs6°) → SF2 contra 2°
   const rounds = cupData.rounds;
-  const r0 = rounds[0]; // cuartos
-  const r1 = rounds.length > 1 ? rounds[1] : null; // semis
-  const rFinal = rounds[rounds.length - 1]; // final
+  const rRep   = rounds[0];  // Repechaje (2 partidos)
+  const rSemi  = rounds.length > 1 ? rounds[1] : null; // Semifinales
+  const rFinal = rounds[rounds.length - 1]; // Final
   const finalMatch = rFinal?.matches[0] || null;
   const campeon = finalMatch?.winner || null;
 
+  // Rep-A (4vs5) → izquierda  /  Rep-B (3vs6) → derecha
+  const repA = rRep?.matches[0] || null;
+  const repB = rRep?.matches[1] || null;
+  const sf1  = rSemi?.matches[0] || null; // izquierda (1° + ganRepA)
+  const sf2  = rSemi?.matches[1] || null; // derecha (2° + ganRepB)
+
   // — render un slot individual —
-  function slot(s){
+  function slotHtml(s, isByeSlot=false){
+    if(!s) return `<div class="cb-vs-slot cb-tbd-slot"><span class="cb-seed">?</span><span class="cb-logo-ph">⚽</span><span class="cb-name">Por definirse</span></div>`;
     const logo = s.team?.logo
       ? `<img class="cb-logo" src="${escapeHtml(s.team.logo)}" />`
       : `<span class="cb-logo-ph">${s.isBye?'⬜':'⚽'}</span>`;
-    const seedCls = s.seed===1 ? 'cb-seed cb-seed-gold' : 'cb-seed';
-    const slotCls = `cb-vs-slot${s.isBye?' cb-bye':''}${s.isPlaceholder?' cb-tbd-slot':''}`;
+    const seedCls = s.seed===1 ? 'cb-seed cb-seed-gold' : s.seed===2 ? 'cb-seed cb-seed-silver' : 'cb-seed';
+    const slotCls = `cb-vs-slot${s.isBye?' cb-bye':''}${s.isPlaceholder?' cb-tbd-slot':''}${isByeSlot?' cb-direct-slot':''}`;
     const pts = adminMode && s.team ? `<span class="cb-pts">${s.team.pts||0}p</span>` : '';
+    const directBadge = isByeSlot ? `<span class="cb-direct-badge">Directo</span>` : '';
     return `<div class="${slotCls}">
       <span class="${seedCls}">${s.seed?`#${s.seed}`:'?'}</span>
       ${logo}
       <span class="cb-name">${escapeHtml(s.displayName||'Por definirse')}</span>
-      ${pts}
+      ${directBadge}${pts}
     </div>`;
   }
 
-  // — render una tarjeta de partido —
-  function matchCard(match, extraClass=''){
+  // — tarjeta de partido —
+  function matchCard(match, extraClass='', byeSlotIndex=-1){
     if(!match) return `<div class="cb-match cb-tbd ${extraClass}">
       <div class="cb-vs-slot cb-tbd-slot"><span class="cb-seed">?</span><span class="cb-logo-ph">⚽</span><span class="cb-name">Por definirse</span></div>
       <div class="cb-divider"><span>VS</span></div>
@@ -4010,58 +4191,57 @@ function buildCopaBracketVisual(cupData, adminMode=false){
       ? `<span class="cb-winner-badge">✓ ${escapeHtml(match.winner.nombre)}</span>`
       : '';
     return `<div class="cb-match ${extraClass}">
-      ${slot(match.slotA)}
+      ${slotHtml(match.slotA, byeSlotIndex===0)}
       <div class="cb-divider"><span>VS</span>${winnerBadge}</div>
-      ${slot(match.slotB)}
+      ${slotHtml(match.slotB, byeSlotIndex===1)}
     </div>`;
   }
-
-  const half = Math.ceil(r0.matches.length / 2);
-  const r0L = r0.matches.slice(0, half);   // cuartos izquierda
-  const r0R = r0.matches.slice(half);       // cuartos derecha
-  const r1L = r1 ? r1.matches.slice(0, Math.ceil(r1.matches.length/2)) : [];
-  const r1R = r1 ? r1.matches.slice(Math.ceil(r1.matches.length/2)) : [];
-
-  const semiName = r1 ? escapeHtml(r1.name) : 'Semifinal';
-  const finalName = escapeHtml(rFinal.name);
 
   const campLogoHtml = campeon?.logo
     ? `<img src="${escapeHtml(campeon.logo)}" class="cb-camp-logo"/>`
     : `<div class="cb-camp-logo-ph">🏆</div>`;
 
+  const repName  = escapeHtml(rRep?.name || 'Repechaje');
+  const semiName = escapeHtml(rSemi?.name || 'Semifinales');
+  const finalName = escapeHtml(rFinal?.name || 'Final');
+
   return `
   <div class="cb-bracket">
 
-    <!-- ════ LAYOUT DESKTOP: 5 columnas ════
-         QF-L | conn | SF-L | conn | FINAL/TROFEO | conn | SF-R | conn | QF-R
+    <!-- ════ NOTA FORMATO ════ -->
+    <div style="text-align:center;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;">
+      <span style="background:linear-gradient(135deg,#fbbf24,#ca8a04);color:#fff;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:999px;">🥇 1° y 2° → Directo a Semis</span>
+      <span style="background:rgba(37,84,212,.1);color:var(--acc);border:1px solid rgba(37,84,212,.25);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:999px;">🔥 3°-6° → Repechaje</span>
+    </div>
+
+    <!-- ════ LAYOUT DESKTOP ════
+         REP-A | conn | SF1(1°+ganA) | conn | FINAL | conn | SF2(2°+ganB) | conn | REP-B
     -->
     <div class="cb-full-grid">
 
-      <!-- COL 1: Cuartos Izquierda -->
+      <!-- COL 1: Repechaje A (4° vs 5°) -->
       <div class="cb-col">
-        <div class="cb-col-label">${escapeHtml(r0.name)}</div>
-        <div class="cb-col-matches">
-          ${r0L.map((m,i)=>`
-            <div class="cb-qf-wrap">
-              ${matchCard(m)}
-            </div>
-          `).join('')}
+        <div class="cb-col-label" style="background:linear-gradient(135deg,#dc2626,#991b1b)">${repName} A</div>
+        <div class="cb-col-matches" style="justify-content:center">
+          <div class="cb-col-sublabel" style="font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;">4° vs 5°</div>
+          ${matchCard(repA)}
         </div>
       </div>
 
-      <!-- COL 2: Conectores QF→SF izquierda -->
+      <!-- COL 2: Conector Rep→SF izquierda -->
       <div class="cb-col cb-col-conn">
         <div class="cb-conn-tree cb-conn-tree-right">
-          ${r0L.map((_,i)=>`<div class="cb-tree-branch"></div>`).join('')}
+          <div class="cb-tree-branch"></div>
           <div class="cb-tree-trunk"></div>
         </div>
       </div>
 
-      <!-- COL 3: Semifinal Izquierda -->
+      <!-- COL 3: Semifinal 1 (1° directo + Gan.Rep-A) -->
       <div class="cb-col">
-        <div class="cb-col-label">${semiName}</div>
+        <div class="cb-col-label">${semiName} 1</div>
         <div class="cb-col-matches cb-col-matches-centered">
-          ${r1L.map(m=>matchCard(m)).join('')}
+          <div class="cb-col-sublabel" style="font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;">1° vs Gan. Rep-A</div>
+          ${matchCard(sf1,'',0)}
         </div>
       </div>
 
@@ -4091,31 +4271,29 @@ function buildCopaBracketVisual(cupData, adminMode=false){
         <div class="cb-conn-arrow cb-conn-arrow-left"></div>
       </div>
 
-      <!-- COL 7: Semifinal Derecha -->
+      <!-- COL 7: Semifinal 2 (2° directo + Gan.Rep-B) -->
       <div class="cb-col">
-        <div class="cb-col-label">${semiName}</div>
+        <div class="cb-col-label">${semiName} 2</div>
         <div class="cb-col-matches cb-col-matches-centered">
-          ${r1R.map(m=>matchCard(m)).join('')}
+          <div class="cb-col-sublabel" style="font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;">2° vs Gan. Rep-B</div>
+          ${matchCard(sf2,'',0)}
         </div>
       </div>
 
-      <!-- COL 8: Conectores SF→QF derecha -->
+      <!-- COL 8: Conector SF→Rep derecha -->
       <div class="cb-col cb-col-conn">
         <div class="cb-conn-tree cb-conn-tree-left">
-          ${r0R.map((_,i)=>`<div class="cb-tree-branch"></div>`).join('')}
+          <div class="cb-tree-branch"></div>
           <div class="cb-tree-trunk"></div>
         </div>
       </div>
 
-      <!-- COL 9: Cuartos Derecha -->
+      <!-- COL 9: Repechaje B (3° vs 6°) -->
       <div class="cb-col">
-        <div class="cb-col-label">${escapeHtml(r0.name)}</div>
-        <div class="cb-col-matches">
-          ${r0R.map((m,i)=>`
-            <div class="cb-qf-wrap">
-              ${matchCard(m)}
-            </div>
-          `).join('')}
+        <div class="cb-col-label" style="background:linear-gradient(135deg,#dc2626,#991b1b)">${repName} B</div>
+        <div class="cb-col-matches" style="justify-content:center">
+          <div class="cb-col-sublabel" style="font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);text-align:center;margin-bottom:6px;text-transform:uppercase;">3° vs 6°</div>
+          ${matchCard(repB)}
         </div>
       </div>
 
@@ -4123,12 +4301,11 @@ function buildCopaBracketVisual(cupData, adminMode=false){
 
     <!-- ════ LAYOUT MÓVIL: stack vertical ════ -->
     <div class="cb-mobile-stack">
-      <div class="cb-mob-label">${escapeHtml(r0.name)} — Lado Izquierdo</div>
-      ${r0L.map(m=>matchCard(m)).join('<div class="cb-mob-spacer"></div>')}
-      ${r1L.length ? `
+      <div class="cb-mob-label" style="background:linear-gradient(135deg,#dc2626,#991b1b)">🔥 ${repName} A — 4° vs 5°</div>
+      ${matchCard(repA)}
       <div class="cb-mob-connector"></div>
-      <div class="cb-mob-label">${semiName} — Izquierda</div>
-      ${r1L.map(m=>matchCard(m)).join('')}` : ''}
+      <div class="cb-mob-label">${semiName} 1 — 1° vs Gan.Rep-A</div>
+      ${matchCard(sf1,'',0)}
 
       <div class="cb-mob-connector"></div>
       <div class="cb-mob-center">
@@ -4141,13 +4318,12 @@ function buildCopaBracketVisual(cupData, adminMode=false){
         ${matchCard(finalMatch, 'cb-match-final')}
       </div>
 
-      ${r1R.length ? `
       <div class="cb-mob-connector"></div>
-      <div class="cb-mob-label">${semiName} — Derecha</div>
-      ${r1R.map(m=>matchCard(m)).join('')}` : ''}
+      <div class="cb-mob-label">${semiName} 2 — 2° vs Gan.Rep-B</div>
+      ${matchCard(sf2,'',0)}
       <div class="cb-mob-connector"></div>
-      <div class="cb-mob-label">${escapeHtml(r0.name)} — Lado Derecho</div>
-      ${r0R.map(m=>matchCard(m)).join('<div class="cb-mob-spacer"></div>')}
+      <div class="cb-mob-label" style="background:linear-gradient(135deg,#dc2626,#991b1b)">🔥 ${repName} B — 3° vs 6°</div>
+      ${matchCard(repB)}
     </div><!-- /cb-mobile-stack -->
 
   </div><!-- /cb-bracket -->`;
@@ -4555,7 +4731,8 @@ function renderPartidos(){
     const lLogo=eqL?.logo?`<img class="team-logo" src="${eqL.logo}"/>`:`<div class="team-ph">⚽</div>`;
     const vLogo=eqV?.logo?`<img class="team-logo" src="${eqV.logo}"/>`:`<div class="team-ph">⚽</div>`;
     const statusClass=p.status==='terminado'?'ms-done':p.status==='jugando'?'ms-live':'ms-pen';
-    const statusTxt=p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente';
+    const statusTxt=p.porDefault?'⚠️ Default':p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente';
+    const statusClass2=p.porDefault?'ms-default':null;
     var mcCls=p.status!=='terminado'?'mc-pending':(wL?'mc-win':wV?'mc-win':'mc-draw');
     return `<div class="match-card ${mcCls}" onclick="openPartidoDetail('${p._key}')">
       <div class="mc-top">
@@ -4716,8 +4893,8 @@ function renderPartidoDetail(){
   }
   document.getElementById('modalPartidoContent').innerHTML=`
     <div style="text-align:center;margin-bottom:10px">
-      <span class="mc-status ${p.status==='terminado'?'ms-done':p.status==='jugando'?'ms-live':'ms-pen'}">
-        ${p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente'}
+      <span class="mc-status ${p.porDefault?'ms-default':p.status==='terminado'?'ms-done':p.status==='jugando'?'ms-live':'ms-pen'}">
+        ${p.porDefault?'⚠️ DEFAULT (2-0)':p.status==='terminado'?'✅ Terminado':p.status==='jugando'?'🟢 En Juego':'⏳ Pendiente'}
       </span>
     </div>
     <div class="scoreboard" style="margin-bottom:10px">
@@ -4835,6 +5012,12 @@ function resetPartidoForm(){
   document.getElementById('mp_costo').value=250;
   document.getElementById('lineup_local').innerHTML='';
   document.getElementById('lineup_visita').innerHTML='';
+  document.getElementById('lineup_local_roster').innerHTML='';
+  document.getElementById('lineup_visita_roster').innerHTML='';
+  if(document.getElementById('mp_is_default')) document.getElementById('mp_is_default').checked=false;
+  if(document.getElementById('mp_default_options')) document.getElementById('mp_default_options').style.display='none';
+  if(document.getElementById('mp_default_loser')) document.getElementById('mp_default_loser').value='';
+  const mps=document.getElementById('mp_marcador_section'); if(mps) mps.style.display='block';
   document.getElementById('mp_torneo').value=currentTorneo;
   document.getElementById('mp_cat').value=currentCat;
   // populate árbitros
@@ -4875,6 +5058,63 @@ function syncPartidoPorteroDefaults(force=false){
   if(visitaInput && (force || !visitaInput.value.trim())) visitaInput.value=eqV?.portero||'';
 }
 
+// ══════════════════════════════════════
+//  DEFAULT (victoria por no presentarse)
+// ══════════════════════════════════════
+function toggleDefaultMode(){
+  const isDefault = document.getElementById('mp_is_default').checked;
+  document.getElementById('mp_default_options').style.display = isDefault ? 'block' : 'none';
+  const section = document.getElementById('mp_marcador_section');
+  if(section) section.style.display = isDefault ? 'none' : 'block';
+  if(!isDefault){
+    document.getElementById('mp_gL').value=0;
+    document.getElementById('mp_gV').value=0;
+    document.getElementById('mp_status').value='pendiente';
+  }
+}
+
+// ══════════════════════════════════════
+//  SINCRONIZAR ALINEACION DESDE EQUIPO
+// ══════════════════════════════════════
+function syncLineupFromTeam(side){
+  const key = document.getElementById(side==='local'?'mp_local':'mp_visita').value;
+  const rosterEl = document.getElementById(`lineup_${side}_roster`);
+  if(!rosterEl) return;
+  rosterEl.innerHTML='';
+  if(!key){ return; }
+  const eq = C.equipos[key];
+  const aline = eq?.alineacion || [];
+  if(!aline.length){ rosterEl.innerHTML='<div style="font-size:10px;color:var(--muted);padding:4px 0">Sin alineación guardada</div>'; return; }
+  rosterEl.innerHTML = '<div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc);margin-bottom:5px">👕 Alineación registrada — toca para agregar</div>'
+    + aline.map(pl=>`<div class="roster-player-chip" onclick="toggleRosterPlayer('${side}','${pl.replace(/'/g,"\'")}',this)" style="display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;padding:5px 10px;margin:3px 3px 3px 0;cursor:pointer;font-size:11px;font-weight:700;transition:all .2s">${pl}</div>`).join('');
+}
+
+function toggleRosterPlayer(side, name, chip){
+  const cont = document.getElementById(`lineup_${side}`);
+  // Check if already added
+  const existing = Array.from(cont.querySelectorAll('input')).find(i=>i.value.trim()===name.trim());
+  if(existing){
+    existing.closest('.player-input-row').remove();
+    chip.style.background='var(--card2)';
+    chip.style.borderColor='var(--border)';
+    chip.style.color='var(--text)';
+    // renumber
+    Array.from(cont.querySelectorAll('.player-input-row')).forEach((row,i)=>{
+      const num=row.querySelector('span'); if(num) num.textContent=i+1;
+      const inp=row.querySelector('input'); if(inp) inp.placeholder=`Jugador ${i+1}`;
+    });
+    return;
+  }
+  // Add player
+  const idx = cont.children.length+1;
+  const div = document.createElement('div'); div.className='player-input-row';
+  div.innerHTML=`<span style="font-size:10px;color:var(--muted);width:16px;text-align:center;line-height:28px">${idx}</span><input class="fi" value="${name}" placeholder="Jugador ${idx}" style="flex:1"/>`;
+  cont.appendChild(div);
+  chip.style.background='rgba(37,84,212,.12)';
+  chip.style.borderColor='var(--acc)';
+  chip.style.color='var(--acc)';
+}
+
 function openEditPartido(key){
   const p=C.partidos[key]; if(!p)return;
   resetPartidoForm();
@@ -4905,6 +5145,18 @@ function openEditPartido(key){
   document.getElementById('mp_visita').value=vKey;
   document.getElementById('mp_portero_local').value=(p.porteroLocal||lEq?.portero||'').trim();
   document.getElementById('mp_portero_visita').value=(p.porteroVisita||vEq?.portero||'').trim();
+  // Sync roster chips
+  syncLineupFromTeam('local');
+  syncLineupFromTeam('visita');
+  // Mark selected players in roster chips after lineup is rendered
+  setTimeout(()=>{
+    ['local','visita'].forEach(side=>{
+      const cont=document.getElementById(`lineup_${side}`);
+      const chips=document.querySelectorAll(`#lineup_${side}_roster .roster-player-chip`);
+      const added=Array.from(cont.querySelectorAll('input')).map(i=>i.value.trim());
+      chips.forEach(chip=>{ if(added.includes(chip.textContent.trim())){ chip.style.background='rgba(37,84,212,.12)';chip.style.borderColor='var(--acc)';chip.style.color='var(--acc)'; } });
+    });
+  },50);
   openModal('modalPartido');
 }
 
@@ -4933,6 +5185,21 @@ function savePartido(){
   const key=document.getElementById('mp_key').value;
   const porteroLocal=document.getElementById('mp_portero_local').value.trim();
   const porteroVisita=document.getElementById('mp_portero_visita').value.trim();
+  // DEFAULT mode
+  const isDefault=document.getElementById('mp_is_default')?.checked||false;
+  let gL,gV,status,defaultFlag=false;
+  if(isDefault){
+    const loser=document.getElementById('mp_default_loser').value;
+    if(!loser){showToast('Selecciona qué equipo no se presentó','ta');return;}
+    gL=loser==='local'?0:2;
+    gV=loser==='visita'?0:2;
+    status='terminado';
+    defaultFlag=true;
+  } else {
+    gL=parseInt(document.getElementById('mp_gL').value)||0;
+    gV=parseInt(document.getElementById('mp_gV').value)||0;
+    status=document.getElementById('mp_status').value;
+  }
   const data={
     torneo, cat,
     local:localKey, localNombre:eqL.nombre,
@@ -4942,20 +5209,20 @@ function savePartido(){
     fecha:document.getElementById('mp_fecha').value,
     horaIni:document.getElementById('mp_hora_ini').value,
     horaFin:document.getElementById('mp_hora_fin').value||null,
-    gL:parseInt(document.getElementById('mp_gL').value)||0,
-    gV:parseInt(document.getElementById('mp_gV').value)||0,
+    gL, gV,
     porteroLocal:porteroLocal||null,
     porteroVisita:porteroVisita||null,
-    status:document.getElementById('mp_status').value,
+    status,
+    porDefault:defaultFlag||null,
     costArb:parseInt(document.getElementById('mp_costo').value)||250,
-    alineLocal:getLineup('local'),
-    alineVisita:getLineup('visita'),
+    alineLocal:isDefault?[]:getLineup('local'),
+    alineVisita:isDefault?[]:getLineup('visita'),
     updatedAt:Date.now()
   };
   if(key) db.ref(`partidos/${key}`).update(data);
   else db.ref('partidos').push({...data,goles:{},arbPago:{local:{ef:0,tr:0,pp:0},visita:{ef:0,tr:0,pp:0}},creadoAt:Date.now()});
   closeModal('modalPartido');
-  showToast(key?'Partido actualizado':'Partido registrado','tg');
+  showToast(key?'Partido actualizado':(defaultFlag?'⚠️ Default registrado':'Partido registrado'),'tg');
 }
 
 // ══════════════════════════════════════
@@ -5072,6 +5339,21 @@ async function savePartido(){
   const porteroLocal=document.getElementById('mp_portero_local').value.trim();
   const porteroVisita=document.getElementById('mp_portero_visita').value.trim();
   const updatedAt=Date.now();
+  // DEFAULT mode
+  const isDefault=document.getElementById('mp_is_default')?.checked||false;
+  let gL,gV,status,defaultFlag=false;
+  if(isDefault){
+    const loser=document.getElementById('mp_default_loser').value;
+    if(!loser){showToast('Selecciona qué equipo no se presentó','ta');return;}
+    gL=loser==='local'?0:2;
+    gV=loser==='visita'?0:2;
+    status='terminado';
+    defaultFlag=true;
+  } else {
+    gL=parseInt(document.getElementById('mp_gL').value)||0;
+    gV=parseInt(document.getElementById('mp_gV').value)||0;
+    status=document.getElementById('mp_status').value;
+  }
   const data={
     torneo, cat,
     local:localKey, localNombre:eqL.nombre,
@@ -5081,14 +5363,14 @@ async function savePartido(){
     fecha:document.getElementById('mp_fecha').value,
     horaIni:document.getElementById('mp_hora_ini').value,
     horaFin:document.getElementById('mp_hora_fin').value||null,
-    gL:parseInt(document.getElementById('mp_gL').value)||0,
-    gV:parseInt(document.getElementById('mp_gV').value)||0,
+    gL, gV,
     porteroLocal:porteroLocal||null,
     porteroVisita:porteroVisita||null,
-    status:document.getElementById('mp_status').value,
+    status,
+    porDefault:defaultFlag||null,
     costArb:parseInt(document.getElementById('mp_costo').value)||250,
-    alineLocal:getLineup('local'),
-    alineVisita:getLineup('visita'),
+    alineLocal:isDefault?[]:getLineup('local'),
+    alineVisita:isDefault?[]:getLineup('visita'),
     updatedAt
   };
   try{
@@ -5105,7 +5387,7 @@ async function savePartido(){
     }
     await intentarSincronizarResultado(partidoKey,partidoData);
     closeModal('modalPartido');
-    showToast(key?'Partido actualizado':'Partido registrado','tg');
+    showToast(key?'Partido actualizado':(defaultFlag?'⚠️ Default registrado':'Partido registrado'),'tg');
   }catch(error){
     console.log('[Make] Error al guardar partido', error);
     showToast('Error al guardar partido','tr');
