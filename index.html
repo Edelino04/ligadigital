@@ -1227,12 +1227,6 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <div class="sl"></div>
     <button class="btn btn-out btn-sm" onclick="compartirTabla()" title="Compartir tabla">📤</button>
   </div>
-  <!-- Tabs Vuelta 1 / Vuelta 2 / General -->
-  <div class="cat-tabs" id="vueltaTabs" style="padding:6px 2px 10px;gap:8px;">
-    <button class="cat-tab active" id="vtab-general" onclick="selectVuelta('general',this)">General</button>
-    <button class="cat-tab" id="vtab-v1" onclick="selectVuelta('v1',this)">🔵 Vuelta 1</button>
-    <button class="cat-tab" id="vtab-v2" onclick="selectVuelta('v2',this)">🟠 Vuelta 2</button>
-  </div>
   <div id="vueltaInfoBanner" style="display:none;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;line-height:1.5;"></div>
   <div class="tabla-wrap card" style="padding:0" id="tablaCaptura">
     <table class="tabla">
@@ -1266,14 +1260,7 @@ border:1px solid #c2d5f5;box-shadow:0 14px 30px rgba(37,84,212,.08);}
     <button class="btn btn-out btn-sm" onclick="compartirGoleadores()" title="Compartir goleadores">📤</button>
   </div>
   <div class="ranking-container" id="goleadoresCaptura"><div id="goleadoresList"><div class="empty"><span class="empty-icon">🥅</span>Sin goles registrados</div></div></div>
-  <div class="sh" style="margin-top:18px">
-    <div class="st">🧤 Mejores Porteros</div>
-    <div class="sl"><span style="font-size:9px;color:var(--muted);font-weight:600;margin-left:8px">Top 10</span></div>
-    <button id="btnTogglePorterosPublic" class="btn btn-out btn-sm admin-only" onclick="togglePorterosPublic()" title="Mostrar/ocultar al público" style="display:none;">👁️</button>
-    <button class="btn btn-out btn-sm" onclick="compartirPorteros()" title="Compartir porteros">📤</button>
-  </div>
-  <div id="porterosPublicBanner" style="display:none;background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:700;color:var(--red);margin-bottom:8px;">🔒 Tabla de porteros oculta al público</div>
-  <div class="ranking-container keeper-ranking" id="porterosCaptura"><div id="porterosList"><div class="empty"><span class="empty-icon">🧤</span>Asigna un portero a cada equipo para generar el ranking</div></div></div>
+
 </div>
 
 <!-- ═══════ ÚLTIMOS PARTIDOS ═══════ -->
@@ -8040,7 +8027,7 @@ function getStatsSharePayloadBase(tipo, dataOverride=null){
     const bodyHtml = `
       <div class="share-board">
         <div class="share-board-head" style="grid-template-columns:72px minmax(0,1.8fr) 72px 72px 72px 72px 88px 92px;">
-          <div>#</div><div>Equipo</div><div>PJ</div><div>G</div><div>E</div><div>P</div><div>DG</div><div>Pts</div>
+          <div style="text-align:center;">#</div><div>Equipo</div><div style="text-align:center;">PJ</div><div style="text-align:center;">G</div><div style="text-align:center;">E</div><div style="text-align:center;">P</div><div style="text-align:center;">DG</div><div style="text-align:center;">Pts</div>
         </div>
         ${rows}
       </div>
